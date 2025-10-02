@@ -1,18 +1,17 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import reactLogo from "../../assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./HomePage.css";
+import { useBackendResult } from "./services/ExampleService";
 
 function HomePage() {
   const [count, setCount] = useState(0);
-  const [backendResult, setBackendResult] = useState<string>("");
 
-  React.useEffect(() => {
-    fetch("http://localhost:5015/")
-      .then((res) => res.text())
-      .then((data) => setBackendResult(data))
-      .catch((err) => setBackendResult("Error: " + err.message));
-  }, []);
+  function BackendResultDisplay() {
+    const { data, error } = useBackendResult();
+    if (error) return <pre>Error: {error.message}</pre>;
+    return <pre>{data}</pre>;
+  }
 
   return (
     <>
@@ -38,7 +37,7 @@ function HomePage() {
       </p>
       <div style={{ marginTop: "2rem" }}>
         <h2>Backend Response:</h2>
-        <pre>{backendResult}</pre>
+        <BackendResultDisplay />
       </div>
     </>
   );
