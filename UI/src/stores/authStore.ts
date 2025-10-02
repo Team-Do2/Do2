@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import type { PersistOptions } from "zustand/middleware";
 
+// Note: user will need to be included here eventually
 interface AuthState {
   isLoggedIn: boolean;
   logIn: () => void;

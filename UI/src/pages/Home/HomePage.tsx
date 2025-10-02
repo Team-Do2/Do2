@@ -1,4 +1,6 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import ExampleModal from "./components/ExampleModal/ExampleModal";
 import reactLogo from "../../assets/react.svg";
 import viteLogo from "/vite.svg";
 import "./HomePage.css";
@@ -6,6 +8,8 @@ import { useBackendResult } from "./services/ExampleService";
 
 function HomePage() {
   const [count, setCount] = useState(0);
+  const [modalOpen, setModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   function BackendResultDisplay() {
     const { data, error } = useBackendResult();
@@ -28,6 +32,18 @@ function HomePage() {
         <button onClick={() => setCount((count) => count + 1)}>
           count is {count}
         </button>
+        <button
+          style={{ marginLeft: "1rem" }}
+          onClick={() => setModalOpen(true)}
+        >
+          Show Popup
+        </button>
+        <button
+          style={{ marginLeft: "1rem" }}
+          onClick={() => navigate("/settings")}
+        >
+          Go to Settings
+        </button>
         <p>
           Edit <code>src/pages/Home/HomePage.tsx</code> and save to test HMR
         </p>
@@ -39,6 +55,10 @@ function HomePage() {
         <h2>Backend Response:</h2>
         <BackendResultDisplay />
       </div>
+      <ExampleModal
+        isOpen={modalOpen}
+        onRequestClose={() => setModalOpen(false)}
+      />
     </>
   );
 }
