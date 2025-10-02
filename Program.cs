@@ -18,6 +18,9 @@ app.UseStaticFiles();
 // Use CORS middleware
 app.UseCors();
 
-app.MapGet("/", () => "Hello World!");
+app.MapGet("/", async () => {
+	await Task.Delay(2000);
+	return "Hello World!";
+});
 
 app.Run();
