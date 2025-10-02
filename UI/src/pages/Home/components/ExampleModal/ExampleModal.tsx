@@ -1,17 +1,14 @@
-import Modal from "react-modal";
-import "./ExampleModal.css";
+import Modal from 'react-modal';
+import './ExampleModal.css';
 
-Modal.setAppElement("#root");
+Modal.setAppElement('#root');
 
 interface ExampleModalProps {
   isOpen: boolean;
   onRequestClose: () => void;
 }
 
-const ExampleModal: React.FC<ExampleModalProps> = ({
-  isOpen,
-  onRequestClose,
-}) => {
+const ExampleModal: React.FC<ExampleModalProps> = ({ isOpen, onRequestClose }) => {
   return (
     <Modal
       isOpen={isOpen}

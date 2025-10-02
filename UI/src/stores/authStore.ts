@@ -1,6 +1,6 @@
-import { create } from "zustand";
-import { persist } from "zustand/middleware";
-import type { PersistOptions } from "zustand/middleware";
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
+import type { PersistOptions } from 'zustand/middleware';
 
 // Note: user will need to be included here eventually
 interface AuthState {
@@ -17,7 +17,7 @@ export const useAuthStore = create<AuthState>()(
       logOut: () => set({ isLoggedIn: false }),
     }),
     {
-      name: "auth-storage",
+      name: 'auth-storage',
     } as PersistOptions<AuthState>
   )
 );

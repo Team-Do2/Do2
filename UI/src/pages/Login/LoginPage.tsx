@@ -1,5 +1,5 @@
-import "./LoginPage.css";
-import { useAuthStore } from "../../stores/authStore";
+import './LoginPage.css';
+import { useAuthStore } from '../../stores/authStore';
 
 function LoginPage() {
   const logIn = useAuthStore((state) => state.logIn);

@@ -1,5 +1,5 @@
-import "./SettingsPage.css";
-import { useAuthStore } from "../../stores/authStore";
+import './SettingsPage.css';
+import { useAuthStore } from '../../stores/authStore';
 
 function SettingsPage() {
   const logOut = useAuthStore((state) => state.logOut);
