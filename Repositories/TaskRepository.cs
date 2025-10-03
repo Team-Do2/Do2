@@ -14,6 +14,7 @@ namespace Do2.Repositories
 
         public async Task<IEnumerable<TaskModel>> GetAllTasksAsync()
         {
+            await Task.Delay(2000); // Fake delay to simulate loading TODO: remove this
             var sql = "SELECT Id, Name, IsCompleted FROM Tasks";
             return await _db.QueryAsync<TaskModel>(sql);
         }
