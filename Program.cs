@@ -44,9 +44,6 @@ app.UseCors();
 
 app.MapControllers();
 
-app.MapGet("/", async () => {
-	await Task.Delay(2000);
-	return "Hello World!";
-});
+app.MapGet("/", () => "Hello World!");
 
 app.Run();

@@ -4,6 +4,7 @@ import HomePage from './pages/Home/HomePage';
 import SettingsPage from './pages/Settings/SettingsPage';
 import LoginPage from './pages/Login/LoginPage';
 import { useAuthStore } from './stores/authStore';
+import LoadingPage from './pages/Loading/LoadingPage';
 
 export function AppRoutes() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -13,7 +14,7 @@ export function AppRoutes() {
         path="/"
         element={
           isLoggedIn ? (
-            <Suspense fallback={<div>Loading...</div>}>
+            <Suspense fallback={<LoadingPage />}>
               <HomePage />
             </Suspense>
           ) : (

@@ -4,7 +4,7 @@ import ExampleModal from './components/ExampleModal/ExampleModal';
 import reactLogo from '../../assets/react.svg';
 import viteLogo from '/vite.svg';
 import './HomePage.css';
-import { useBackendResult } from './services/ExampleService';
+import { useGetTasks } from './services/ExampleService';
 
 function HomePage() {
   const [count, setCount] = useState(0);
@@ -12,9 +12,17 @@ function HomePage() {
   const navigate = useNavigate();
 
   function BackendResultDisplay() {
-    const { data, error } = useBackendResult();
+    const { data, error } = useGetTasks();
     if (error) return <pre>Error: {error.message}</pre>;
-    return <pre>{data}</pre>;
+    return (
+      <>
+        {data.map((task) => (
+          <div key={task.id}>
+            <input type="checkbox" checked={task.isCompleted} readOnly /> {task.name}
+          </div>
+        ))}
+      </>
+    );
   }
 
   return (
