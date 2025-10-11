@@ -5,6 +5,7 @@ import reactLogo from '../../assets/react.svg';
 import viteLogo from '/vite.svg';
 import './HomePage.css';
 import { useGetTasks } from './services/ExampleService';
+import TaskCard from './components/TaskCard/TaskCard';
 
 function HomePage() {
   const [count, setCount] = useState(0);
@@ -17,9 +18,7 @@ function HomePage() {
     return (
       <>
         {data.map((task) => (
-          <div key={task.id}>
-            <input type="checkbox" checked={task.isCompleted} readOnly /> {task.name}
-          </div>
+          <TaskCard key={task.id} task={task} />
         ))}
       </>
     );
