@@ -14,26 +14,25 @@ namespace Do2.Repositories
 
         public async Task<IEnumerable<TaskModel>> GetAllTasksAsync()
         {
-            await Task.Delay(2000); // Fake delay to simulate loading TODO: remove this
-            var sql = "SELECT Id, Name, IsCompleted FROM Tasks";
+            var sql = "SELECT id, name, is_done FROM task";
             return await _db.QueryAsync<TaskModel>(sql);
         }
 
         public async Task<TaskModel?> GetTaskByIdAsync(int id)
         {
-            var sql = "SELECT Id, Name, IsCompleted FROM Tasks WHERE Id = @Id";
+            var sql = "SELECT id, name, is_done FROM task WHERE Id = @Id";
             return await _db.QueryFirstOrDefaultAsync<TaskModel>(sql, new { Id = id });
         }
 
         public async Task<int> AddTaskAsync(TaskModel task)
         {
-            var sql = "INSERT INTO Tasks (Name, IsCompleted) VALUES (@Name, @IsCompleted); SELECT LAST_INSERT_ID();";
+            var sql = "INSERT INTO task (name, is_done) VALUES (@Name, @IsCompleted); SELECT LAST_INSERT_ID();";
             return await _db.ExecuteScalarAsync<int>(sql, task);
         }
 
         public async Task<int> UpdateTaskAsync(TaskModel task)
         {
-            var sql = "UPDATE Tasks SET Name = @Name, IsCompleted = @IsCompleted WHERE Id = @Id";
+            var sql = "UPDATE task SET name = @Name, is_done = @IsCompleted WHERE id = @Id";
             return await _db.ExecuteAsync(sql, task);
         }
     }
