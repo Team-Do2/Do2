@@ -16,14 +16,32 @@ public class AuthenticationService(ILogger _logger, IUserRepositoryService _user
     private IUserRepositoryService userRepositoryService = _userRepositoryService;
     private Random random = _random;
 
-    public async Task<bool> CheckUserHash (string email, string password)
+    public async Task<bool> CheckUserHash(string email, string password)
     {
         // Retrieve salt from db
         byte[] salt = (await userRepositoryService.GetUserSalt(email)).Salt;
 
+        // Attempt to find user with username password hash combination
+        // If found, authenticate, otherwise, fail
+        bool isValid = await userRepositoryService.CheckUserHash(new UserLoginCredentials()
+        {
+            Email = email,
+            Hash = CreateUserHash(email, password, salt)
+        });
+
+        // Because the algorithm's time can be measured, must delay a random amount of time
+        await Task.Delay(random.Next(0, 100));
+
+        logger.LogInformation(email + " login attempt " + (isValid ? "successful" : "failed"));
+
+        return isValid;
+    }
+
+    public byte[] CreateUserHash(string email, string password, byte[] salt)
+    {
         // Prepare byte array
-        byte[] PasswordBytes = Encoding.ASCII.GetBytes(password);
-        byte[] UserBytes = Encoding.ASCII.GetBytes(email);
+        byte[] PasswordBytes = encodeString(password);
+        byte[] UserBytes = encodeString(email);
 
         // Create password hash
 
@@ -37,21 +55,17 @@ public class AuthenticationService(ILogger _logger, IUserRepositoryService _user
             AssociatedData = UserBytes
         };
 
-        var passwordHash = passwordEncryptionInstance.GetBytes(BYTE_COUNT);
-
-        // Attempt to find user with username password hash combination
-        // If found, authenticate, otherwise, fail
-        bool isValid = await userRepositoryService.CheckUserHash(new UserLoginCredentials()
-        {
-            Email = email,
-            Hash = passwordHash
-        });
-
-        // Because the algorithm's time can be measured, must delay a random amount of time
-        await Task.Delay(random.Next(0, 100));
-
-        logger.LogInformation(email + " login attempt " + (isValid? "successful" : "failed"));
-        
-        return isValid;
+        return passwordEncryptionInstance.GetBytes(BYTE_COUNT);
     }
+
+    public byte[] CreateUserSalt()
+    {
+        byte[] result = new byte[BYTE_COUNT];
+
+        random.NextBytes(result);
+
+        return result;
+    }
+
+    private Func<string, byte[]> encodeString = Encoding.ASCII.GetBytes;
 }

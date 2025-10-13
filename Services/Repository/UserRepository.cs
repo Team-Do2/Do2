@@ -1,5 +1,6 @@
 using System.Data;
 using Dapper;
+using Do2.Contracts.DatabaseModels;
 using Do2.Contracts.DatabaseModels.UserCredentials;
 using Do2.Contracts.Services;
 using Microsoft.AspNetCore.SignalR;
@@ -16,6 +17,11 @@ public class UserRepositoryService(IDbConnection _db, ILogger _logger) : IUserRe
     {
         return db.QueryFirstOrDefaultAsync<bool>
         ($"SELECT EXISTS (SELECT 1 FROM user WHERE {userLoginCredentials.Email} AND {userLoginCredentials.Hash})").Result;
+    }
+
+    public Task<bool> CreateUser(User user)
+    {
+        throw new NotImplementedException();
     }
 
     public async Task<UserSalt> GetUserSalt(string email)
