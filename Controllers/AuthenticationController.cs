@@ -5,21 +5,21 @@ namespace Do2.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class AuthenicationController : ControllerBase
+    public class AuthenticationController : ControllerBase
     {
         // private readonly TaskService _service; //TaskService service
-        public AuthenicationController()
+        public AuthenticationController()
         {
 
         }
 
         [HttpPost]
-        public async void CreateUserCreditionals() {
+        public async void CreateUserCredentials() {
 
         }
 
         [HttpPost]
-        public async void AuthenicateUser() {
+        public async void AuthenticateUser() {
             
         }
     }

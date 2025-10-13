@@ -1,10 +1,11 @@
 using Dapper;
+using Do2.Contracts.Services;
+using Do2.Models.DatabaseModels;
 using System.Data;
-using TaskModel = Do2.Models.Task;
 
 namespace Do2.Repositories
 {
-    public class TaskRepository
+    public class TaskRepository : ICompletableTaskRepositoryService
     {
         private readonly IDbConnection _db;
         public TaskRepository(IDbConnection db)
@@ -12,25 +13,25 @@ namespace Do2.Repositories
             _db = db;
         }
 
-        public async Task<IEnumerable<TaskModel>> GetAllTasksAsync()
+        public async Task<IEnumerable<CompletableTask>> GetAllTasksAsync()
         {
             var sql = "SELECT id, name, is_done FROM task";
-            return await _db.QueryAsync<TaskModel>(sql);
+            return await _db.QueryAsync<CompletableTask>(sql);
         }
 
-        public async Task<TaskModel?> GetTaskByIdAsync(int id)
+        public async Task<CompletableTask?> GetTaskByIdAsync(int id)
         {
             var sql = "SELECT id, name, is_done FROM task WHERE Id = @Id";
-            return await _db.QueryFirstOrDefaultAsync<TaskModel>(sql, new { Id = id });
+            return await _db.QueryFirstOrDefaultAsync<CompletableTask>(sql, new { Id = id });
         }
 
-        public async Task<int> AddTaskAsync(TaskModel task)
+        public async Task<int> AddTaskAsync(CompletableTask task)
         {
             var sql = "INSERT INTO task (name, is_done) VALUES (@Name, @IsCompleted); SELECT LAST_INSERT_ID();";
             return await _db.ExecuteScalarAsync<int>(sql, task);
         }
 
-        public async Task<int> UpdateTaskAsync(TaskModel task)
+        public async Task<int> UpdateTaskAsync(CompletableTask task)
         {
             var sql = "UPDATE task SET name = @Name, is_done = @IsCompleted WHERE id = @Id";
             return await _db.ExecuteAsync(sql, task);

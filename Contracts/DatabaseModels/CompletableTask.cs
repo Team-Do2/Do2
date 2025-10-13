@@ -1,6 +1,6 @@
-namespace Do2.Models
+namespace Do2.Models.DatabaseModels
 {
-    public class Task
+    public class CompletableTask
     {
         public int Id { get; set; }
         public string? Name { get; set; }

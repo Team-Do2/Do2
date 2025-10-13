@@ -1,5 +1,6 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Do2.Services;
 using MySql.Data.MySqlClient;
 using System.Data;
 
@@ -21,7 +22,9 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 
 	// Register repository and service
 	containerBuilder.RegisterType<Do2.Repositories.TaskRepository>().AsSelf().InstancePerLifetimeScope();
-	containerBuilder.RegisterType<Do2.Services.TaskService>().AsSelf().InstancePerLifetimeScope();
+	containerBuilder.RegisterType<CompletableTaskService>().AsSelf().InstancePerLifetimeScope();
+	containerBuilder.RegisterType<Random>().AsImplementedInterfaces();
+	containerBuilder.RegisterType<AuthenticationService>().AsImplementedInterfaces();
 });
 
 // Add CORS policy to allow frontend dev server
