@@ -4,7 +4,7 @@ import ExampleModal from './components/ExampleModal/ExampleModal';
 import reactLogo from '../../assets/react.svg';
 import viteLogo from '/vite.svg';
 import './HomePage.css';
-import { useGetTasks } from './services/ExampleService';
+import { useGetTasks } from './services/TaskService';
 import TaskCard from './components/TaskCard/TaskCard';
 
 function HomePage() {

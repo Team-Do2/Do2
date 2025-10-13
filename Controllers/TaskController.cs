@@ -37,7 +37,7 @@ namespace Do2.Controllers
         {
             var result = await _service.UpdateTaskAsync(task);
             if (result == 0) return NotFound();
-            return NoContent();
+            return Ok(task);
         }
     }
 }
