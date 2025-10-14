@@ -1,4 +1,5 @@
 using System.Data;
+using System.Text;
 using Dapper;
 using Do2.Contracts.DatabaseModels;
 using Do2.Contracts.DatabaseModels.UserCredentials;
@@ -12,12 +13,13 @@ public class UserRepositoryService(IDbConnection _db, ILogger _logger) : IUserRe
 
     public async Task<bool> CheckUserHash(UserLoginCredentials userLoginCredentials)
     {
+        
         string sql = @"
         SELECT EXISTS (
             SELECT 
                 1 FROM user 
             WHERE 
-                email = @email AND password_hash = @email
+                email = @Email AND password_hash = @Hash
         )";
 
         return await db.QueryFirstOrDefaultAsync<bool>(sql, userLoginCredentials);
@@ -75,11 +77,13 @@ public class UserRepositoryService(IDbConnection _db, ILogger _logger) : IUserRe
 
     public async Task<UserSalt> GetUserSalt(string email)
     {
-        string query = $"SELECT 1 FROM user WHERE {email}";
+        string sql = @"
+        SELECT password_salt FROM user 
+        WHERE email = @Email";
 
-        var result = await db.QueryFirstOrDefaultAsync<byte[]>(query);
+        var saltString = await db.QueryFirstOrDefaultAsync<byte[]>(sql, new { Email = email });
 
-        if (result == null) {
+        if (saltString == null) {
             const string LoggedError = "Failed to retrieve user salt from email!";
             logger.LogError(LoggedError);
             throw new Exception(LoggedError);
@@ -87,7 +91,7 @@ public class UserRepositoryService(IDbConnection _db, ILogger _logger) : IUserRe
 
         return new UserSalt()
         {
-            Salt = result
+            Salt = saltString
         };
     }
 }
