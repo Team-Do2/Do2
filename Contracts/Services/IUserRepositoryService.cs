@@ -10,4 +10,6 @@ public interface IUserRepositoryService
     Task<bool> CheckUserHash(UserLoginCredentials generatedUserHash);
 
     Task<bool> CreateUser(User user);
+
+    Task<bool> DeleteUser(string email);
 }

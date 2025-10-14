@@ -4,11 +4,11 @@ namespace Do2.Contracts.DatabaseModels;
 
 public class User
 {
-    public required string Email;
-    public required string FirstName;
-    public required string LastName;
-    public required byte[] Salt;
-    public required byte[] Hash;
+    public required string Email { get; set; }
+    public required string FirstName { get; set; }
+    public required string LastName { get; set; }
+    public required byte[] Salt { get; set; }
+    public required byte[] Hash { get; set; }
 }
 
 public class UserSettings

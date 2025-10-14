@@ -1,6 +1,6 @@
+using Do2.Models.DatabaseModels;
 using Do2.Services;
 using Microsoft.AspNetCore.Mvc;
-using TaskModel = Do2.Models.Task;
 
 namespace Do2.Controllers
 {
@@ -8,17 +8,17 @@ namespace Do2.Controllers
     [Route("api/[controller]")]
     public class TaskController : ControllerBase
     {
-        private readonly TaskService _service;
-        public TaskController(TaskService service)
+        private readonly CompletableTaskService _service;
+        public TaskController(CompletableTaskService service)
         {
             _service = service;
         }
 
         [HttpGet]
-        public async Task<IEnumerable<TaskModel>> GetAll() => await _service.GetAllTasksAsync();
+        public async Task<IEnumerable<CompletableTask>> GetAll() => await _service.GetAllTasksAsync();
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<TaskModel>> GetById(int id)
+        public async Task<ActionResult<CompletableTask>> GetById(int id)
         {
             var task = await _service.GetTaskByIdAsync(id);
             if (task == null) return NotFound();
@@ -26,14 +26,14 @@ namespace Do2.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<int>> Add(TaskModel task)
+        public async Task<ActionResult<int>> Add(CompletableTask task)
         {
             var id = await _service.AddTaskAsync(task);
             return CreatedAtAction(nameof(GetById), new { id }, id);
         }
 
         [HttpPut]
-        public async Task<ActionResult> Update(TaskModel task)
+        public async Task<ActionResult> Update(CompletableTask task)
         {
             var result = await _service.UpdateTaskAsync(task);
             if (result == 0) return NotFound();

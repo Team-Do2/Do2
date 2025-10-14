@@ -5,8 +5,8 @@ namespace Do2.Services
 {
     public class CompletableTaskService
     {
-        private readonly TaskRepository _repository;
-        public CompletableTaskService(TaskRepository repository)
+        private readonly TaskRepositoryService _repository;
+        public CompletableTaskService(TaskRepositoryService repository)
         {
             _repository = repository;
         }

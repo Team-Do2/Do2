@@ -5,10 +5,10 @@ using System.Data;
 
 namespace Do2.Repositories
 {
-    public class TaskRepository : ICompletableTaskRepositoryService
+    public class TaskRepositoryService : ICompletableTaskRepositoryService
     {
         private readonly IDbConnection _db;
-        public TaskRepository(IDbConnection db)
+        public TaskRepositoryService(IDbConnection db)
         {
             _db = db;
         }

@@ -3,9 +3,6 @@ using Dapper;
 using Do2.Contracts.DatabaseModels;
 using Do2.Contracts.DatabaseModels.UserCredentials;
 using Do2.Contracts.Services;
-using Microsoft.AspNetCore.SignalR;
-using Mysqlx;
-
 namespace Do2.Repositories;
 
 public class UserRepositoryService(IDbConnection _db, ILogger _logger) : IUserRepositoryService
@@ -15,13 +12,65 @@ public class UserRepositoryService(IDbConnection _db, ILogger _logger) : IUserRe
 
     public async Task<bool> CheckUserHash(UserLoginCredentials userLoginCredentials)
     {
-        return db.QueryFirstOrDefaultAsync<bool>
-        ($"SELECT EXISTS (SELECT 1 FROM user WHERE {userLoginCredentials.Email} AND {userLoginCredentials.Hash})").Result;
+        string sql = @"
+        SELECT EXISTS (
+            SELECT 
+                1 FROM user 
+            WHERE 
+                email = @email AND password_hash = @email
+        )";
+
+        return await db.QueryFirstOrDefaultAsync<bool>(sql, userLoginCredentials);
     }
 
-    public Task<bool> CreateUser(User user)
+    public async Task<bool> CreateUser(User user)
     {
-        throw new NotImplementedException();
+        string sql = @"
+        INSERT INTO user 
+            (email, password_hash, password_salt, first_name, last_name) 
+        VALUES 
+            (@Email, @Hash, @Salt, @FirstName, @LastName)";
+
+        int rowsAffected = await db.ExecuteAsync(sql, user);
+
+        bool isSuccessful = rowsAffected > 0;
+
+        if (isSuccessful)
+        {
+            string LogSuccess = "Created user with " + user.Email;
+            logger.LogInformation(LogSuccess);
+            return isSuccessful;
+        }
+        else
+        {
+            string LoggedError = "Failed to create user with " + user.Email;
+            logger.LogInformation(LoggedError);
+            return isSuccessful;
+        }
+    }
+
+    public async Task<bool> DeleteUser(string email)
+    {
+        string sql = @"
+        DELETE FROM user 
+        WHERE email = @Email";
+
+        int rowsAffected = await db.ExecuteAsync(sql, new {Email=email});
+
+        bool isSuccessful = rowsAffected > 0;
+
+        if (isSuccessful)
+        {
+            string LogSuccess = "Deleted user with " + email;
+            logger.LogInformation(LogSuccess);
+            return isSuccessful;
+        }
+        else
+        {
+            string LoggedError = "Failed to delete user with " + email;
+            logger.LogInformation(LoggedError);
+            return isSuccessful;
+        }
     }
 
     public async Task<UserSalt> GetUserSalt(string email)

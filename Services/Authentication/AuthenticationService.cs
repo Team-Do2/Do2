@@ -9,9 +9,11 @@ namespace Do2.Services;
 
 public class AuthenticationService(ILogger _logger, IUserRepositoryService _userRepositoryService, Random _random) : IAuthenticationService
 {
-    const int BYTE_COUNT = 128;
+    const int PASSWORD_BYTE_COUNT = 128;
+    const int SALT_BYTE_COUNT = 32;
     const int PARALLELISM_COUNT = 4;
     const int MEMORY_SIZE = 8192;
+    const int ITERATION_COUNT = 40;
     private ILogger logger = _logger;
     private IUserRepositoryService userRepositoryService = _userRepositoryService;
     private Random random = _random;
@@ -51,16 +53,17 @@ public class AuthenticationService(ILogger _logger, IUserRepositoryService _user
         {
             DegreeOfParallelism = PARALLELISM_COUNT,
             MemorySize = MEMORY_SIZE,
+            Iterations = ITERATION_COUNT,
             Salt = salt,
             AssociatedData = UserBytes
         };
 
-        return passwordEncryptionInstance.GetBytes(BYTE_COUNT);
+        return passwordEncryptionInstance.GetBytes(PASSWORD_BYTE_COUNT);
     }
 
     public byte[] CreateUserSalt()
     {
-        byte[] result = new byte[BYTE_COUNT];
+        byte[] result = new byte[SALT_BYTE_COUNT];
 
         random.NextBytes(result);
 

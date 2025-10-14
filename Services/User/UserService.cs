@@ -37,9 +37,17 @@ public class UserService(IAuthenticationService _authenticationService, IUserRep
         return true;
     }
     
-    public bool DeleteUser(UserLoginCredentials userLoginCredentials)
+    public async Task<bool> DeleteUser(string email)
     {
-        throw new NotImplementedException();
+        var isSuccessful = await repositoryService.DeleteUser(email);
+
+        if (!isSuccessful)
+        {
+            _logger.LogInformation("Attempted user deleted failed!");
+            return false;
+        }
+
+        return true;
     }
 
     Task<bool> IUserService.UpdateSettings()

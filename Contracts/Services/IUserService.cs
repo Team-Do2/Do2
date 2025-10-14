@@ -8,7 +8,7 @@ public interface IUserService
 {
     Task<bool> CreateUser(BasicUserInformation basicUserInformation);
 
-    bool DeleteUser(UserLoginCredentials userLoginCredentials);
+    Task<bool> DeleteUser(string email);
 
     Task<bool> UpdateSettings();
 }
