@@ -1,0 +1,15 @@
+using System;
+
+namespace Do2.Contracts.Services;
+
+public interface ISessionService
+{   
+    // Doesn't have to be these parameters
+    // Assumes user is already authenticated
+    public string CreateSession(string email, TimeSpan duration);
+
+    public bool ValidateSession(string accessToken);
+
+    public void InvalidateSessionByAccessToken(string accessToken);
+    public void InvalidateSessionByEmail(string email);
+}

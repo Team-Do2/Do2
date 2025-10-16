@@ -7,6 +7,7 @@ using Do2.Services.User;
 using Microsoft.Extensions.Logging;
 using MySql.Data.MySqlClient;
 using System.Data;
+using System.Security.Cryptography;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,7 +26,8 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 	}).As<IDbConnection>().InstancePerLifetimeScope();
 
 		// Register repository and service
-		containerBuilder.RegisterType<Random>().AsSelf();
+		
+		containerBuilder.RegisterType<RandomNumberGenerator>().AsSelf();
 		containerBuilder.RegisterType<Logger<string>>().AsImplementedInterfaces();
 		
 		containerBuilder.RegisterType<UserRepositoryService>().AsImplementedInterfaces();

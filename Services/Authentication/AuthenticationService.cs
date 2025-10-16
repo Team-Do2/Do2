@@ -1,3 +1,4 @@
+using System.Security.Cryptography;
 using System.Security.Policy;
 using System.Text;
 using System.Threading.Tasks;
@@ -7,7 +8,7 @@ using Konscious.Security.Cryptography;
 
 namespace Do2.Services;
 
-public class AuthenticationService(ILogger _logger, IUserRepositoryService _userRepositoryService, Random _random) : IAuthenticationService
+public class AuthenticationService(ILogger _logger, IUserRepositoryService _userRepositoryService, RandomNumberGenerator _random) : IAuthenticationService
 {
     const int PASSWORD_BYTE_COUNT = 128;
     const int SALT_BYTE_COUNT = 32;
@@ -16,7 +17,7 @@ public class AuthenticationService(ILogger _logger, IUserRepositoryService _user
     const int ITERATION_COUNT = 40;
     private ILogger logger = _logger;
     private IUserRepositoryService userRepositoryService = _userRepositoryService;
-    private Random random = _random;
+    private RandomNumberGenerator random = _random;
 
     public async Task<bool> CheckUserHash(string email, string password)
     {
@@ -32,7 +33,7 @@ public class AuthenticationService(ILogger _logger, IUserRepositoryService _user
         });
 
         // Because the algorithm's time can be measured, must delay a random amount of time
-        await Task.Delay(random.Next(0, 100));
+        await Task.Delay(RandomNumberGenerator.GetInt32(100)); 
 
         logger.LogInformation(email + " login attempt " + (isValid ? "successful" : "failed"));
 
@@ -65,7 +66,7 @@ public class AuthenticationService(ILogger _logger, IUserRepositoryService _user
     {
         byte[] result = new byte[SALT_BYTE_COUNT];
 
-        random.NextBytes(result);
+        random.GetNonZeroBytes(result);
 
         return result;
     }
