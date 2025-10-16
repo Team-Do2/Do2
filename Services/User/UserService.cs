@@ -30,7 +30,7 @@ public class UserService(IAuthenticationService _authenticationService, IUserRep
 
         if (!isSuccessful)
         {
-            _logger.LogInformation("Attempted user creation failed");
+            logger.LogInformation("Attempted user creation failed");
             return false;
         }
 
@@ -43,7 +43,7 @@ public class UserService(IAuthenticationService _authenticationService, IUserRep
 
         if (!isSuccessful)
         {
-            _logger.LogInformation("Attempted user deleted failed!");
+            logger.LogInformation("Attempted user deleted failed!");
             return false;
         }
 
