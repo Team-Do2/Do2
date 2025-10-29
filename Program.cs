@@ -26,8 +26,9 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 	}).As<IDbConnection>().InstancePerLifetimeScope();
 
 		// Register repository and service
-		
-		containerBuilder.RegisterType<RandomNumberGenerator>().AsSelf();
+		containerBuilder.Register(c => RandomNumberGenerator.Create())
+			.As<System.Security.Cryptography.RandomNumberGenerator>()
+			.SingleInstance();
 		containerBuilder.RegisterType<Logger<string>>().AsImplementedInterfaces();
 		
 		containerBuilder.RegisterType<UserRepositoryService>().AsImplementedInterfaces();
