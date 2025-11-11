@@ -34,3 +34,45 @@ export function useUpdateTask() {
     },
   });
 }
+
+export function useUpdateTaskDone() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, isDone }: { id: number; isDone: boolean }) => {
+      const res = await axios.patch(`http://localhost:5015/api/task/${id}/done?isDone=${isDone}`);
+      return res.data;
+    },
+    onSuccess: (_data, variables) => {
+      queryClient.setQueryData<Task[]>(['getTasks'], (oldTasks) => {
+        if (!oldTasks) return [];
+        const idx = oldTasks.findIndex((task) => task.id === variables.id);
+        if (idx === -1) return oldTasks;
+        const newTasks = oldTasks.slice();
+        newTasks[idx] = { ...newTasks[idx], isDone: variables.isDone };
+        return newTasks;
+      });
+    },
+  });
+}
+
+export function useUpdateTaskPinned() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, isPinned }: { id: number; isPinned: boolean }) => {
+      const res = await axios.patch(
+        `http://localhost:5015/api/task/${id}/pinned?isPinned=${isPinned}`
+      );
+      return res.data;
+    },
+    onSuccess: (_data, variables) => {
+      queryClient.setQueryData<Task[]>(['getTasks'], (oldTasks) => {
+        if (!oldTasks) return [];
+        const idx = oldTasks.findIndex((task) => task.id === variables.id);
+        if (idx === -1) return oldTasks;
+        const newTasks = oldTasks.slice();
+        newTasks[idx] = { ...newTasks[idx], isPinned: variables.isPinned };
+        return newTasks;
+      });
+    },
+  });
+}

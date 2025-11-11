@@ -39,5 +39,21 @@ namespace Do2.Controllers
             if (result == 0) return NotFound();
             return Ok(task);
         }
+
+        [HttpPatch("{taskId}/done")]
+        public async Task<ActionResult> UpdateDone(int taskId, bool isDone)
+        {
+            var result = await _service.UpdateTaskDoneAsync(taskId, isDone);
+            if (result == 0) return NotFound();
+            return Ok();
+        }
+
+        [HttpPatch("{taskId}/pinned")]
+        public async Task<ActionResult> UpdatePinned(int taskId, bool isPinned)
+        {
+            var result = await _service.UpdateTaskPinnedAsync(taskId, isPinned);
+            if (result == 0) return NotFound();
+            return Ok();
+        }
     }
 }
