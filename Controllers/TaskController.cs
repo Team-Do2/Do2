@@ -1,3 +1,4 @@
+using Do2.DTO;
 using Do2.Services;
 using Microsoft.AspNetCore.Mvc;
 using TaskModel = Do2.Models.Task;
@@ -14,46 +15,75 @@ namespace Do2.Controllers
             _service = service;
         }
 
-        [HttpGet]
-        public async Task<IEnumerable<TaskModel>> GetAll() => await _service.GetAllTasksAsync();
+        [HttpGet("user/{userEmail}")]
+        public async Task<IEnumerable<TaskModel>> GetAllUserTasks(string userEmail) => await _service.GetAllUserTasksAsync(userEmail);
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<TaskModel>> GetById(int id)
+        [HttpGet("user/{userEmail}/pinned")]
+        public async Task<IEnumerable<TaskModel>> GetPinnedUserTasks(string userEmail) => await _service.GetPinnedUserTasksAsync(userEmail);
+
+        [HttpGet("user/{userEmail}/search")]
+        public async Task<IEnumerable<TaskModel>> GetUserTasksBySearch(string userEmail, [FromQuery] string search) => await _service.GetUserTasksBySearchAsync(userEmail, search);
+
+        [HttpPost("user/{userEmail}")]
+        public async Task<ActionResult<int>> AddUserTask(string userEmail, [FromBody] TaskModel task)
         {
-            var task = await _service.GetTaskByIdAsync(id);
-            if (task == null) return NotFound();
-            return task;
+            var id = await _service.AddUserTaskAsync(userEmail, task);
+            return CreatedAtAction(nameof(GetAllUserTasks), new { userEmail }, id);
         }
 
-        [HttpPost]
-        public async Task<ActionResult<int>> Add(TaskModel task)
+        [HttpPost("deadline")]
+        public async Task<ActionResult<int>> AddDeadlineTask([FromQuery] int taskId, [FromQuery] DateTime datetime)
         {
-            var id = await _service.AddTaskAsync(task);
-            return CreatedAtAction(nameof(GetById), new { id }, id);
+            var id = await _service.AddDeadlineTaskAsync(taskId, datetime);
+            return Ok(id);
         }
 
-        [HttpPut]
-        public async Task<ActionResult> Update(TaskModel task)
+        [HttpPost("subtask")]
+        public async Task<ActionResult> AddSubtaskRelationship([FromQuery] int supertaskId, [FromQuery] int subtaskId)
         {
-            var result = await _service.UpdateTaskAsync(task);
+            var result = await _service.AddSubtaskRelationship(supertaskId, subtaskId);
             if (result == 0) return NotFound();
-            return Ok(task);
+            return Ok();
+        }
+
+        [HttpPatch("{taskId}/pinned")]
+        public async Task<ActionResult> UpdateTaskPinned(int taskId, [FromQuery] bool isPinned)
+        {
+            var result = await _service.UpdateTaskPinnedAsync(taskId, isPinned);
+            if (result == 0) return NotFound();
+            return Ok();
         }
 
         [HttpPatch("{taskId}/done")]
-        public async Task<ActionResult> UpdateDone(int taskId, bool isDone)
+        public async Task<ActionResult> UpdateTaskDone(int taskId, [FromQuery] bool isDone)
         {
             var result = await _service.UpdateTaskDoneAsync(taskId, isDone);
             if (result == 0) return NotFound();
             return Ok();
         }
 
-        [HttpPatch("{taskId}/pinned")]
-        public async Task<ActionResult> UpdatePinned(int taskId, bool isPinned)
+
+        [HttpPatch("{taskId}/description")]
+        public async Task<ActionResult> UpdateTaskDescription(int taskId, UpdateTaskDescriptionRequest request)
         {
-            var result = await _service.UpdateTaskPinnedAsync(taskId, isPinned);
+            var result = await _service.UpdateTaskDescriptionAsync(taskId, request.Description);
             if (result == 0) return NotFound();
             return Ok();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteTask(int id)
+        {
+            var result = await _service.DeleteTaskAsync(id);
+            if (result == 0) return NotFound();
+            return NoContent();
+        }
+
+        [HttpDelete("user/{userEmail}/stale")]
+        public async Task<ActionResult> DeleteAllStaleTasks(string userEmail)
+        {
+            var result = await _service.DeleteAllStaleTasksAsync(userEmail);
+            return Ok(result);
         }
     }
 }

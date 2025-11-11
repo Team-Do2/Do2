@@ -1,10 +1,10 @@
 import './HomePage.css';
-import { useGetTasks } from './services/TaskService';
+import { useGetAllUserTasks } from './services/TaskService';
 import TaskCard from './components/TaskCard/TaskCard';
 
 function HomePage() {
   function TaskList() {
-    const { data, error } = useGetTasks();
+    const { data, error } = useGetAllUserTasks('nnn10219@gmail.com');
     if (error) return <pre>Error: {error.message}</pre>;
     return (
       <>

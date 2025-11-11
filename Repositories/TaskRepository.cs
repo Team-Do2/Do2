@@ -12,29 +12,86 @@ namespace Do2.Repositories
             _db = db;
         }
 
-        public async Task<IEnumerable<TaskModel>> GetAllTasksAsync()
+        public async Task<IEnumerable<TaskModel>> GetAllUserTasksAsync(string userEmail)
         {
-            var sql = "SELECT id, name, is_done AS isDone, is_pinned AS isPinned FROM task";
-            return await _db.QueryAsync<TaskModel>(sql);
+            var sql =
+            """
+            SELECT
+                id,
+                is_pinned AS isPinned,
+                is_done AS isDone,
+                name,
+                datetime_to_delete AS datetimeToDelete,
+                description,
+                supertask_id AS supertaskId,
+                user_email AS userEmail
+            FROM task
+            WHERE user_email = @userEmail
+            """;
+            return await _db.QueryAsync<TaskModel>(sql, new { userEmail });
         }
 
-        public async Task<TaskModel?> GetTaskByIdAsync(int id)
+        public async Task<IEnumerable<TaskModel>> GetPinnedUserTasksAsync(string userEmail)
         {
-            var sql = "SELECT id, name, is_done AS isDone, is_pinned AS isPinned FROM task WHERE id = @id";
-            return await _db.QueryFirstOrDefaultAsync<TaskModel>(sql, new { id });
+            var sql = """
+            SELECT
+                id,
+                is_pinned AS isPinned,
+                is_done AS isDone,
+                name,
+                datetime_to_delete AS datetimeToDelete,
+                description,
+                supertask_id AS supertaskId,
+                user_email AS userEmail
+            FROM task
+            WHERE user_email = @userEmail AND is_pinned = 1
+            """;
+            return await _db.QueryAsync<TaskModel>(sql, new { userEmail });
         }
 
-
-        public async Task<int> AddTaskAsync(TaskModel task)
+        public async Task<IEnumerable<TaskModel>> GetUserTasksBySearchAsync(string userEmail, string search)
         {
-            var sql = "INSERT INTO task (name, is_done, is_pinned) VALUES (@name, @isDone, @isPinned); SELECT LAST_INSERT_ID();";
-            return await _db.ExecuteScalarAsync<int>(sql, task);
+            var sql = """
+            SELECT
+                id,
+                is_pinned AS isPinned,
+                is_done AS isDone,
+                name,
+                datetime_to_delete AS datetimeToDelete,
+                description,
+                supertask_id AS supertaskId,
+                user_email AS userEmail,
+                MATCH(name) AGAINST (@search IN NATURAL LANGUAGE MODE) AS relevance
+            FROM task
+            WHERE user_email = @userEmail
+              AND MATCH(name) AGAINST (@search IN NATURAL LANGUAGE MODE)
+            ORDER BY relevance DESC
+            """;
+            return await _db.QueryAsync<TaskModel>(sql, new { userEmail, search });
         }
 
-        public async Task<int> UpdateTaskAsync(TaskModel task)
+        public async Task<int> AddUserTaskAsync(string email, TaskModel task)
         {
-            var sql = "UPDATE task SET name = @name, is_done = @isDone, is_pinned = @isPinned WHERE id = @id";
-            return await _db.ExecuteAsync(sql, task);
+            var sql = "INSERT INTO task (name, description, user_email) VALUES (@name, @description, @userEmail); SELECT LAST_INSERT_ID();";
+            return await _db.ExecuteScalarAsync<int>(sql, new { task.name, task.description, userEmail = email });
+        }
+
+        public async Task<int> AddDeadlineTaskAsync(int taskId, DateTime datetime)
+        {
+            var sql = "INSERT INTO deadline_task (task_id, due_datetime) VALUES (@taskId, @datetime); SELECT LAST_INSERT_ID();";
+            return await _db.ExecuteScalarAsync<int>(sql, new { taskId, datetime });
+        }
+
+        public async Task<int> AddSubtaskRelationship(int supertaskId, int subtaskId)
+        {
+            var sql = "UPDATE task SET supertask_id = @supertaskId WHERE id = @subtaskId";
+            return await _db.ExecuteAsync(sql, new { supertaskId, subtaskId });
+        }
+
+        public async Task<int> UpdateTaskPinnedAsync(int taskId, bool isPinned)
+        {
+            var sql = "UPDATE task SET is_pinned = @isPinned WHERE id = @taskId";
+            return await _db.ExecuteAsync(sql, new { taskId, isPinned });
         }
 
         public async Task<int> UpdateTaskDoneAsync(int taskId, bool isDone)
@@ -43,10 +100,21 @@ namespace Do2.Repositories
             return await _db.ExecuteAsync(sql, new { taskId, isDone });
         }
 
-        public async Task<int> UpdateTaskPinnedAsync(int taskId, bool isPinned)
+        public async Task<int> UpdateTaskDescriptionAsync(int taskId, string description)
         {
-            var sql = "UPDATE task SET is_pinned = @isPinned WHERE id = @taskId";
-            return await _db.ExecuteAsync(sql, new { taskId, isPinned });
+            var sql = "UPDATE task SET description = @description WHERE id = @id";
+            return await _db.ExecuteAsync(sql, new { id = taskId, description });
+        }
+
+        public async Task<int> DeleteTaskAsync(int id)
+        {
+            var sql = "DELETE FROM task WHERE id = @id";
+            return await _db.ExecuteAsync(sql, new { id });
+        }
+
+        public async Task<int> DeleteAllStaleTasksAsync(string email) {
+            var sql = "DELETE FROM task WHERE user_email = @userEmail AND datetime_to_delete < NOW()";
+            return await _db.ExecuteAsync(sql, new { userEmail = email });
         }
     }
 }
