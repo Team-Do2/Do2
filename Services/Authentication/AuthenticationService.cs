@@ -1,10 +1,9 @@
 using System.Security.Cryptography;
-using System.Security.Policy;
 using System.Text;
-using System.Threading.Tasks;
 using Do2.Contracts.DatabaseModels.UserCredentials;
 using Do2.Contracts.Services;
 using Konscious.Security.Cryptography;
+using Microsoft.Extensions.Logging;
 
 namespace Do2.Services;
 

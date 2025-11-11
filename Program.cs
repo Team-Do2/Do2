@@ -1,10 +1,8 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using Do2.Contracts.Services;
 using Do2.Repositories;
 using Do2.Services;
 using Do2.Services.User;
-using Microsoft.Extensions.Logging;
 using MySql.Data.MySqlClient;
 using System.Data;
 using System.Security.Cryptography;
@@ -25,18 +23,18 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 		return new MySqlConnection(connectionString);
 	}).As<IDbConnection>().InstancePerLifetimeScope();
 
-		// Register repository and service
-		containerBuilder.Register(c => RandomNumberGenerator.Create())
-			.As<System.Security.Cryptography.RandomNumberGenerator>()
-			.SingleInstance();
-		containerBuilder.RegisterType<Logger<string>>().AsImplementedInterfaces();
-		
-		containerBuilder.RegisterType<UserRepositoryService>().AsImplementedInterfaces();
-		containerBuilder.RegisterType<TaskRepositoryService>().AsSelf().InstancePerLifetimeScope();
+	// Register repository and service
+	containerBuilder.Register(c => RandomNumberGenerator.Create())
+		.As<RandomNumberGenerator>()
+		.SingleInstance();
+	containerBuilder.RegisterType<Logger<string>>().AsImplementedInterfaces();
+	
+	containerBuilder.RegisterType<UserRepositoryService>().AsImplementedInterfaces();
+	containerBuilder.RegisterType<TaskRepositoryService>().AsSelf().InstancePerLifetimeScope();
 
-		containerBuilder.RegisterType<CompletableTaskService>().AsSelf().InstancePerLifetimeScope();
-		containerBuilder.RegisterType<AuthenticationService>().AsImplementedInterfaces();
-		containerBuilder.RegisterType<UserService>().AsImplementedInterfaces();
+	containerBuilder.RegisterType<CompletableTaskService>().AsSelf().InstancePerLifetimeScope();
+	containerBuilder.RegisterType<AuthenticationService>().AsImplementedInterfaces();
+	containerBuilder.RegisterType<UserService>().AsImplementedInterfaces();
 });
 
 // Add CORS policy to allow frontend dev server
@@ -45,8 +43,8 @@ builder.Services.AddCors(options =>
 	options.AddDefaultPolicy(policy =>
 	{
 		policy.WithOrigins("http://localhost:5173") // Vite default dev port
-			  .AllowAnyHeader()
-			  .AllowAnyMethod();
+			.AllowAnyHeader()
+			.AllowAnyMethod();
 	});
 });
 

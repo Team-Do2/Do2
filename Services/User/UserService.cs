@@ -1,8 +1,6 @@
-using System.Diagnostics;
-using System.Threading.Tasks;
-using Do2.Contracts.DatabaseModels.UserCredentials;
 using Do2.Contracts.DTOs;
 using Do2.Contracts.Services;
+using Microsoft.Extensions.Logging;
 
 namespace Do2.Services.User;
 

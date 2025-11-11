@@ -4,6 +4,7 @@ using Dapper;
 using Do2.Contracts.DatabaseModels;
 using Do2.Contracts.DatabaseModels.UserCredentials;
 using Do2.Contracts.Services;
+using Microsoft.Extensions.Logging;
 namespace Do2.Repositories;
 
 public class UserRepositoryService(IDbConnection _db, ILogger _logger) : IUserRepositoryService
