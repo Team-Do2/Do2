@@ -2,6 +2,7 @@ import './SettingsPage.css';
 
 import { useAuthStore } from '../../stores/authStore';
 import { useQueryClient } from '@tanstack/react-query';
+import TagList from './components/TagList/TagList';
 
 function SettingsPage() {
   const logOut = useAuthStore((state) => state.logOut);
@@ -20,6 +21,7 @@ function SettingsPage() {
     <>
       <p>Settings Page Works!</p>
       <button onClick={handleLogout}>Log Out</button>
+      <TagList />
     </>
   );
 }

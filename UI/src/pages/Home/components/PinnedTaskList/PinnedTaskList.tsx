@@ -1,5 +1,5 @@
 import './PinnedTaskList.css';
-import { useGetPinnedUserTasks } from '../../services/TaskService';
+import { useGetPinnedUserTasks } from '../../../../services/TaskService';
 import { useAuthStore } from '../../../../stores/authStore';
 import TaskCard from '../TaskCard/TaskCard';
 

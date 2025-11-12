@@ -1,5 +1,5 @@
 import './FilteredTaskList.css';
-import { useGetUserTasksBySearch } from '../../services/TaskService';
+import { useGetUserTasksBySearch } from '../../../../services/TaskService';
 import { useAuthStore } from '../../../../stores/authStore';
 import TaskCard from '../TaskCard/TaskCard';
 

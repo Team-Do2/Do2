@@ -4,7 +4,7 @@ import {
   useUpdateTaskDone,
   useUpdateTaskDescription,
   useDeleteTask,
-} from '../../services/TaskService';
+} from '../../../../services/TaskService';
 import './TaskCard.css';
 import PinButton from './Components/PinButton/PinButton';
 import CheckboxButton from './Components/CheckboxButton/CheckboxButton';
