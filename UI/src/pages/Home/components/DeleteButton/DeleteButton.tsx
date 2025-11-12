@@ -1,9 +1,19 @@
-function DeleteButton({ onClick }: { onClick: () => void }) {
+import './DeleteButton.css';
+
+function DeleteButton({
+  onClick,
+  width,
+  height,
+}: {
+  onClick: () => void;
+  width: string;
+  height: string;
+}) {
   return (
-    <button className="task-card-delete" onClick={onClick}>
+    <button className="delete-button" onClick={onClick}>
       <svg
-        width="16.33"
-        height="23.33"
+        width={width}
+        height={height}
         viewBox="0 0 49 70"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

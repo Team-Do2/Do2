@@ -1,6 +1,15 @@
-import { useSuspenseQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { useQuery, useSuspenseQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import type { Task } from '../../../models/Task';
+
+function updateTaskInList(tasks: Task[] | undefined, id: number, update: Partial<Task>): Task[] {
+  if (!tasks) return [];
+  const idx = tasks.findIndex((task) => task.id === id);
+  if (idx === -1) return tasks;
+  const newTasks = tasks.slice();
+  newTasks[idx] = { ...newTasks[idx], ...update };
+  return newTasks;
+}
 
 export function useGetAllUserTasks(userEmail: string) {
   return useSuspenseQuery<Task[]>({
@@ -14,6 +23,43 @@ export function useGetAllUserTasks(userEmail: string) {
   });
 }
 
+export function useGetPinnedUserTasks(userEmail: string) {
+  return useSuspenseQuery<Task[]>({
+    queryKey: ['getPinnedTasks'],
+    queryFn: async () => {
+      const res = await axios.get(
+        `http://localhost:5015/api/task/user/${encodeURIComponent(userEmail)}/pinned`
+      );
+      return res.data;
+    },
+  });
+}
+
+export function useGetUserTasksBySearch(userEmail: string, search: string) {
+  return useQuery<Task[]>({
+    queryKey: ['getTasksBySearch', search],
+    queryFn: async () => {
+      const res = await axios.get(
+        `http://localhost:5015/api/task/user/${encodeURIComponent(
+          userEmail
+        )}/search?search=${encodeURIComponent(search)}`
+      );
+      return res.data;
+    },
+  });
+}
+
+function updateTaskInCaches(
+  queryClient: ReturnType<typeof useQueryClient>,
+  id: number,
+  update: Partial<Task>
+) {
+  const keys = [['getTasks'], ['getPinnedTasks'], ['getTasksBySearch']];
+  keys.forEach((key) => {
+    queryClient.setQueryData<Task[]>(key, (oldTasks) => updateTaskInList(oldTasks, id, update));
+  });
+}
+
 export function useUpdateTaskDone() {
   const queryClient = useQueryClient();
   return useMutation({
@@ -22,14 +68,7 @@ export function useUpdateTaskDone() {
       return res.data;
     },
     onSuccess: (_data, variables) => {
-      queryClient.setQueryData<Task[]>(['getTasks'], (oldTasks) => {
-        if (!oldTasks) return [];
-        const idx = oldTasks.findIndex((task) => task.id === variables.id);
-        if (idx === -1) return oldTasks;
-        const newTasks = oldTasks.slice();
-        newTasks[idx] = { ...newTasks[idx], isDone: variables.isDone };
-        return newTasks;
-      });
+      updateTaskInCaches(queryClient, variables.id, { isDone: variables.isDone });
     },
   });
 }
@@ -44,14 +83,8 @@ export function useUpdateTaskPinned() {
       return res.data;
     },
     onSuccess: (_data, variables) => {
-      queryClient.setQueryData<Task[]>(['getTasks'], (oldTasks) => {
-        if (!oldTasks) return [];
-        const idx = oldTasks.findIndex((task) => task.id === variables.id);
-        if (idx === -1) return oldTasks;
-        const newTasks = oldTasks.slice();
-        newTasks[idx] = { ...newTasks[idx], isPinned: variables.isPinned };
-        return newTasks;
-      });
+      queryClient.invalidateQueries({ queryKey: ['getPinnedTasks'] });
+      updateTaskInCaches(queryClient, variables.id, { isPinned: variables.isPinned });
     },
   });
 }
@@ -66,16 +99,14 @@ export function useUpdateTaskDescription() {
       return res.data;
     },
     onSuccess: (_data, variables) => {
-      queryClient.setQueryData<Task[]>(['getTasks'], (oldTasks) => {
-        if (!oldTasks) return [];
-        const idx = oldTasks.findIndex((task) => task.id === variables.id);
-        if (idx === -1) return oldTasks;
-        const newTasks = oldTasks.slice();
-        newTasks[idx] = { ...newTasks[idx], description: variables.description };
-        return newTasks;
-      });
+      updateTaskInCaches(queryClient, variables.id, { description: variables.description });
     },
   });
+}
+
+function removeTaskFromList(tasks: Task[] | undefined, id: number): Task[] {
+  if (!tasks) return [];
+  return tasks.filter((task) => task.id !== id);
 }
 
 export function useDeleteTask() {
@@ -86,9 +117,9 @@ export function useDeleteTask() {
       return res.data;
     },
     onSuccess: (_data, id) => {
-      queryClient.setQueryData<Task[]>(['getTasks'], (oldTasks) => {
-        if (!oldTasks) return [];
-        return oldTasks.filter((task) => task.id !== id);
+      const keys = [['getTasks'], ['getPinnedTasks'], ['getTasksBySearch']];
+      keys.forEach((key) => {
+        queryClient.setQueryData<Task[]>(key, (oldTasks) => removeTaskFromList(oldTasks, id));
       });
     },
   });

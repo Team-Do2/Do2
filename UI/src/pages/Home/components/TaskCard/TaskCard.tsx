@@ -47,11 +47,21 @@ function TaskCard({ task }: TaskCardProps) {
 
   return (
     <div className={'task-card'}>
-      <PinButton isPinned={task.isPinned} onClick={handlePinClick} />
+      <PinButton isPinned={task.isPinned} onClick={handlePinClick} width="1.5rem" height="1.5rem" />
       <div className={`task-card-content ${isExpanded ? 'task-card-content-expanded' : ''}`}>
-        <CheckboxButton checked={task.isDone} onClick={handleCheckboxClick} />
-        <span className="task-card-title">{task.name}</span>
-        <ExpandButton onClick={() => setIsExpanded(!isExpanded)} rotated={isExpanded} />
+        <CheckboxButton
+          checked={task.isDone}
+          onClick={handleCheckboxClick}
+          width="1.75rem"
+          height="1.75rem"
+        />
+        <h1 className="task-card-title">{task.name}</h1>
+        <ExpandButton
+          onClick={() => setIsExpanded(!isExpanded)}
+          rotated={isExpanded}
+          width="1.5rem"
+          height="1.5rem"
+        />
       </div>
       {isExpanded && (
         <div className="task-card-footer">
@@ -65,11 +75,15 @@ function TaskCard({ task }: TaskCardProps) {
             onClick={() => {
               handleTagClick(task.id);
             }}
+            width="2rem"
+            height="2rem"
           />
           <DeleteButton
             onClick={() => {
               handleDeleteClick();
             }}
+            width="1.5rem"
+            height="2rem"
           />
         </div>
       )}

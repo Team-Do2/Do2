@@ -1,0 +1,7 @@
+.pinned-task-list-container {
+  height: 100%;
+  overflow: auto;
+  box-sizing: border-box;
+  position: relative;
+  padding-left: 0.5rem;
+}

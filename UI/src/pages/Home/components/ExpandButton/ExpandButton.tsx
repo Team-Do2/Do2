@@ -1,9 +1,13 @@
+import './ExpandButton.css';
+
 interface ExpandButtonProps {
   onClick: () => void;
   rotated?: boolean;
+  width: string;
+  height: string;
 }
 
-function ExpandButton({ onClick, rotated }: ExpandButtonProps) {
+function ExpandButton({ onClick, rotated, width, height }: ExpandButtonProps) {
   return (
     <div
       className="task-card-expand"
@@ -14,8 +18,8 @@ function ExpandButton({ onClick, rotated }: ExpandButtonProps) {
       }}
     >
       <svg
-        width="25.125"
-        height="15"
+        width={width}
+        height={height}
         viewBox="0 0 67 40"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
