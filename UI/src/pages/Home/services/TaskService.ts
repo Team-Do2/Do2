@@ -11,12 +11,29 @@ function updateTaskInList(tasks: Task[] | undefined, id: number, update: Partial
   return newTasks;
 }
 
+function updateTaskInCaches(
+  queryClient: ReturnType<typeof useQueryClient>,
+  id: number,
+  update: Partial<Task>
+) {
+  const keys = [['getTasks'], ['getPinnedTasks'], ['getTasksBySearch']];
+  keys.forEach((key) => {
+    queryClient.setQueryData<Task[]>(key, (oldTasks) => updateTaskInList(oldTasks, id, update));
+  });
+}
+
+function removeTaskFromList(tasks: Task[] | undefined, id: number): Task[] {
+  if (!tasks) return [];
+  return tasks.filter((task) => task.id !== id);
+}
+
 export function useGetAllUserTasks(userEmail: string) {
   return useSuspenseQuery<Task[]>({
     queryKey: ['getTasks'],
     queryFn: async () => {
       const res = await axios.get(
-        `http://localhost:5015/api/task/user/${encodeURIComponent(userEmail)}`
+        `http://localhost:5015/api/task/user/${encodeURIComponent(userEmail)}`,
+        { withCredentials: true }
       );
       return res.data;
     },
@@ -28,7 +45,8 @@ export function useGetPinnedUserTasks(userEmail: string) {
     queryKey: ['getPinnedTasks'],
     queryFn: async () => {
       const res = await axios.get(
-        `http://localhost:5015/api/task/user/${encodeURIComponent(userEmail)}/pinned`
+        `http://localhost:5015/api/task/user/${encodeURIComponent(userEmail)}/pinned`,
+        { withCredentials: true }
       );
       return res.data;
     },
@@ -42,21 +60,11 @@ export function useGetUserTasksBySearch(userEmail: string, search: string) {
       const res = await axios.get(
         `http://localhost:5015/api/task/user/${encodeURIComponent(
           userEmail
-        )}/search?search=${encodeURIComponent(search)}`
+        )}/search?search=${encodeURIComponent(search)}`,
+        { withCredentials: true }
       );
       return res.data;
     },
-  });
-}
-
-function updateTaskInCaches(
-  queryClient: ReturnType<typeof useQueryClient>,
-  id: number,
-  update: Partial<Task>
-) {
-  const keys = [['getTasks'], ['getPinnedTasks'], ['getTasksBySearch']];
-  keys.forEach((key) => {
-    queryClient.setQueryData<Task[]>(key, (oldTasks) => updateTaskInList(oldTasks, id, update));
   });
 }
 
@@ -64,7 +72,11 @@ export function useUpdateTaskDone() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({ id, isDone }: { id: number; isDone: boolean }) => {
-      const res = await axios.patch(`http://localhost:5015/api/task/${id}/done?isDone=${isDone}`);
+      const res = await axios.patch(
+        `http://localhost:5015/api/task/${id}/done?isDone=${isDone}`,
+        {},
+        { withCredentials: true }
+      );
       return res.data;
     },
     onSuccess: (_data, variables) => {
@@ -78,7 +90,9 @@ export function useUpdateTaskPinned() {
   return useMutation({
     mutationFn: async ({ id, isPinned }: { id: number; isPinned: boolean }) => {
       const res = await axios.patch(
-        `http://localhost:5015/api/task/${id}/pinned?isPinned=${isPinned}`
+        `http://localhost:5015/api/task/${id}/pinned?isPinned=${isPinned}`,
+        {},
+        { withCredentials: true }
       );
       return res.data;
     },
@@ -93,9 +107,13 @@ export function useUpdateTaskDescription() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async ({ id, description }: { id: number; description: string }) => {
-      const res = await axios.patch(`http://localhost:5015/api/task/${id}/description`, {
-        description,
-      });
+      const res = await axios.patch(
+        `http://localhost:5015/api/task/${id}/description`,
+        {
+          description,
+        },
+        { withCredentials: true }
+      );
       return res.data;
     },
     onSuccess: (_data, variables) => {
@@ -104,16 +122,13 @@ export function useUpdateTaskDescription() {
   });
 }
 
-function removeTaskFromList(tasks: Task[] | undefined, id: number): Task[] {
-  if (!tasks) return [];
-  return tasks.filter((task) => task.id !== id);
-}
-
 export function useDeleteTask() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (id: number) => {
-      const res = await axios.delete(`http://localhost:5015/api/task/${id}`);
+      const res = await axios.delete(`http://localhost:5015/api/task/${id}`, {
+        withCredentials: true,
+      });
       return res.data;
     },
     onSuccess: (_data, id) => {

@@ -18,8 +18,7 @@ public class SessionService(RandomNumberGenerator _random, ILogger _logger) : IS
         if (EmailToAccessTokenTable.ContainsKey(email))
         {
             InvalidateSessionByEmail(email);
-            const string message = "Invalided session because of suspected multi-session login!";
-            throw new Exception(message);
+            _logger.LogWarning("Multiple sessions detected for " + email);
         }
 
         byte[] accessToken = new byte[COOKIE_SIZE]; // Change to secure
