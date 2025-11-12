@@ -1,14 +1,16 @@
 ﻿using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 using Autofac;
-using Do2.Contracts.DTOs;
-using Do2.Contracts.Services;
-using Do2.Models.DatabaseModels;
+using Do2.DTOs;
+using Do2.Services;
+using Do2.Models;
 using Xunit;
+using TaskModel = Do2.Models.Task;
+using Task = System.Threading.Tasks.Task;
 
 namespace Do2.Tests;
-public class AuthenticationTest  : IClassFixture<AutofacFixture>
+
+public class AuthenticationTest : IClassFixture<AutofacFixture>
 {
     IAuthenticationService authenticationService;
     IUserService userService;
@@ -28,7 +30,7 @@ public class AuthenticationTest  : IClassFixture<AutofacFixture>
         string LastName = "test";
 
         Assert.True(
-            await userService.CreateUser(new Contracts.DTOs.BasicUserInformation()
+            await userService.CreateUser(new BasicUserInformation()
             {
                 Email = Email,
                 Password = Password,
@@ -76,7 +78,7 @@ public class AuthenticationTest  : IClassFixture<AutofacFixture>
                 Email = Email,
                 Password = Password
             };
-            
+
             var jsonContent = new StringContent(
                 JsonSerializer.Serialize(authPayload),
                 Encoding.UTF8,
@@ -90,8 +92,8 @@ public class AuthenticationTest  : IClassFixture<AutofacFixture>
             );
 
             // Assert successful authentication
-            authResponse.EnsureSuccessStatusCode(); 
-            
+            authResponse.EnsureSuccessStatusCode();
+
             // Extract the authentication token/cookie/body data
             // NOTE: This assumes the token is returned in the JSON body. 
             // If it's a cookie, the logic would need to change to read the 'Set-Cookie' header 
@@ -104,10 +106,10 @@ public class AuthenticationTest  : IClassFixture<AutofacFixture>
 
             // --- Protected Endpoint Access Step ---
             // Create a dummy task object (assuming the endpoint expects a POST with data)
-            var taskPayload = new CompletableTask() // Assuming this DTO exists
+            var taskPayload = new TaskModel() // Assuming this DTO exists
             {
-                Name = "This is a secured test task.",
-                UserEmail = Email
+                name = "This is a secured test task.",
+                userEmail = Email
             };
 
             var taskContent = new StringContent(
@@ -124,7 +126,7 @@ public class AuthenticationTest  : IClassFixture<AutofacFixture>
 
             // Check if access was successful (HTTP 200/201)
             Assert.True(protectedResponse.IsSuccessStatusCode, $"Access to protected endpoint failed: {protectedResponse.StatusCode}");
-            
+
             // --- Optional: Check security failure (e.g., attempt without token) ---
             client.DefaultRequestHeaders.Authorization = null; // Remove token
             var unauthorizedResponse = await client.PostAsync(
@@ -145,8 +147,8 @@ public class AuthenticationTest  : IClassFixture<AutofacFixture>
             // 2. Delete User (Clean up)
             Assert.True(await userService.DeleteUser(Email), "User cleanup failed.");
         }
-        
-        
+
+
         // string Email = "test";
         // string Password = "test";
         // string FirstName = "test";
@@ -173,7 +175,7 @@ public class AuthenticationTest  : IClassFixture<AutofacFixture>
 
         // http://localhost:5015/api/Task
         // AuthToken : fzY8LGeniXbhgJWapPBBE6ZeHEuTQoy6Uq2CqSZlA3k=
-        
+
         // Check if it works
 
         // */

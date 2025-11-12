@@ -1,6 +1,4 @@
-using System.Runtime.InteropServices;
-using Do2.Contracts.DTOs;
-using Do2.Contracts.Services;
+using Do2.DTOs;
 using Do2.Services;
 using Microsoft.AspNetCore.Mvc;
 

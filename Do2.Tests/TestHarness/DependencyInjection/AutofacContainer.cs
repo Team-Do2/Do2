@@ -3,7 +3,6 @@ using System.Security.Cryptography;
 using Do2.Repositories;
 using Do2.Services;
 using Do2.Services.User;
-using Microsoft.Extensions.Logging;
 
 using Autofac;
 using MySql.Data.MySqlClient;
@@ -33,9 +32,7 @@ public class AutofacFixture : IDisposable
             .SingleInstance();
 
         builder.RegisterType<UserRepositoryService>().AsImplementedInterfaces();
-        builder.RegisterType<TaskRepositoryService>().AsSelf().InstancePerLifetimeScope();
-
-        builder.RegisterType<CompletableTaskService>().AsSelf().InstancePerLifetimeScope();
+        builder.RegisterType<TaskService>().AsSelf().InstancePerLifetimeScope();
         builder.RegisterType<AuthenticationService>().AsImplementedInterfaces();
         builder.RegisterType<UserService>().AsImplementedInterfaces();
 

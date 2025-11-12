@@ -1,0 +1,9 @@
+.tag-button {
+  position: absolute;
+  bottom: 0.2rem;
+  right: 2rem;
+  background: none;
+  cursor: pointer;
+  border: none;
+  padding: 0;
+}

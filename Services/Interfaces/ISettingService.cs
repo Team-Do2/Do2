@@ -1,0 +1,6 @@
+namespace Do2.Services;
+public interface ISettingsService
+{
+    public Task<bool> UpdateTaskDeletionInterval(TimeSpan timeSpan);
+    public Task<bool> UpdateTheme(Themes newTheme);
+}
