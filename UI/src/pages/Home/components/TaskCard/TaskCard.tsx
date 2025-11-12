@@ -6,13 +6,13 @@ import {
   useDeleteTask,
 } from '../../services/TaskService';
 import './TaskCard.css';
-import PinButton from '../PinButton/PinButton';
-import CheckboxButton from '../CheckboxButton/CheckboxButton';
-import ExpandButton from '../ExpandButton/ExpandButton';
-import DeleteButton from '../DeleteButton/DeleteButton';
-import TagButton from '../TagButton/TagButton';
+import PinButton from './Components/PinButton/PinButton';
+import CheckboxButton from './Components/CheckboxButton/CheckboxButton';
+import ExpandButton from './Components/ExpandButton/ExpandButton';
+import DeleteButton from './Components/DeleteButton/DeleteButton';
+import TagButton from './Components/TagButton/TagButton';
 import { useState } from 'react';
-import TaskDescription from '../TaskDescription/TaskDescription';
+import TaskDescription from './Components/TaskDescription/TaskDescription';
 
 interface TaskCardProps {
   task: Task;
