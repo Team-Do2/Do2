@@ -1,6 +1,6 @@
 import { useQuery, useSuspenseQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
-import type { Task } from '../../../models/Task';
+import type { Task } from '../models/Task';
 
 function updateTaskInList(tasks: Task[] | undefined, id: number, update: Partial<Task>): Task[] {
   if (!tasks) return [];

@@ -1,5 +1,5 @@
 import './TaskList.css';
-import { useGetAllUserTasks } from '../../services/TaskService';
+import { useGetAllUserTasks } from '../../../../services/TaskService';
 import { useAuthStore } from '../../../../stores/authStore';
 import TaskCard from '../TaskCard/TaskCard';
 
