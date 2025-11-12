@@ -9,9 +9,7 @@ function TagList() {
 
   return (
     <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
-      {tags?.map((tag: Tag) => (
-        <TagComponent key={tag.id} tag={tag} />
-      ))}
+      {tags && tags.map((tag: Tag) => <TagComponent key={tag.id} tag={tag} />)}
     </div>
   );
 }

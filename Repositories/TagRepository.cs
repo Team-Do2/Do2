@@ -23,6 +23,7 @@ namespace Do2.Repositories
             FROM tag
             WHERE user_email = @userEmail
             """;
+            System.Console.WriteLine("Tag Repository Called");
             return await _db.QueryAsync<Tag>(sql, new { userEmail });
         }
 

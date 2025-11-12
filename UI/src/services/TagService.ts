@@ -7,7 +7,8 @@ export function useGetAllUserTags(userEmail: string) {
     queryKey: ['userTags', userEmail],
     queryFn: async () => {
       const response = await axios.get<Tag[]>(
-        `/api/tags?userEmail=${encodeURIComponent(userEmail)}`
+        `http://localhost:5015/api/tag?userEmail=${encodeURIComponent(userEmail)}`,
+        { withCredentials: true }
       );
       return response.data;
     },
