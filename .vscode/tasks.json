@@ -13,6 +13,39 @@
                 "reveal": "silent" 
             },
             "problemMatcher": "$msCompile"
-        }
+        },
+        {
+            "label": "Create Database",
+            "type": "shell",
+            "command": "powershell -File ${workspaceFolder}\\Tools\\CreateDatabase.ps1",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "clear": false
+            }            
+        },
+        {
+            "label": "Add Test Data Database",
+            "type": "shell",
+            "command": "powershell -File ${workspaceFolder}\\Tools\\AddTestDatabase.ps1",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "clear": false
+            }            
+        },
+        {
+            "label": "Tear down Database",
+            "type": "shell",
+            "command": "powershell -File ${workspaceFolder}\\Tools\\DestoryDatabase.ps1",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "clear": false
+            }            
+        },
     ]
 }

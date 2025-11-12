@@ -9,6 +9,6 @@ namespace Do2.Models
         public DateTime? datetimeToDelete { get; set; }
         public string? description { get; set; }
         public int? supertaskId { get; set; }
-        public string userEmail { get; set; }
+        public required string userEmail { get; set; }
     }
 }

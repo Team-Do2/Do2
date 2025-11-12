@@ -1,7 +1,12 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using Do2.Repositories;
+using Do2.Services;
+using Do2.Services.Authentication;
+using Do2.Services.User;
 using MySql.Data.MySqlClient;
 using System.Data;
+using System.Security.Cryptography;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -20,8 +25,19 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 	}).As<IDbConnection>().InstancePerLifetimeScope();
 
 	// Register repository and service
-	containerBuilder.RegisterType<Do2.Repositories.TaskRepository>().AsSelf().InstancePerLifetimeScope();
-	containerBuilder.RegisterType<Do2.Services.TaskService>().AsSelf().InstancePerLifetimeScope();
+	containerBuilder.Register(c => RandomNumberGenerator.Create())
+		.As<RandomNumberGenerator>()
+		.SingleInstance();
+	containerBuilder.RegisterType<Logger<string>>().AsImplementedInterfaces();
+
+	containerBuilder.RegisterType<UserRepositoryService>().AsImplementedInterfaces();
+	containerBuilder.RegisterType<TaskRepository>().AsSelf().InstancePerLifetimeScope();
+	containerBuilder.RegisterType<TaskService>().AsSelf().InstancePerLifetimeScope();
+	containerBuilder.RegisterType<AuthenticationService>().AsImplementedInterfaces();
+	containerBuilder.RegisterType<UserService>().AsImplementedInterfaces();
+	containerBuilder.RegisterType<SessionService>().AsImplementedInterfaces().SingleInstance();
+
+	containerBuilder.RegisterType<CheckSession>();
 });
 
 // Add CORS policy to allow frontend dev server
@@ -30,8 +46,8 @@ builder.Services.AddCors(options =>
 	options.AddDefaultPolicy(policy =>
 	{
 		policy.WithOrigins("http://localhost:5173") // Vite default dev port
-			  .AllowAnyHeader()
-			  .AllowAnyMethod();
+			.AllowAnyHeader()
+			.AllowAnyMethod();
 	});
 });
 

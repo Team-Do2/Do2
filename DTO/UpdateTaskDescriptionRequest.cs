@@ -1,7 +1,7 @@
-namespace Do2.DTO
+namespace Do2.DTOs
 {
     public class UpdateTaskDescriptionRequest
     {
-        public string Description { get; set; }
+        public required string Description { get; set; }
     }
 }
