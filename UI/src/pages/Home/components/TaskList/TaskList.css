@@ -1,0 +1,6 @@
+.task-list-container {
+  height: 100%;
+  overflow: auto;
+  box-sizing: border-box;
+  position: relative;
+}

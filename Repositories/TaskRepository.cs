@@ -51,7 +51,7 @@ namespace Do2.Repositories
 
         public async Task<IEnumerable<TaskModel>> GetUserTasksBySearchAsync(string userEmail, string search)
         {
-            var sql = """
+            var sql = @"
             SELECT
                 id,
                 is_pinned AS isPinned,
@@ -60,13 +60,15 @@ namespace Do2.Repositories
                 datetime_to_delete AS datetimeToDelete,
                 description,
                 supertask_id AS supertaskId,
-                user_email AS userEmail,
-                MATCH(name) AGAINST (@search IN NATURAL LANGUAGE MODE) AS relevance
+                user_email AS userEmail
             FROM task
             WHERE user_email = @userEmail
-              AND MATCH(name) AGAINST (@search IN NATURAL LANGUAGE MODE)
-            ORDER BY relevance DESC
-            """;
+              AND name LIKE CONCAT('%', @search, '%')
+            ORDER BY
+            (LENGTH(@search) / LENGTH(name)) DESC,
+            LOCATE(@search, name),
+            name ASC
+            ";
             return await _db.QueryAsync<TaskModel>(sql, new { userEmail, search });
         }
 

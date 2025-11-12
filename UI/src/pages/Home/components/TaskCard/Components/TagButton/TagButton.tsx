@@ -1,9 +1,19 @@
-function TagButton({ onClick }: { onClick: () => void }) {
+import './TagButton.css';
+
+function TagButton({
+  onClick,
+  width,
+  height,
+}: {
+  onClick: () => void;
+  width: string;
+  height: string;
+}) {
   return (
-    <div className="task-card-tag-button" onClick={onClick}>
+    <div className="tag-button" onClick={onClick}>
       <svg
-        width="23.33"
-        height="23.33"
+        width={width}
+        height={height}
         viewBox="0 0 67 67"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"

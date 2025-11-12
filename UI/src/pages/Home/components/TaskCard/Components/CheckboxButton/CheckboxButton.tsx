@@ -1,15 +1,27 @@
-function CheckboxButton({ checked, onClick }: { checked: boolean; onClick: () => void }) {
+import './CheckboxButton.css';
+
+function CheckboxButton({
+  checked,
+  onClick,
+  width,
+  height,
+}: {
+  checked: boolean;
+  onClick: () => void;
+  width: string;
+  height: string;
+}) {
   return (
     <button
-      className="task-card-checkbox"
+      className="checkbox-button"
       aria-label={checked ? 'Mark as not done' : 'Mark as done'}
       onClick={onClick}
     >
       {checked ? (
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
+          width={`${width}`}
+          height={`{height}`}
           fill="currentColor"
           viewBox="0 0 16 16"
         >
@@ -18,8 +30,8 @@ function CheckboxButton({ checked, onClick }: { checked: boolean; onClick: () =>
       ) : (
         <svg
           xmlns="http://www.w3.org/2000/svg"
-          width="20"
-          height="20"
+          width={`${width}`}
+          height={`${height}`}
           fill="currentColor"
           viewBox="0 0 16 16"
         >
