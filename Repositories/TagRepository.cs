@@ -1,10 +1,10 @@
 using Dapper;
 using System.Data;
-using TaskModel = Do2.Models.Task;
+using Tag = Do2.Models.Tag;
 
 namespace Do2.Repositories
 {
-    public class Tag
+    public class TagRepository
     {
         private readonly IDbConnection _db;
         public TagRepository(IDbConnection db)
@@ -21,66 +21,60 @@ namespace Do2.Repositories
                 color,
                 user_email AS userEmail
             FROM tag
+            WHERE user_email = @userEmail
             """;
             return await _db.QueryAsync<Tag>(sql, new { userEmail });
         }
 
-        public async task<Tag> CreateTagAsync(Tag tag)
+        public async Task<Tag> CreateTagAsync(Tag tag)
         {
             var sql = @"
-            INSERT INTO tag (name, color)
-            VALUES (@Name, @Color);
-            WHERE email = @UserEmail
+            INSERT INTO tag (name, color, user_email)
+            VALUES (@name, @color, @userEmail);
+            SELECT LAST_INSERT_ID();
             ";
 
-            var id = await _db.QuerySingleAsync<int>(sql, tag);
-            tag.id = id;
-            return tag;
+            return await _db.QuerySingleAsync<Tag>(sql , new { tag.name, tag.color, tag.userEmail });
         }
-        public async task<tag> UpdateTagAsync(Tag tag)
+        public async Task<Tag> UpdateTagAsync(Tag tag)
         {
             var sql = @"
             UPDATE tag
-            SET name = @Name,
-                color = @Color
-            WHERE email = @UserEmail
+            SET name = @name,
+                color = @color
+            WHERE user_email = @userEmail
             ";
 
-            await _db.ExecuteAsync(sql, tag);
+            await _db.ExecuteAsync(sql, new { tag.name, tag.color, tag.userEmail });
             return tag;
         }
-        public async Task<bool> DeleteTagAsync(int tagId, string userEmail)
+        public async Task<int> DeleteTagAsync(int tagId, string userEmail)
         {
             var sql = @"
             DELETE FROM tag
-            WHERE id = @TagId AND email = @UserEmail;
+            WHERE id = @tagId AND user_email = @userEmail;
             ";
-
-            int rowsAffected = await _db.ExecuteAsync(sql, new { TagId = tagId, UserEmail = userEmail });
-            return rowsAffected > 0;
+            return await _db.ExecuteAsync(sql, new { tagId, userEmail });
         }
 
-        public async Task<bool> AddTagToTaskAsync(int tagId, int taskId)
+        public async Task<int> AddTagToTaskAsync(int tagId, int taskId)
         {
             var sql = @"
-            INSERT INTO task_tag (task_id, tag_id)
-            VALUES (@TaskId, @TagId);
-            WHERE email = @UserEmail
+            INSERT INTO tagged_by (task_id, tag_id)
+            VALUES (@taskId, @tagId);
             ";
 
-            int rowsAffected = await _db.ExecuteAsync(sql, new { TaskId = taskId, TagId = tagId });
-            return rowsAffected > 0;
+            return await _db.ExecuteAsync(sql, new { taskId, tagId });
         }
 
-        public async Task<bool> RemoveTagFromTaskAsync(int tagId, int taskId)
+        public async Task<int> RemoveTagFromTaskAsync(int tagId, int taskId)
         {
             var sql = @"
-            DELETE FROM task_tag
-            WHERE task_id = @TaskId AND tag_id = @TagId AND email = @UserEmail;
+            DELETE FROM tagged_by
+            WHERE task_id = @taskId AND tag_id = @tagId;
             ";
 
-            int rowsAffected = await _db.ExecuteAsync(sql, new { TaskId = taskId, TagId = tagId });
-            return rowsAffected > 0;
+            return await _db.ExecuteAsync(sql, new { taskId, tagId });
         }
 
 
