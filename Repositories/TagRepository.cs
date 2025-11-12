@@ -18,7 +18,8 @@ namespace Do2.Repositories
             SELECT
                 id,
                 name,
-                color
+                color,
+                user_email AS userEmail
             FROM tag
             """;
             return await _db.QueryAsync<Tag>(sql, new { userEmail });
@@ -29,18 +30,20 @@ namespace Do2.Repositories
             var sql = @"
             INSERT INTO tag (name, color)
             VALUES (@Name, @Color);
+            WHERE email = @UserEmail
             ";
 
             var id = await _db.QuerySingleAsync<int>(sql, tag);
             tag.id = id;
             return tag;
         }
-        public async task<tag> updateTagAsync(Tag tag)
+        public async task<tag> UpdateTagAsync(Tag tag)
         {
             var sql = @"
             UPDATE tag
             SET name = @Name,
                 color = @Color
+            WHERE email = @UserEmail
             ";
 
             await _db.ExecuteAsync(sql, tag);
@@ -50,7 +53,7 @@ namespace Do2.Repositories
         {
             var sql = @"
             DELETE FROM tag
-            WHERE id = @TagId;
+            WHERE id = @TagId AND email = @UserEmail;
             ";
 
             int rowsAffected = await _db.ExecuteAsync(sql, new { TagId = tagId, UserEmail = userEmail });
@@ -62,6 +65,7 @@ namespace Do2.Repositories
             var sql = @"
             INSERT INTO task_tag (task_id, tag_id)
             VALUES (@TaskId, @TagId);
+            WHERE email = @UserEmail
             ";
 
             int rowsAffected = await _db.ExecuteAsync(sql, new { TaskId = taskId, TagId = tagId });
@@ -72,7 +76,7 @@ namespace Do2.Repositories
         {
             var sql = @"
             DELETE FROM task_tag
-            WHERE task_id = @TaskId AND tag_id = @TagId;
+            WHERE task_id = @TaskId AND tag_id = @TagId AND email = @UserEmail;
             ";
 
             int rowsAffected = await _db.ExecuteAsync(sql, new { TaskId = taskId, TagId = tagId });
