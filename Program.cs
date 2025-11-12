@@ -47,7 +47,8 @@ builder.Services.AddCors(options =>
 	{
 		policy.WithOrigins("http://localhost:5173") // Vite default dev port
 			.AllowAnyHeader()
-			.AllowAnyMethod();
+			.AllowAnyMethod()
+			.AllowCredentials();
 	});
 });
 
@@ -55,7 +56,6 @@ var app = builder.Build();
 
 app.UseStaticFiles();
 
-// Use CORS middleware
 app.UseCors();
 
 app.MapControllers();

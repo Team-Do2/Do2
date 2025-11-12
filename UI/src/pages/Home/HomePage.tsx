@@ -1,10 +1,31 @@
 import './HomePage.css';
+
+import { useNavigate } from 'react-router-dom';
 import PinnedTaskBar from './components/PinnedTaskBar/PinnedTaskBar';
 import TaskList from './components/TaskList/TaskList';
 
 function HomePage() {
+  const navigate = useNavigate();
   return (
-    <div className="home-page-container">
+    <div className="home-page-container" style={{ position: 'relative' }}>
+      <button
+        style={{
+          position: 'absolute',
+          top: 16,
+          right: 16,
+          zIndex: 10,
+          padding: '8px 16px',
+          borderRadius: 6,
+          border: 'none',
+          background: '#eee',
+          cursor: 'pointer',
+          fontWeight: 500,
+        }}
+        onClick={() => navigate('/settings')}
+        aria-label="Go to settings"
+      >
+        Settings
+      </button>
       <PinnedTaskBar />
       <div className="home-page-main">
         <h1 className="home-page-title">Welcome back!</h1>
