@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices;
 using Do2.Contracts.DTOs;
 using Do2.Contracts.Services;
 using Do2.Services;
@@ -9,15 +10,29 @@ namespace Do2.Controllers
     [Route("api/[controller]")]
     public class AuthenticationController : ControllerBase
     {
+        static TimeSpan MaxSessionLength = new TimeSpan(2, 0, 0); 
+        
         private IAuthenticationService authenticationService;
-        public AuthenticationController(IAuthenticationService _authenticationService)
+        private ISessionService sessionService;
+        public AuthenticationController(IAuthenticationService _authenticationService, ISessionService _sessionService)
         {
             authenticationService = _authenticationService;
+            sessionService = _sessionService;
         }
 
         [HttpPost("AuthenticateUser")]
-        public async Task<bool> AuthenticateUser(AuthenticateUserRequest request) {
-            return await authenticationService.CheckUserHash(request.Email, request.Password);
+        public async Task<string> AuthenticateUser(AuthenticateUserRequest request) {
+
+            bool isAuthenticated = await authenticationService.CheckUserHash(request.Email, request.Password);
+
+            if (!isAuthenticated)
+                throw new UnauthorizedAccessException();
+
+            var cookie = sessionService.CreateSession(request.Email, MaxSessionLength);
+
+            HttpContext.Response.Cookies.Append("AuthToken", cookie);
+
+            return cookie;
         }
     }
 }

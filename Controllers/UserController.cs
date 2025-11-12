@@ -1,6 +1,7 @@
 using Do2.Contracts.DatabaseModels;
 using Do2.Contracts.DTOs;
 using Do2.Contracts.Services;
+using Do2.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,6 +29,7 @@ namespace Do2.Controllers
         }
 
         [HttpPost("DeleteUserCredentials")]
+        [ServiceFilter(typeof(CheckSession))]
         public async Task<bool> DeleteUserCredentials(DeleteUserRequest userRequest) {
             return await userService.DeleteUser(userRequest.Email);
         }

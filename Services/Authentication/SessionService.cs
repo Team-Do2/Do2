@@ -7,6 +7,8 @@ namespace Do2.Services.Authentication;
 
 public class SessionService(RandomNumberGenerator _random, ILogger _logger) : ISessionService
 {
+    static short COOKIE_SIZE = 32;
+
     RandomNumberGenerator random = _random;
     ILogger logger = _logger;
     private ConcurrentDictionary<string, string> AccessTokenToEmailTable = new ConcurrentDictionary<string, string>();
@@ -21,7 +23,7 @@ public class SessionService(RandomNumberGenerator _random, ILogger _logger) : IS
             throw new Exception(message);
         }
 
-        byte[] accessToken = new byte[128]; // Change to secure
+        byte[] accessToken = new byte[COOKIE_SIZE]; // Change to secure
         random.GetNonZeroBytes(accessToken);
 
         string accessTokenString = Convert.ToBase64String(accessToken);

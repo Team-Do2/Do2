@@ -27,7 +27,7 @@ namespace Do2.Repositories
 
         public async Task<int> AddTaskAsync(CompletableTask task)
         {
-            var sql = "INSERT INTO task (name, is_done) VALUES (@Name, @IsCompleted); SELECT LAST_INSERT_ID();";
+            var sql = "INSERT INTO task (name, is_done, user_email) VALUES (@Name, @IsCompleted, @UserEmail); SELECT LAST_INSERT_ID();";
             return await _db.ExecuteScalarAsync<int>(sql, task);
         }
 

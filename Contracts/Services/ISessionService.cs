@@ -3,7 +3,9 @@ using System;
 namespace Do2.Contracts.Services;
 
 public interface ISessionService
-{   
+{
+    static short COOKIE_SIZE;
+
     // Doesn't have to be these parameters
     // Assumes user is already authenticated
     public string CreateSession(string email, TimeSpan duration);
