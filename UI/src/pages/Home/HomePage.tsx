@@ -3,6 +3,7 @@ import './HomePage.css';
 import { useNavigate } from 'react-router-dom';
 import PinnedTaskBar from './components/PinnedTaskBar/PinnedTaskBar';
 import TaskList from './components/TaskList/TaskList';
+import AddTaskButton from './components/AddTaskButton/AddTaskButton';
 
 function HomePage() {
   const navigate = useNavigate();
@@ -26,6 +27,7 @@ function HomePage() {
       >
         Settings
       </button>
+      <AddTaskButton />
       <PinnedTaskBar />
       <div className="home-page-main">
         <h1 className="home-page-title">Welcome back!</h1>
