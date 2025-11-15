@@ -50,7 +50,7 @@ namespace Do2.Services
             }
         }
 
-        public Task<int> AddUserTaskAsync(string email, TaskModel task) => _repository.AddUserTaskAsync(email, task);
+        public Task<int> AddUserTaskAsync(TaskModel task) => _repository.AddUserTaskAsync(task);
         public Task<int> AddDeadlineTaskAsync(int taskId, DateTime datetime) => _repository.AddDeadlineTaskAsync(taskId, datetime);
         public Task<int> AddSubtaskRelationship(int supertaskId, int subtaskId) => _repository.AddSubtaskRelationship(supertaskId, subtaskId);
         public Task<int> UpdateTaskPinnedAsync(int taskId, bool isPinned) => _repository.UpdateTaskPinnedAsync(taskId, isPinned);

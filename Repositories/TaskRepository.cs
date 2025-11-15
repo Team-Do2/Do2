@@ -72,10 +72,10 @@ namespace Do2.Repositories
             return await _db.QueryAsync<TaskModel>(sql, new { userEmail, search });
         }
 
-        public async Task<int> AddUserTaskAsync(string email, TaskModel task)
+        public async Task<int> AddUserTaskAsync(TaskModel task)
         {
             var sql = "INSERT INTO task (name, description, user_email) VALUES (@name, @description, @userEmail); SELECT LAST_INSERT_ID();";
-            return await _db.ExecuteScalarAsync<int>(sql, new { task.name, task.description, userEmail = email });
+            return await _db.ExecuteScalarAsync<int>(sql, new { task.name, task.description, userEmail = task.userEmail });
         }
 
         public async Task<int> AddDeadlineTaskAsync(int taskId, DateTime datetime)

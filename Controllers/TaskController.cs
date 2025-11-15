@@ -30,12 +30,12 @@ namespace Do2.Controllers
         [ServiceFilter(typeof(CheckSession))]
         public async Task<IEnumerable<TaskModel>> GetUserTasksBySearch(string userEmail, [FromQuery] string search) => await _service.GetUserTasksBySearchAsync(userEmail, search);
 
-        [HttpPost("user/{userEmail}")]
+        [HttpPost]
         [ServiceFilter(typeof(CheckSession))]
-        public async Task<ActionResult<int>> AddUserTask(string userEmail, [FromBody] TaskModel task)
+        public async Task<ActionResult<int>> AddUserTask([FromBody] TaskModel task)
         {
-            var id = await _service.AddUserTaskAsync(userEmail, task);
-            return CreatedAtAction(nameof(GetAllUserTasks), new { userEmail }, id);
+            var id = await _service.AddUserTaskAsync(task);
+            return Created("", id);
         }
 
         [HttpPost("deadline")]

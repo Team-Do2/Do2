@@ -117,3 +117,40 @@ export function useDeleteTask() {
     },
   });
 }
+
+// Create Task
+export function useCreateTask() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({
+      name,
+      description,
+      userEmail,
+    }: {
+      name: string;
+      description: string;
+      userEmail: string;
+    }) => {
+      const res = await axios.post(
+        `http://localhost:5015/api/task`,
+        {
+          name,
+          description,
+          isPinned: false,
+          isDone: false,
+          userEmail,
+          datetimeToDelete: null,
+          supertaskId: null,
+          Tags: [],
+        },
+        { withCredentials: true }
+      );
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['getTasks'] });
+      queryClient.invalidateQueries({ queryKey: ['getPinnedTasks'] });
+      queryClient.invalidateQueries({ queryKey: ['getTasksBySearch'] });
+    },
+  });
+}
