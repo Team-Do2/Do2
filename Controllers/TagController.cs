@@ -22,7 +22,6 @@ namespace Do2.Controllers
         public async Task<ActionResult<IEnumerable<Tag>>> GetAllUserTags([FromQuery] string userEmail)
         {
             var tags = await _service.GetAllUserTagsAsync(userEmail);
-            System.Console.WriteLine("Tag Controller Called");
             return Ok(tags);
         }
 

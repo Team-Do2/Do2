@@ -23,10 +23,26 @@ namespace Do2.Repositories
             FROM tag
             WHERE user_email = @userEmail
             """;
-            System.Console.WriteLine("Tag Repository Called");
             return await _db.QueryAsync<Tag>(sql, new { userEmail });
         }
 
+        public async Task<IEnumerable<(int taskId, Tag tag)>> GetTagsForTasksAsync(IEnumerable<int> taskIds)
+        {
+            var sql =
+            """
+            SELECT
+                tb.task_id AS taskId,
+                t.id,
+                t.name,
+                t.color,
+                t.user_email AS userEmail
+            FROM tag t
+            JOIN tagged_by tb ON t.id = tb.tag_id
+            WHERE tb.task_id IN @taskIds
+            """;
+            var results = await _db.QueryAsync<(int taskId, int id, string name, string color, string userEmail)>(sql, new { taskIds });
+            return results.Select(r => (r.taskId, new Tag { id = r.id, name = r.name, color = r.color, userEmail = r.userEmail }));
+        }
         public async Task<Tag> CreateTagAsync(Tag tag)
         {
             var sql = @"
@@ -43,10 +59,10 @@ namespace Do2.Repositories
             UPDATE tag
             SET name = @name,
                 color = @color
-            WHERE user_email = @userEmail
+            WHERE tag.id = @id;
             ";
 
-            await _db.ExecuteAsync(sql, new { tag.name, tag.color, tag.userEmail });
+            await _db.ExecuteAsync(sql, new { tag.name, tag.color, tag.id });
             return tag;
         }
         public async Task<int> DeleteTagAsync(int tagId, string userEmail)
@@ -77,7 +93,5 @@ namespace Do2.Repositories
 
             return await _db.ExecuteAsync(sql, new { taskId, tagId });
         }
-
-
     }
 }

@@ -13,17 +13,16 @@ import DeleteButton from './Components/DeleteButton/DeleteButton';
 import TagButton from './Components/TagButton/TagButton';
 import { useState } from 'react';
 import TaskDescription from './Components/TaskDescription/TaskDescription';
+import ManageTagsModal from '../ManageTagsModal/ManageTagsModal';
+import TagComponent from '../../../Settings/components/TagComponent/TagComponent';
 
-interface TaskCardProps {
-  task: Task;
-}
-
-function TaskCard({ task }: TaskCardProps) {
+function TaskCard({ task }: { task: Task }) {
   const updateTaskDone = useUpdateTaskDone();
   const updateTaskPinned = useUpdateTaskPinned();
   const updateTaskDescription = useUpdateTaskDescription();
   const deleteTask = useDeleteTask();
   const [isExpanded, setIsExpanded] = useState(false);
+  const [isTagsModalOpen, setIsTagsModalOpen] = useState(false);
 
   const handleCheckboxClick = () => {
     updateTaskDone.mutate({ id: task.id, isDone: !task.isDone });
@@ -41,8 +40,8 @@ function TaskCard({ task }: TaskCardProps) {
     deleteTask.mutate(task.id);
   };
 
-  const handleTagClick = (taskId: number) => {
-    console.log(`Tag button clicked for task ID: ${taskId}`);
+  const handleTagClick = () => {
+    setIsTagsModalOpen(true);
   };
 
   return (
@@ -56,6 +55,13 @@ function TaskCard({ task }: TaskCardProps) {
           height="1.75rem"
         />
         <h1 className="task-card-title">{task.name}</h1>
+        {task.tags && (
+          <div className="task-card-tags">
+            {task.tags.map((tag) => (
+              <TagComponent key={tag.id} tag={tag} />
+            ))}
+          </div>
+        )}
         <ExpandButton
           onClick={() => setIsExpanded(!isExpanded)}
           rotated={isExpanded}
@@ -73,7 +79,7 @@ function TaskCard({ task }: TaskCardProps) {
           />
           <TagButton
             onClick={() => {
-              handleTagClick(task.id);
+              handleTagClick();
             }}
             width="2rem"
             height="2rem"
@@ -87,6 +93,12 @@ function TaskCard({ task }: TaskCardProps) {
           />
         </div>
       )}
+      <ManageTagsModal
+        isOpen={isTagsModalOpen}
+        onRequestClose={() => setIsTagsModalOpen(false)}
+        taskId={task.id}
+        currentTags={task.tags || []}
+      />
     </div>
   );
 }
