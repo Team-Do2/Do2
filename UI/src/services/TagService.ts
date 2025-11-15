@@ -60,3 +60,43 @@ export function useDeleteTag() {
     },
   });
 }
+
+// Add Tag to Task
+export function useAddTagToTask() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ tagId, taskId }: { tagId: number; taskId: number }) => {
+      const res = await axios.post(
+        `http://localhost:5015/api/tag/add-to-task?tagId=${tagId}&taskId=${taskId}`,
+        {},
+        { withCredentials: true }
+      );
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['getTasks'] });
+      queryClient.invalidateQueries({ queryKey: ['getPinnedTasks'] });
+      queryClient.invalidateQueries({ queryKey: ['getTasksBySearch'] });
+    },
+  });
+}
+
+// Remove Tag from Task
+export function useRemoveTagFromTask() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ tagId, taskId }: { tagId: number; taskId: number }) => {
+      const res = await axios.post(
+        `http://localhost:5015/api/tag/remove-from-task?tagId=${tagId}&taskId=${taskId}`,
+        {},
+        { withCredentials: true }
+      );
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['getTasks'] });
+      queryClient.invalidateQueries({ queryKey: ['getPinnedTasks'] });
+      queryClient.invalidateQueries({ queryKey: ['getTasksBySearch'] });
+    },
+  });
+}

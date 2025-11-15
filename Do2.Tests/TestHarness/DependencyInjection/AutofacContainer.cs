@@ -32,6 +32,8 @@ public class AutofacFixture : IDisposable
             .SingleInstance();
 
         builder.RegisterType<UserRepositoryService>().AsImplementedInterfaces();
+        builder.RegisterType<TaskRepository>().AsSelf().InstancePerLifetimeScope();
+        builder.RegisterType<TagRepository>().AsSelf().InstancePerLifetimeScope();
         builder.RegisterType<TaskService>().AsSelf().InstancePerLifetimeScope();
         builder.RegisterType<AuthenticationService>().AsImplementedInterfaces();
         builder.RegisterType<UserService>().AsImplementedInterfaces();

@@ -1,3 +1,4 @@
+import type { Tag } from './Tag';
 export interface Task {
   id: number;
   isPinned: boolean;
@@ -7,4 +8,5 @@ export interface Task {
   description?: string;
   supertaskId: number;
   userEmail: string;
+  tags?: Tag[];
 }
