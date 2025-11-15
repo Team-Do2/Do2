@@ -43,10 +43,10 @@ namespace Do2.Repositories
             UPDATE tag
             SET name = @name,
                 color = @color
-            WHERE user_email = @userEmail
+            WHERE tag.id = @id;
             ";
 
-            await _db.ExecuteAsync(sql, new { tag.name, tag.color, tag.userEmail });
+            await _db.ExecuteAsync(sql, new { tag.name, tag.color, tag.id });
             return tag;
         }
         public async Task<int> DeleteTagAsync(int tagId, string userEmail)

@@ -1,7 +1,8 @@
-import { useSuspenseQuery } from '@tanstack/react-query';
+import { useSuspenseQuery, useMutation, useQueryClient } from '@tanstack/react-query';
 import axios from 'axios';
 import type { Tag } from '../models/Tag';
 
+// Get Tags
 export function useGetAllUserTags(userEmail: string) {
   return useSuspenseQuery<Tag[], Error>({
     queryKey: ['userTags', userEmail],
@@ -11,6 +12,51 @@ export function useGetAllUserTags(userEmail: string) {
         { withCredentials: true }
       );
       return response.data;
+    },
+  });
+}
+
+// Create Tags
+export function useCreateTag() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (tag: Omit<Tag, 'id'> & { userEmail: string }) => {
+      const res = await axios.post(`http://localhost:5015/api/tag`, tag, { withCredentials: true });
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['userTags'] });
+    },
+  });
+}
+
+// Update Tags
+export function useUpdateTag() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (tag: Tag & { userEmail: string }) => {
+      const res = await axios.put(`http://localhost:5015/api/tag`, tag, { withCredentials: true });
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['userTags'] });
+    },
+  });
+}
+
+// Delete Tags
+export function useDeleteTag() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ tagId, userEmail }: { tagId: number; userEmail: string }) => {
+      const res = await axios.delete(
+        `http://localhost:5015/api/tag?tagId=${tagId}&userEmail=${encodeURIComponent(userEmail)}`,
+        { withCredentials: true }
+      );
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['userTags'] });
     },
   });
 }

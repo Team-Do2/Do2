@@ -1,0 +1,12 @@
+.tag-list-container {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-bottom: 0.5rem;
+}
+
+.tag-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
