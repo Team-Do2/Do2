@@ -17,6 +17,28 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({ isOpen, onRequestClose }) =
 
   const [name, setName] = useState('');
   const [description, setDescription] = useState('');
+  const [nameError, setNameError] = useState('');
+  const [descriptionError, setDescriptionError] = useState('');
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setName(value);
+    if (value.length > 32) {
+      setNameError('Name must be 32 characters or less');
+    } else {
+      setNameError('');
+    }
+  };
+
+  const handleDescriptionChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    setDescription(value);
+    if (value.length > 140) {
+      setDescriptionError('Description must be 140 characters or less');
+    } else {
+      setDescriptionError('');
+    }
+  };
 
   const handleSubmit = () => {
     if (name.trim()) {
@@ -42,22 +64,29 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({ isOpen, onRequestClose }) =
           id="task-name"
           type="text"
           value={name}
-          onChange={(e) => setName(e.target.value)}
+          onChange={handleNameChange}
           placeholder="Enter task name"
         />
       </div>
+      {nameError && <p className="error">{nameError}</p>}
       <div className="form-group">
         <label htmlFor="task-description">Description:</label>
         <textarea
           id="task-description"
           value={description}
-          onChange={(e) => setDescription(e.target.value)}
+          onChange={handleDescriptionChange}
           placeholder="Enter task description"
           rows={4}
         />
       </div>
+      {descriptionError && <p className="error">{descriptionError}</p>}
       <div className="modal-actions">
-        <button onClick={handleSubmit} disabled={createTaskMutation.isPending || !name.trim()}>
+        <button
+          onClick={handleSubmit}
+          disabled={
+            createTaskMutation.isPending || !name.trim() || !!nameError || !!descriptionError
+          }
+        >
           {createTaskMutation.isPending ? 'Adding...' : 'Add Task'}
         </button>
         <button onClick={onRequestClose}>Cancel</button>

@@ -25,6 +25,7 @@ const AddEditTagModal: React.FC<AddEditTagModalProps> = ({
 }) => {
   const [name, setName] = useState('');
   const [color, setColor] = useState('#000000');
+  const [nameError, setNameError] = useState('');
 
   useEffect(() => {
     if (tagToEdit) {
@@ -35,6 +36,16 @@ const AddEditTagModal: React.FC<AddEditTagModalProps> = ({
       setColor('#000000');
     }
   }, [tagToEdit, isOpen]);
+
+  const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    setName(value);
+    if (value.length > 32) {
+      setNameError('Name must be 32 characters or less');
+    } else {
+      setNameError('');
+    }
+  };
 
   const handleSave = () => {
     if (!name.trim()) return;
@@ -59,21 +70,17 @@ const AddEditTagModal: React.FC<AddEditTagModalProps> = ({
       <div>
         <label>
           Name:
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => setName(e.target.value)}
-            placeholder="Tag name"
-          />
+          <input type="text" value={name} onChange={handleNameChange} placeholder="Tag name" />
         </label>
       </div>
+      {nameError && <p className="error">{nameError}</p>}
       <div>
         <label>
           Color:
           <input type="color" value={color} onChange={(e) => setColor(e.target.value)} />
         </label>
       </div>
-      <button onClick={handleSave} disabled={!name.trim()}>
+      <button onClick={handleSave} disabled={!name.trim() || !!nameError}>
         {tagToEdit ? 'Update' : 'Create'}
       </button>
       <button onClick={onRequestClose}>Cancel</button>

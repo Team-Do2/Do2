@@ -31,3 +31,10 @@
   font-size: 1.9rem;
   color: #4c4c4c;
 }
+
+.task-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-left: 8px;
+}
