@@ -99,6 +99,26 @@ export function useUpdateTaskDescription() {
     },
   });
 }
+export function useUpdateTaskName() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, name }: { id: number; name: string }) => {
+      const res = await axios.patch(
+        `http://localhost:5015/api/task/${id}/name`,
+        {
+          name,
+        },
+        { withCredentials: true }
+      );
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['getTasks'] });
+      queryClient.invalidateQueries({ queryKey: ['getPinnedTasks'] });
+      queryClient.invalidateQueries({ queryKey: ['getTasksBySearch'] });
+    },
+  });
+}
 
 // Delete Tasks
 export function useDeleteTask() {

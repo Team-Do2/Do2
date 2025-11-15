@@ -108,6 +108,12 @@ namespace Do2.Repositories
             return await _db.ExecuteAsync(sql, new { id = taskId, description });
         }
 
+        public async Task<int> UpdateTaskNameAsync(int taskId, string name)
+        {
+            var sql = "UPDATE task SET name = @name WHERE id = @id";
+            return await _db.ExecuteAsync(sql, new { id = taskId, name });
+        }
+
         public async Task<int> DeleteTaskAsync(int id)
         {
             var sql = "DELETE FROM task WHERE id = @id";

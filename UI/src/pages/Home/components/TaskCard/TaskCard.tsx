@@ -3,6 +3,7 @@ import {
   useUpdateTaskPinned,
   useUpdateTaskDone,
   useUpdateTaskDescription,
+  useUpdateTaskName,
   useDeleteTask,
 } from '../../../../services/TaskService';
 import './TaskCard.css';
@@ -13,6 +14,7 @@ import DeleteButton from './Components/DeleteButton/DeleteButton';
 import TagButton from './Components/TagButton/TagButton';
 import { useState } from 'react';
 import TaskDescription from './Components/TaskDescription/TaskDescription';
+import TaskTitle from './Components/TaskTitle/TaskTitle';
 import ManageTagsModal from '../ManageTagsModal/ManageTagsModal';
 import TagComponent from '../../../Settings/components/TagComponent/TagComponent';
 
@@ -20,6 +22,7 @@ function TaskCard({ task }: { task: Task }) {
   const updateTaskDone = useUpdateTaskDone();
   const updateTaskPinned = useUpdateTaskPinned();
   const updateTaskDescription = useUpdateTaskDescription();
+  const updateTaskName = useUpdateTaskName();
   const deleteTask = useDeleteTask();
   const [isExpanded, setIsExpanded] = useState(false);
   const [isTagsModalOpen, setIsTagsModalOpen] = useState(false);
@@ -34,6 +37,10 @@ function TaskCard({ task }: { task: Task }) {
 
   const handleDescriptionChange = (value: string) => {
     updateTaskDescription.mutate({ id: task.id, description: value });
+  };
+
+  const handleTitleChange = (value: string) => {
+    updateTaskName.mutate({ id: task.id, name: value });
   };
 
   const handleDeleteClick = () => {
@@ -54,7 +61,7 @@ function TaskCard({ task }: { task: Task }) {
           width="1.75rem"
           height="1.75rem"
         />
-        <h1 className="task-card-title">{task.name}</h1>
+        <TaskTitle value={task.name} onBlur={handleTitleChange} />
         {task.tags && (
           <div className="task-card-tags">
             {task.tags.map((tag) => (

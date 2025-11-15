@@ -83,6 +83,15 @@ namespace Do2.Controllers
             return Ok();
         }
 
+        [HttpPatch("{taskId}/name")]
+        [ServiceFilter(typeof(CheckSession))]
+        public async Task<ActionResult> UpdateTaskName(int taskId, UpdateTaskNameRequest request)
+        {
+            var result = await _service.UpdateTaskNameAsync(taskId, request.Name);
+            if (result == 0) return NotFound();
+            return Ok();
+        }
+
         [HttpDelete("{id}")]
         [ServiceFilter(typeof(CheckSession))]
         public async Task<ActionResult> DeleteTask(int id)

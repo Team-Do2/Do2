@@ -1,3 +1,7 @@
+.task-description-container {
+  position: relative;
+}
+
 .task-description-input {
   color: #848484;
   background: transparent;
