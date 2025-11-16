@@ -92,6 +92,23 @@ namespace Do2.Controllers
             return Ok();
         }
 
+        [HttpPatch("{taskId}/supertask")]
+        [ServiceFilter(typeof(CheckSession))]
+        public async Task<ActionResult> UpdateTaskSupertask(int taskId, [FromQuery] int? supertaskId)
+        {
+            var result = await _service.UpdateTaskSupertaskAsync(taskId, supertaskId);
+            if (result == 0) return NotFound();
+            return Ok();
+        }
+
+        [HttpPatch("{taskId}/duedate")]
+        [ServiceFilter(typeof(CheckSession))]
+        public async Task<ActionResult> UpdateTaskDueDate(int taskId, [FromQuery] DateTime? dueDate)
+        {
+            var result = await _service.UpdateTaskDueDateAsync(taskId, dueDate);
+            return Ok();
+        }
+
         [HttpDelete("{id}")]
         [ServiceFilter(typeof(CheckSession))]
         public async Task<ActionResult> DeleteTask(int id)

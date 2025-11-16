@@ -57,6 +57,8 @@ namespace Do2.Services
         public Task<int> UpdateTaskDoneAsync(int taskId, bool isDone) => _repository.UpdateTaskDoneAsync(taskId, isDone);
         public Task<int> UpdateTaskDescriptionAsync(int taskId, string description) => _repository.UpdateTaskDescriptionAsync(taskId, description);
         public Task<int> UpdateTaskNameAsync(int taskId, string name) => _repository.UpdateTaskNameAsync(taskId, name);
+        public Task<int> UpdateTaskSupertaskAsync(int taskId, int? supertaskId) => _repository.UpdateTaskSupertaskAsync(taskId, supertaskId);
+        public Task<int> UpdateTaskDueDateAsync(int taskId, DateTime? dueDate) => _repository.UpdateTaskDueDateAsync(taskId, dueDate);
         public Task<int> DeleteTaskAsync(int id) => _repository.DeleteTaskAsync(id);
         public Task<int> DeleteAllStaleTasksAsync(string email) => _repository.DeleteAllStaleTasksAsync(email);
     }

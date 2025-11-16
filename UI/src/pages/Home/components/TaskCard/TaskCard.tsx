@@ -12,13 +12,14 @@ import CheckboxButton from './Components/CheckboxButton/CheckboxButton';
 import ExpandButton from './Components/ExpandButton/ExpandButton';
 import DeleteButton from './Components/DeleteButton/DeleteButton';
 import TagButton from './Components/TagButton/TagButton';
+import EditButton from './Components/EditButton/EditButton';
 import { useState } from 'react';
 import TaskDescription from './Components/TaskDescription/TaskDescription';
 import TaskTitle from './Components/TaskTitle/TaskTitle';
 import ManageTagsModal from '../ManageTagsModal/ManageTagsModal';
 import TagComponent from '../../../Settings/components/TagComponent/TagComponent';
 
-function TaskCard({ task }: { task: Task }) {
+function TaskCard({ task, onEdit }: { task: Task; onEdit: (task: Task) => void }) {
   const updateTaskDone = useUpdateTaskDone();
   const updateTaskPinned = useUpdateTaskPinned();
   const updateTaskDescription = useUpdateTaskDescription();
@@ -45,6 +46,10 @@ function TaskCard({ task }: { task: Task }) {
 
   const handleDeleteClick = () => {
     deleteTask.mutate(task.id);
+  };
+
+  const handleEditClick = () => {
+    onEdit(task);
   };
 
   const handleTagClick = () => {
@@ -83,6 +88,13 @@ function TaskCard({ task }: { task: Task }) {
             onBlur={(value) => {
               handleDescriptionChange(value);
             }}
+          />
+          <EditButton
+            onClick={() => {
+              handleEditClick();
+            }}
+            width="1.75rem"
+            height="1.75rem"
           />
           <TagButton
             onClick={() => {

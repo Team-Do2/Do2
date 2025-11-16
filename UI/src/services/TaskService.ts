@@ -120,6 +120,48 @@ export function useUpdateTaskName() {
   });
 }
 
+export function useUpdateTaskSupertask() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, supertaskId }: { id: number; supertaskId: number | null }) => {
+      const params = new URLSearchParams();
+      if (supertaskId !== null) params.append('supertaskId', supertaskId.toString());
+      const res = await axios.patch(
+        `http://localhost:5015/api/task/${id}/supertask?${params.toString()}`,
+        {},
+        { withCredentials: true }
+      );
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['getTasks'] });
+      queryClient.invalidateQueries({ queryKey: ['getPinnedTasks'] });
+      queryClient.invalidateQueries({ queryKey: ['getTasksBySearch'] });
+    },
+  });
+}
+
+export function useUpdateTaskDueDate() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, dueDate }: { id: number; dueDate: string | null }) => {
+      const params = new URLSearchParams();
+      if (dueDate) params.append('dueDate', dueDate);
+      const res = await axios.patch(
+        `http://localhost:5015/api/task/${id}/duedate?${params.toString()}`,
+        {},
+        { withCredentials: true }
+      );
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['getTasks'] });
+      queryClient.invalidateQueries({ queryKey: ['getPinnedTasks'] });
+      queryClient.invalidateQueries({ queryKey: ['getTasksBySearch'] });
+    },
+  });
+}
+
 // Delete Tasks
 export function useDeleteTask() {
   const queryClient = useQueryClient();

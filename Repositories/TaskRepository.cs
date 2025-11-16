@@ -114,6 +114,31 @@ namespace Do2.Repositories
             return await _db.ExecuteAsync(sql, new { id = taskId, name });
         }
 
+        public async Task<int> UpdateTaskSupertaskAsync(int taskId, int? supertaskId)
+        {
+            var sql = "UPDATE task SET supertask_id = @supertaskId WHERE id = @taskId";
+            return await _db.ExecuteAsync(sql, new { taskId, supertaskId });
+        }
+
+        public async Task<int> UpdateTaskDueDateAsync(int taskId, DateTime? dueDate)
+        {
+            if (dueDate.HasValue)
+            {
+                // First, delete existing deadline if any
+                var deleteSql = "DELETE FROM deadline_task WHERE task_id = @taskId";
+                await _db.ExecuteAsync(deleteSql, new { taskId });
+                // Then insert new
+                var insertSql = "INSERT INTO deadline_task (task_id, due_datetime) VALUES (@taskId, @dueDate)";
+                return await _db.ExecuteAsync(insertSql, new { taskId, dueDate });
+            }
+            else
+            {
+                // Remove deadline
+                var sql = "DELETE FROM deadline_task WHERE task_id = @taskId";
+                return await _db.ExecuteAsync(sql, new { taskId });
+            }
+        }
+
         public async Task<int> DeleteTaskAsync(int id)
         {
             var sql = "DELETE FROM task WHERE id = @id";
