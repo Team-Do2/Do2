@@ -124,19 +124,22 @@ namespace Do2.Repositories
         {
             if (dueDate.HasValue)
             {
-                // First, delete existing deadline if any
                 var deleteSql = "DELETE FROM deadline_task WHERE task_id = @taskId";
                 await _db.ExecuteAsync(deleteSql, new { taskId });
-                // Then insert new
                 var insertSql = "INSERT INTO deadline_task (task_id, due_datetime) VALUES (@taskId, @dueDate)";
                 return await _db.ExecuteAsync(insertSql, new { taskId, dueDate });
             }
             else
             {
-                // Remove deadline
                 var sql = "DELETE FROM deadline_task WHERE task_id = @taskId";
                 return await _db.ExecuteAsync(sql, new { taskId });
             }
+        }
+
+        public async Task<IEnumerable<(int taskId, DateTime dueDate)>> GetDueDatesForTasksAsync(List<int> taskIds)
+        {
+            var sql = "SELECT task_id AS taskId, due_datetime AS dueDate FROM deadline_task WHERE task_id IN @taskIds";
+            return await _db.QueryAsync<(int taskId, DateTime dueDate)>(sql, new { taskIds });
         }
 
         public async Task<int> DeleteTaskAsync(int id)

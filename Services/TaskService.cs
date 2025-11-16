@@ -17,24 +17,25 @@ namespace Do2.Services
         public async Task<IEnumerable<TaskModel>> GetAllUserTasksAsync(string userEmail)
         {
             var tasks = await _repository.GetAllUserTasksAsync(userEmail);
-            await HydrateTasksWithTags(tasks);
+            await HydrateTasks(tasks);
             return tasks;
         }
         public async Task<IEnumerable<TaskModel>> GetPinnedUserTasksAsync(string userEmail)
         {
             var tasks = await _repository.GetPinnedUserTasksAsync(userEmail);
-            await HydrateTasksWithTags(tasks);
+            await HydrateTasks(tasks);
             return tasks;
         }
         public async Task<IEnumerable<TaskModel>> GetUserTasksBySearchAsync(string userEmail, string search)
         {
             var tasks = await _repository.GetUserTasksBySearchAsync(userEmail, search);
-            await HydrateTasksWithTags(tasks);
+            await HydrateTasks(tasks);
             return tasks;
         }
 
-        private async Task HydrateTasksWithTags(IEnumerable<TaskModel> tasks)
+        private async Task HydrateTasks(IEnumerable<TaskModel> tasks)
         {
+            // Fetch and assign tags for each task
             var taskIds = tasks.Select(t => t.id).ToList();
             if (taskIds.Count != 0)
             {
@@ -46,6 +47,17 @@ namespace Do2.Services
                     {
                         task.Tags = tags;
                     }
+                }
+            }
+
+            // Fetch and assign due dates for each task
+            var dueDateData = await _repository.GetDueDatesForTasksAsync(taskIds);
+            var dueDateDict = dueDateData.ToDictionary(x => x.taskId, x => x.dueDate);
+            foreach (var task in tasks)
+            {
+                if (dueDateDict.TryGetValue(task.id, out var dueDate))
+                {
+                    task.dueDate = dueDate;
                 }
             }
         }

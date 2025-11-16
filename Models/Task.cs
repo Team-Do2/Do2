@@ -11,5 +11,6 @@ namespace Do2.Models
         public int? supertaskId { get; set; }
         public required string userEmail { get; set; }
         public List<Tag>? Tags { get; set; } = new();
+        public DateTime? dueDate { get; set; }
     }
 }

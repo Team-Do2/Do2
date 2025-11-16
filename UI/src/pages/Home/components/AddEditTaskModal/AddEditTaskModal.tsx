@@ -44,7 +44,7 @@ const AddEditTaskModal = ({
     if (isEdit && task) {
       setName(task.name);
       setDescription(task.description || '');
-      setDueDate(task.datetimeToComplete ? task.datetimeToComplete.split('T')[0] : '');
+      setDueDate(task.dueDate ? task.dueDate.split('T')[0] : '');
       setParentTaskId(task.supertaskId || null);
     } else {
       setName('');
@@ -93,8 +93,8 @@ const AddEditTaskModal = ({
         if (description !== (task.description || '')) {
           updateDescriptionMutation.mutate({ id: task.id, description });
         }
-        const originalDueDate = task.datetimeToComplete
-          ? task.datetimeToComplete.split('T')[0]
+        const originalDueDate = task.dueDate
+          ? task.dueDate.split('T')[0]
           : '';
         if (dueDate !== originalDueDate) {
           updateDueDateMutation.mutate({ id: task.id, dueDate: dueDate || null });

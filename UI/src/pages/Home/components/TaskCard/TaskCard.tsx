@@ -112,6 +112,9 @@ function TaskCard({ task, onEdit }: { task: Task; onEdit: (task: Task) => void }
           />
         </div>
       )}
+      {task.dueDate && (
+        <span className="task-due-date">Due: {new Date(task.dueDate).toLocaleDateString()}</span>
+      )}
       <ManageTagsModal
         isOpen={isTagsModalOpen}
         onRequestClose={() => setIsTagsModalOpen(false)}

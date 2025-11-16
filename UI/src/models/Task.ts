@@ -9,4 +9,5 @@ export interface Task {
   supertaskId: number;
   userEmail: string;
   tags?: Tag[];
+  dueDate?: string;
 }
