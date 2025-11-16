@@ -43,7 +43,7 @@ function HomePage() {
         Settings
       </button>
       <AddTaskButton onClick={() => setIsAddTaskModalOpen(true)} />
-      <PinnedTaskBar />
+      <PinnedTaskBar onEditTask={handleEditTask} />
       <div className="home-page-main">
         <h1 className="home-page-title">Welcome back!</h1>
         <TaskList onEditTask={handleEditTask} />
