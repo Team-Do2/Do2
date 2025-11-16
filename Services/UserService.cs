@@ -48,6 +48,11 @@ public class UserService(IAuthenticationService _authenticationService, IUserRep
         return true;
     }
 
+    public async Task<UserModel> GetUser(string email)
+    {
+        return await repositoryService.GetUser(email);
+    }
+
     Task<bool> IUserService.UpdateSettings()
     {
         throw new NotImplementedException();

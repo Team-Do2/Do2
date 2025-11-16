@@ -1,5 +1,6 @@
 using Do2.Services;
 using Microsoft.AspNetCore.Mvc.Filters;
+using Microsoft.AspNetCore.Mvc;
 
 namespace Do2.Services;
 
@@ -21,7 +22,8 @@ public class CheckSession : ActionFilterAttribute
         if (string.IsNullOrEmpty(cookieValue) || !sessionService.ValidateSession(cookieValue))
         {
             logger.LogCritical(context.HttpContext.Request.Host + " attempted to get in.");
-            throw new UnauthorizedAccessException("Not valid session. Please authenticate and try again");
+            context.Result = new UnauthorizedResult();
+            return;
         }
             
         base.OnActionExecuting(context);

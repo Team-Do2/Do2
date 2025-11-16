@@ -1,4 +1,5 @@
 using Do2.DTOs;
+using UserModel = Do2.Models.User;
 
 namespace Do2.Services;
 
@@ -7,6 +8,8 @@ public interface IUserService
     Task<bool> CreateUser(BasicUserInformation basicUserInformation);
 
     Task<bool> DeleteUser(string email);
+
+    Task<UserModel> GetUser(string email);
 
     Task<bool> UpdateSettings();
 }

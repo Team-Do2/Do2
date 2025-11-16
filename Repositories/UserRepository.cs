@@ -93,4 +93,13 @@ public class UserRepositoryService(IDbConnection _db, ILogger _logger) : IUserRe
             Salt = saltString
         };
     }
+
+    public async Task<User> GetUser(string email)
+    {
+        string sql = @"
+        SELECT email, first_name, last_name FROM user 
+        WHERE email = @Email";
+
+        return await db.QueryFirstOrDefaultAsync<User>(sql, new { Email = email });
+    }
 }
