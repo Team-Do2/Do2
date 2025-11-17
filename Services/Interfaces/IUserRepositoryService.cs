@@ -1,5 +1,6 @@
 using UserModel = Do2.Models.User;
 using Do2.Models.UserCredentials;
+using Do2.DTOs;
 
 namespace Do2.Services;
 
@@ -13,5 +14,5 @@ public interface IUserRepositoryService
 
     Task<bool> DeleteUser(string email);
 
-    Task<UserModel> GetUser(string email);
+    Task<UserInformationResponse> GetUser(string email);
 }

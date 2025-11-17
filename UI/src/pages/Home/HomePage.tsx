@@ -7,11 +7,13 @@ import TaskList from './components/TaskList/TaskList';
 import AddTaskButton from './components/AddTaskButton/AddTaskButton';
 import AddEditTaskModal from './components/AddEditTaskModal/AddEditTaskModal';
 import type { Task } from '../../models/Task';
+import { useAuthStore } from '../../stores/authStore';
 
 function HomePage() {
   const navigate = useNavigate();
   const [isAddTaskModalOpen, setIsAddTaskModalOpen] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
+  const userName = useAuthStore((state) => state.userName);
 
   const handleEditTask = (task: Task) => {
     setEditingTask(task);
@@ -45,7 +47,11 @@ function HomePage() {
       <AddTaskButton onClick={() => setIsAddTaskModalOpen(true)} />
       <PinnedTaskBar onEditTask={handleEditTask} />
       <div className="home-page-main">
-        <h1 className="home-page-title">Welcome back!</h1>
+        {userName ? (
+          <h1 className="home-page-title">Welcome back, {userName}!</h1>
+        ) : (
+          <h1 className="home-page-title">Welcome back!</h1>
+        )}
         <TaskList onEditTask={handleEditTask} />
       </div>
       <AddEditTaskModal

@@ -9,7 +9,7 @@ public interface IUserService
 
     Task<bool> DeleteUser(string email);
 
-    Task<UserModel> GetUser(string email);
+    Task<UserInformationResponse> GetUser(string email);
 
     Task<bool> UpdateSettings();
 }

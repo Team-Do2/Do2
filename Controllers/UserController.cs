@@ -34,7 +34,7 @@ namespace Do2.Controllers
 
         [HttpGet]
         [ServiceFilter(typeof(CheckSession))]
-        public async Task<User> GetUser(string email) {
+        public async Task<UserInformationResponse> GetUser(string email) {
             return await userService.GetUser(email);
         }
     }

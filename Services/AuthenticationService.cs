@@ -20,8 +20,17 @@ public class AuthenticationService(ILogger _logger, IUserRepositoryService _user
 
     public async Task<bool> CheckUserHash(string email, string password)
     {
-        // Retrieve salt from db
-        byte[] salt = (await userRepositoryService.GetUserSalt(email)).Salt;
+        byte[] salt;
+        try
+        {
+            // Retrieve salt from db
+            salt = (await userRepositoryService.GetUserSalt(email)).Salt;
+        }
+        catch (Exception ex)
+        {
+            logger.LogWarning($"Failed to retrieve salt for {email}: {ex.Message}");
+            return false;
+        }
 
         // Attempt to find user with username password hash combination
         // If found, authenticate, otherwise, fail
