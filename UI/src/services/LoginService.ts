@@ -7,6 +7,13 @@ export interface LoginRequest {
   Password: string;
 }
 
+export interface SignupRequest {
+  Email: string;
+  Password: string;
+  FirstName: string;
+  LastName: string;
+}
+
 async function loginRequest(
   request: LoginRequest
 ): Promise<{ success: boolean; error?: string; user?: User }> {
@@ -40,5 +47,36 @@ async function loginRequest(
 export function useLogin() {
   return useMutation({
     mutationFn: loginRequest,
+  });
+}
+
+async function signupRequest(
+  request: SignupRequest
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    const response = await axios.post(
+      'http://localhost:5015/api/User/CreateUserCredentials',
+      request,
+      {
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
+    if (response.status === 200) {
+      return { success: true };
+    } else {
+      return { success: false, error: 'Signup failed' };
+    }
+  } catch (error) {
+    if (axios.isAxiosError(error)) {
+      const message = error.response?.data?.message || error.message || 'Network error';
+      return { success: false, error: message };
+    }
+    return { success: false, error: 'Network error' };
+  }
+}
+
+export function useSignup() {
+  return useMutation({
+    mutationFn: signupRequest,
   });
 }

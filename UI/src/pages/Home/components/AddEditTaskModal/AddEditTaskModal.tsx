@@ -103,7 +103,12 @@ const AddEditTaskModal = ({
         onRequestClose();
       } else {
         // Create new task
-        createTaskMutation.mutate({ name, description, userEmail: userEmail || '' });
+        createTaskMutation.mutate({
+          name,
+          description,
+          userEmail: userEmail || '',
+          supertaskId: parentTaskId,
+        });
         setName('');
         setDescription('');
         setDueDate('');

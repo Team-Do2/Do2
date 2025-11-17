@@ -13,13 +13,21 @@ import ExpandButton from './Components/ExpandButton/ExpandButton';
 import DeleteButton from './Components/DeleteButton/DeleteButton';
 import TagButton from './Components/TagButton/TagButton';
 import EditButton from './Components/EditButton/EditButton';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import TaskDescription from './Components/TaskDescription/TaskDescription';
 import TaskTitle from './Components/TaskTitle/TaskTitle';
 import ManageTagsModal from '../ManageTagsModal/ManageTagsModal';
 import TagComponent from '../../../Settings/components/TagComponent/TagComponent';
 
-function TaskCard({ task, onEdit }: { task: Task; onEdit: (task: Task) => void }) {
+function TaskCard({
+  task,
+  onEdit,
+  collapseAll,
+}: {
+  task: Task;
+  onEdit: (task: Task) => void;
+  collapseAll: number;
+}) {
   const updateTaskDone = useUpdateTaskDone();
   const updateTaskPinned = useUpdateTaskPinned();
   const updateTaskDescription = useUpdateTaskDescription();
@@ -27,6 +35,10 @@ function TaskCard({ task, onEdit }: { task: Task; onEdit: (task: Task) => void }
   const deleteTask = useDeleteTask();
   const [isExpanded, setIsExpanded] = useState(false);
   const [isTagsModalOpen, setIsTagsModalOpen] = useState(false);
+
+  useEffect(() => {
+    setIsExpanded(false);
+  }, [collapseAll]);
 
   const handleCheckboxClick = () => {
     updateTaskDone.mutate({ id: task.id, isDone: !task.isDone });
@@ -115,7 +127,7 @@ function TaskCard({ task, onEdit }: { task: Task; onEdit: (task: Task) => void }
       {isExpanded && task.subtasks && task.subtasks.length > 0 && (
         <div className="task-card-subtasks">
           {task.subtasks.map((subtask) => (
-            <TaskCard key={subtask.id} task={subtask} onEdit={onEdit} />
+            <TaskCard key={subtask.id} task={subtask} onEdit={onEdit} collapseAll={collapseAll} />
           ))}
         </div>
       )}

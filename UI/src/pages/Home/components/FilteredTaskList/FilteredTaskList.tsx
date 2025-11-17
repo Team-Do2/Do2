@@ -4,7 +4,15 @@ import { useAuthStore } from '../../../../stores/authStore';
 import TaskCard from '../TaskCard/TaskCard';
 import type { Task } from '../../../../models/Task';
 
-function TaskList({ search, onEditTask }: { search: string; onEditTask: (task: Task) => void }) {
+function TaskList({
+  search,
+  onEditTask,
+  collapseAll,
+}: {
+  search: string;
+  onEditTask: (task: Task) => void;
+  collapseAll: number;
+}) {
   const userEmail = useAuthStore((state: { userEmail?: string }) => state.userEmail);
   const { data, error } = useGetUserTasksBySearch(userEmail || '', search);
   if (error) return <pre>Error: {error.message}</pre>;
@@ -12,7 +20,7 @@ function TaskList({ search, onEditTask }: { search: string; onEditTask: (task: T
   return (
     <div className="filtered-task-list-container">
       {data?.map((task) => (
-        <TaskCard key={task.id} task={task} onEdit={onEditTask} />
+        <TaskCard key={task.id} task={task} onEdit={onEditTask} collapseAll={collapseAll} />
       ))}
     </div>
   );

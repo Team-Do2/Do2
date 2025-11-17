@@ -21,12 +21,12 @@ namespace Do2.Controllers
         [HttpPost("AuthenticateUser")]
         public async Task<IActionResult> AuthenticateUser(AuthenticateUserRequest request) {
 
-            bool isAuthenticated = await authenticationService.CheckUserHash(request.Email, request.Password);
+            bool isAuthenticated = await authenticationService.CheckUserHash(request.Email.ToLower(), request.Password);
 
             if (!isAuthenticated)
                 return Unauthorized();
 
-            var cookie = sessionService.CreateSession(request.Email, MaxSessionLength);
+            var cookie = sessionService.CreateSession(request.Email.ToLower(), MaxSessionLength);
 
             HttpContext.Response.Cookies.Append("AuthToken", cookie);
 

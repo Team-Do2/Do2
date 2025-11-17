@@ -188,10 +188,12 @@ export function useCreateTask() {
       name,
       description,
       userEmail,
+      supertaskId = null,
     }: {
       name: string;
       description: string;
       userEmail: string;
+      supertaskId: number | null;
     }) => {
       const res = await axios.post(
         `http://localhost:5015/api/task`,
@@ -202,7 +204,7 @@ export function useCreateTask() {
           isDone: false,
           userEmail,
           datetimeToDelete: null,
-          supertaskId: null,
+          supertaskId: supertaskId,
           Tags: [],
         },
         { withCredentials: true }

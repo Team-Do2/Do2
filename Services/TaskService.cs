@@ -23,7 +23,7 @@ namespace Do2.Services
         public async Task<IEnumerable<TaskModel>> GetPinnedUserTasksAsync(string userEmail)
         {
             var tasks = (await _repository.GetPinnedUserTasksAsync(userEmail)).ToList();
-            await HydrateTasks(tasks);
+            await HydrateTasks(tasks, true);
             return tasks;
         }
         public async Task<IEnumerable<TaskModel>> GetUserTasksBySearchAsync(string userEmail, string search)
