@@ -5,7 +5,13 @@ import './PinnedTaskBar.css';
 import FilteredTaskList from '../FilteredTaskList/FilteredTaskList';
 import type { Task } from '../../../../models/Task';
 
-function PinnedTaskBar({ onEditTask }: { onEditTask: (task: Task) => void }) {
+function PinnedTaskBar({
+  onEditTask,
+  collapseAll,
+}: {
+  onEditTask: (task: Task) => void;
+  collapseAll: number;
+}) {
   const [search, setSearch] = useState('');
   const [debouncedSearch, setDebouncedSearch] = useState(search);
 
@@ -24,9 +30,13 @@ function PinnedTaskBar({ onEditTask }: { onEditTask: (task: Task) => void }) {
     <div className="pinned-task-bar">
       <SearchBar value={search} onChange={(e) => setSearch(e.target.value)} />
       {debouncedSearch ? (
-        <FilteredTaskList search={debouncedSearch} onEditTask={onEditTask} />
+        <FilteredTaskList
+          search={debouncedSearch}
+          onEditTask={onEditTask}
+          collapseAll={collapseAll}
+        />
       ) : (
-        <PinnedTaskList onEditTask={onEditTask} />
+        <PinnedTaskList onEditTask={onEditTask} collapseAll={collapseAll} />
       )}
     </div>
   );

@@ -74,8 +74,8 @@ namespace Do2.Repositories
 
         public async Task<int> AddUserTaskAsync(TaskModel task)
         {
-            var sql = "INSERT INTO task (name, description, user_email) VALUES (@name, @description, @userEmail); SELECT LAST_INSERT_ID();";
-            return await _db.ExecuteScalarAsync<int>(sql, new { task.name, task.description, userEmail = task.userEmail });
+            var sql = "INSERT INTO task (name, description, user_email, supertask_id) VALUES (@name, @description, @userEmail, @supertaskId); SELECT LAST_INSERT_ID();";
+            return await _db.ExecuteScalarAsync<int>(sql, new { task.name, task.description, userEmail = task.userEmail, supertaskId = task.supertaskId });
         }
 
         public async Task<int> AddDeadlineTaskAsync(int taskId, DateTime datetime)

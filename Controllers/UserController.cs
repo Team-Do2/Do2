@@ -19,7 +19,7 @@ namespace Do2.Controllers
         public async Task<bool> CreateUserCredentials(CreateUserCredentialsRequest userRequest) {
             return await userService.CreateUser(new BasicUserInformation()
             {
-                Email = userRequest.Email,
+                Email = userRequest.Email.ToLower(),
                 Password = userRequest.Password,
                 FirstName = userRequest.FirstName,
                 LastName = userRequest.LastName
