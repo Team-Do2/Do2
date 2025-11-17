@@ -1,9 +1,9 @@
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import type { User } from '../models/User';
 
 export function useGetUser(email: string) {
-  return useQuery<User>({
+  return useSuspenseQuery<User>({
     queryKey: ['getUser', email],
     queryFn: async () => {
       const res = await axios.get(
@@ -12,6 +12,5 @@ export function useGetUser(email: string) {
       );
       return res.data;
     },
-    enabled: !!email,
   });
 }

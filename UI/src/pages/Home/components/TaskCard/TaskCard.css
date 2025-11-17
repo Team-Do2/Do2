@@ -55,10 +55,27 @@
   display: flex;
   flex-wrap: wrap;
   gap: 4px;
-  margin-left: 8px;
+}
+
+.title-and-tags {
+  display: flex;
+  align-items: center;
+  gap: 8px;
 }
 
 .task-card-subtasks {
   margin-left: 25px;
   margin-bottom: 1.5rem;
+}
+
+.task-card-edit-button {
+  position: absolute;
+  bottom: 0.1rem;
+  right: 4rem;
+}
+
+.task-card-delete-button {
+  position: absolute;
+  bottom: 0.25rem;
+  right: 0.25rem;
 }

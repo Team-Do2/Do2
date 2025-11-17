@@ -6,6 +6,8 @@ import TagList from './components/TagList/TagList';
 import AddEditTagModal from './components/AddEditTagModal/AddEditTagModal';
 import { useState } from 'react';
 import { useCreateTag } from '../../services/TagService';
+import { useGetUser } from '../../services/UserService';
+import { useNavigate } from 'react-router-dom';
 
 function SettingsPage() {
   const logOut = useAuthStore((state) => state.logOut);
@@ -13,6 +15,8 @@ function SettingsPage() {
   const userEmail = useAuthStore((state) => state.userEmail || '');
   const [isTagModalOpen, setIsTagModalOpen] = useState(false);
   const createTagMutation = useCreateTag();
+  const userData = useGetUser(userEmail);
+  const navigate = useNavigate();
 
   const handleLogout = () => {
     // Clear user state
@@ -26,7 +30,18 @@ function SettingsPage() {
   };
 
   return (
-    <>
+    <div className="settings-page-container">
+      <a className="back-link" onClick={() => navigate('/')}>
+        {'< Back to Tasks'}
+      </a>
+      <h1 className="settings-header">User Settings</h1>
+      <h2>
+        <u>Currently Logged in as:</u> <br />
+        {userData.data?.email}({userData.data?.firstName + ' ' + userData.data?.lastName})
+      </h2>
+      <button className="logout-button" onClick={handleLogout}>
+        Log Out
+      </button>
       <AddEditTagModal
         isOpen={isTagModalOpen}
         onRequestClose={() => setIsTagModalOpen(false)}
@@ -35,14 +50,15 @@ function SettingsPage() {
           createTagMutation.mutate(tag);
         }}
       />
-      <p>Settings Page Works!</p>
-      <button onClick={handleLogout}>Log Out</button>
+
       <div>
-        <h1>User Tags:</h1>
+        <h2 className="user-tags-header">User Tags</h2>
         <TagList />
-        <button onClick={() => setIsTagModalOpen(true)}>Add New Tag</button>
+        <button className="add-tag-button" onClick={() => setIsTagModalOpen(true)}>
+          Add Tag
+        </button>
       </div>
-    </>
+    </div>
   );
 }
 
