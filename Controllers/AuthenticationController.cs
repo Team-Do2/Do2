@@ -19,18 +19,18 @@ namespace Do2.Controllers
         }
 
         [HttpPost("AuthenticateUser")]
-        public async Task<string> AuthenticateUser(AuthenticateUserRequest request) {
+        public async Task<IActionResult> AuthenticateUser(AuthenticateUserRequest request) {
 
             bool isAuthenticated = await authenticationService.CheckUserHash(request.Email, request.Password);
 
             if (!isAuthenticated)
-                throw new UnauthorizedAccessException();
+                return Unauthorized();
 
             var cookie = sessionService.CreateSession(request.Email, MaxSessionLength);
 
             HttpContext.Response.Cookies.Append("AuthToken", cookie);
 
-            return cookie;
+            return Ok(cookie);
         }
     }
 }

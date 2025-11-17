@@ -1,12 +1,27 @@
 import './HomePage.css';
 
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import PinnedTaskBar from './components/PinnedTaskBar/PinnedTaskBar';
 import TaskList from './components/TaskList/TaskList';
 import AddTaskButton from './components/AddTaskButton/AddTaskButton';
+import AddEditTaskModal from './components/AddEditTaskModal/AddEditTaskModal';
+import type { Task } from '../../models/Task';
 
 function HomePage() {
   const navigate = useNavigate();
+  const [isAddTaskModalOpen, setIsAddTaskModalOpen] = useState(false);
+  const [editingTask, setEditingTask] = useState<Task | null>(null);
+
+  const handleEditTask = (task: Task) => {
+    setEditingTask(task);
+  };
+
+  const handleCloseModal = () => {
+    setIsAddTaskModalOpen(false);
+    setEditingTask(null);
+  };
+
   return (
     <div className="home-page-container" style={{ position: 'relative' }}>
       <button
@@ -27,12 +42,17 @@ function HomePage() {
       >
         Settings
       </button>
-      <AddTaskButton />
-      <PinnedTaskBar />
+      <AddTaskButton onClick={() => setIsAddTaskModalOpen(true)} />
+      <PinnedTaskBar onEditTask={handleEditTask} />
       <div className="home-page-main">
         <h1 className="home-page-title">Welcome back!</h1>
-        <TaskList />
+        <TaskList onEditTask={handleEditTask} />
       </div>
+      <AddEditTaskModal
+        isOpen={isAddTaskModalOpen || !!editingTask}
+        onRequestClose={handleCloseModal}
+        task={editingTask || undefined}
+      />
     </div>
   );
 }

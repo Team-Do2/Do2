@@ -1,13 +1,13 @@
 import React from 'react';
 import './AddTaskButton.css';
 
-const AddTaskButton: React.FC = () => {
-  const handleClick = () => {
-    console.log('Add Task button clicked');
-  };
+interface AddTaskButtonProps {
+  onClick: () => void;
+}
 
+const AddTaskButton: React.FC<AddTaskButtonProps> = ({ onClick }) => {
   return (
-    <button className="add-task-button" onClick={handleClick} aria-label="Add Task">
+    <button className="add-task-button" onClick={onClick} aria-label="Add Task">
       <svg
         width="60"
         height="60"

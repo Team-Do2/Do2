@@ -99,6 +99,68 @@ export function useUpdateTaskDescription() {
     },
   });
 }
+export function useUpdateTaskName() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, name }: { id: number; name: string }) => {
+      const res = await axios.patch(
+        `http://localhost:5015/api/task/${id}/name`,
+        {
+          name,
+        },
+        { withCredentials: true }
+      );
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['getTasks'] });
+      queryClient.invalidateQueries({ queryKey: ['getPinnedTasks'] });
+      queryClient.invalidateQueries({ queryKey: ['getTasksBySearch'] });
+    },
+  });
+}
+
+export function useUpdateTaskSupertask() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, supertaskId }: { id: number; supertaskId: number | null }) => {
+      const params = new URLSearchParams();
+      if (supertaskId !== null) params.append('supertaskId', supertaskId.toString());
+      const res = await axios.patch(
+        `http://localhost:5015/api/task/${id}/supertask?${params.toString()}`,
+        {},
+        { withCredentials: true }
+      );
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['getTasks'] });
+      queryClient.invalidateQueries({ queryKey: ['getPinnedTasks'] });
+      queryClient.invalidateQueries({ queryKey: ['getTasksBySearch'] });
+    },
+  });
+}
+
+export function useUpdateTaskDueDate() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({ id, dueDate }: { id: number; dueDate: string | null }) => {
+      const params = new URLSearchParams();
+      if (dueDate) params.append('dueDate', dueDate);
+      const res = await axios.patch(
+        `http://localhost:5015/api/task/${id}/duedate?${params.toString()}`,
+        {},
+        { withCredentials: true }
+      );
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['getTasks'] });
+      queryClient.invalidateQueries({ queryKey: ['getPinnedTasks'] });
+      queryClient.invalidateQueries({ queryKey: ['getTasksBySearch'] });
+    },
+  });
+}
 
 // Delete Tasks
 export function useDeleteTask() {
@@ -108,6 +170,43 @@ export function useDeleteTask() {
       const res = await axios.delete(`http://localhost:5015/api/task/${id}`, {
         withCredentials: true,
       });
+      return res.data;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['getTasks'] });
+      queryClient.invalidateQueries({ queryKey: ['getPinnedTasks'] });
+      queryClient.invalidateQueries({ queryKey: ['getTasksBySearch'] });
+    },
+  });
+}
+
+// Create Task
+export function useCreateTask() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({
+      name,
+      description,
+      userEmail,
+    }: {
+      name: string;
+      description: string;
+      userEmail: string;
+    }) => {
+      const res = await axios.post(
+        `http://localhost:5015/api/task`,
+        {
+          name,
+          description,
+          isPinned: false,
+          isDone: false,
+          userEmail,
+          datetimeToDelete: null,
+          supertaskId: null,
+          Tags: [],
+        },
+        { withCredentials: true }
+      );
       return res.data;
     },
     onSuccess: () => {

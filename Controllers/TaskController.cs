@@ -30,12 +30,12 @@ namespace Do2.Controllers
         [ServiceFilter(typeof(CheckSession))]
         public async Task<IEnumerable<TaskModel>> GetUserTasksBySearch(string userEmail, [FromQuery] string search) => await _service.GetUserTasksBySearchAsync(userEmail, search);
 
-        [HttpPost("user/{userEmail}")]
+        [HttpPost]
         [ServiceFilter(typeof(CheckSession))]
-        public async Task<ActionResult<int>> AddUserTask(string userEmail, [FromBody] TaskModel task)
+        public async Task<ActionResult<int>> AddUserTask([FromBody] TaskModel task)
         {
-            var id = await _service.AddUserTaskAsync(userEmail, task);
-            return CreatedAtAction(nameof(GetAllUserTasks), new { userEmail }, id);
+            var id = await _service.AddUserTaskAsync(task);
+            return Created("", id);
         }
 
         [HttpPost("deadline")]
@@ -80,6 +80,32 @@ namespace Do2.Controllers
         {
             var result = await _service.UpdateTaskDescriptionAsync(taskId, request.Description);
             if (result == 0) return NotFound();
+            return Ok();
+        }
+
+        [HttpPatch("{taskId}/name")]
+        [ServiceFilter(typeof(CheckSession))]
+        public async Task<ActionResult> UpdateTaskName(int taskId, UpdateTaskNameRequest request)
+        {
+            var result = await _service.UpdateTaskNameAsync(taskId, request.Name);
+            if (result == 0) return NotFound();
+            return Ok();
+        }
+
+        [HttpPatch("{taskId}/supertask")]
+        [ServiceFilter(typeof(CheckSession))]
+        public async Task<ActionResult> UpdateTaskSupertask(int taskId, [FromQuery] int? supertaskId)
+        {
+            var result = await _service.UpdateTaskSupertaskAsync(taskId, supertaskId);
+            if (result == 0) return NotFound();
+            return Ok();
+        }
+
+        [HttpPatch("{taskId}/duedate")]
+        [ServiceFilter(typeof(CheckSession))]
+        public async Task<ActionResult> UpdateTaskDueDate(int taskId, [FromQuery] DateTime? dueDate)
+        {
+            var result = await _service.UpdateTaskDueDateAsync(taskId, dueDate);
             return Ok();
         }
 

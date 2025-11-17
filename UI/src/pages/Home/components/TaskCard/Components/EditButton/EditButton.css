@@ -1,9 +1,10 @@
-.tag-button {
+.edit-button {
   position: absolute;
   bottom: 0.1rem;
-  right: 2rem;
+  right: 4rem;
   background: none;
   cursor: pointer;
   border: none;
   padding: 0;
+  color: darkcyan;
 }

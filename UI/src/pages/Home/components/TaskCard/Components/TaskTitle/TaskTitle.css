@@ -1,0 +1,31 @@
+.task-title-container {
+  flex: 1;
+  min-width: 0;
+}
+
+.task-title-input {
+  font-weight: 700;
+  font-size: 1.9rem;
+  color: #4c4c4c;
+  background: transparent;
+  border: none;
+  outline: none;
+  margin-left: 8px;
+  cursor: text;
+  font-family: 'Lexend', Arial, Helvetica, sans-serif;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: pre-wrap;
+  min-height: 1.5em;
+}
+
+.task-title-input:focus {
+  outline: none;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+  margin-left: 8px;
+  margin-top: 2px;
+}

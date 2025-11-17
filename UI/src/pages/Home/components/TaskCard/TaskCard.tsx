@@ -3,6 +3,7 @@ import {
   useUpdateTaskPinned,
   useUpdateTaskDone,
   useUpdateTaskDescription,
+  useUpdateTaskName,
   useDeleteTask,
 } from '../../../../services/TaskService';
 import './TaskCard.css';
@@ -11,15 +12,18 @@ import CheckboxButton from './Components/CheckboxButton/CheckboxButton';
 import ExpandButton from './Components/ExpandButton/ExpandButton';
 import DeleteButton from './Components/DeleteButton/DeleteButton';
 import TagButton from './Components/TagButton/TagButton';
+import EditButton from './Components/EditButton/EditButton';
 import { useState } from 'react';
 import TaskDescription from './Components/TaskDescription/TaskDescription';
+import TaskTitle from './Components/TaskTitle/TaskTitle';
 import ManageTagsModal from '../ManageTagsModal/ManageTagsModal';
 import TagComponent from '../../../Settings/components/TagComponent/TagComponent';
 
-function TaskCard({ task }: { task: Task }) {
+function TaskCard({ task, onEdit }: { task: Task; onEdit: (task: Task) => void }) {
   const updateTaskDone = useUpdateTaskDone();
   const updateTaskPinned = useUpdateTaskPinned();
   const updateTaskDescription = useUpdateTaskDescription();
+  const updateTaskName = useUpdateTaskName();
   const deleteTask = useDeleteTask();
   const [isExpanded, setIsExpanded] = useState(false);
   const [isTagsModalOpen, setIsTagsModalOpen] = useState(false);
@@ -36,8 +40,16 @@ function TaskCard({ task }: { task: Task }) {
     updateTaskDescription.mutate({ id: task.id, description: value });
   };
 
+  const handleTitleChange = (value: string) => {
+    updateTaskName.mutate({ id: task.id, name: value });
+  };
+
   const handleDeleteClick = () => {
     deleteTask.mutate(task.id);
+  };
+
+  const handleEditClick = () => {
+    onEdit(task);
   };
 
   const handleTagClick = () => {
@@ -54,7 +66,7 @@ function TaskCard({ task }: { task: Task }) {
           width="1.75rem"
           height="1.75rem"
         />
-        <h1 className="task-card-title">{task.name}</h1>
+        <TaskTitle value={task.name} onBlur={handleTitleChange} />
         {task.tags && (
           <div className="task-card-tags">
             {task.tags.map((tag) => (
@@ -70,12 +82,19 @@ function TaskCard({ task }: { task: Task }) {
         />
       </div>
       {isExpanded && (
-        <div className="task-card-footer">
+        <div className="task-card-expanded-content">
           <TaskDescription
             value={task.description}
             onBlur={(value) => {
               handleDescriptionChange(value);
             }}
+          />
+          <EditButton
+            onClick={() => {
+              handleEditClick();
+            }}
+            width="1.75rem"
+            height="1.75rem"
           />
           <TagButton
             onClick={() => {
@@ -93,6 +112,22 @@ function TaskCard({ task }: { task: Task }) {
           />
         </div>
       )}
+      {isExpanded && task.subtasks && task.subtasks.length > 0 && (
+        <div className="task-card-subtasks">
+          {task.subtasks.map((subtask) => (
+            <TaskCard key={subtask.id} task={subtask} onEdit={onEdit} />
+          ))}
+        </div>
+      )}
+      <div className="task-card-footer">
+        {task.dueDate && (
+          <span className="task-due-date">Due: {new Date(task.dueDate).toLocaleDateString()}</span>
+        )}
+        {task.subtasks && task.subtasks.length > 0 && (
+          <span className="task-subtask-count">Subtasks: {task.subtasks.length}</span>
+        )}
+      </div>
+
       <ManageTagsModal
         isOpen={isTagsModalOpen}
         onRequestClose={() => setIsTagsModalOpen(false)}

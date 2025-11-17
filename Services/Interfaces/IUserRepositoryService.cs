@@ -12,4 +12,6 @@ public interface IUserRepositoryService
     Task<bool> CreateUser(UserModel user);
 
     Task<bool> DeleteUser(string email);
+
+    Task<UserModel> GetUser(string email);
 }

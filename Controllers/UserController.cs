@@ -1,6 +1,7 @@
 using Do2.DTOs;
 using Do2.Services;
 using Microsoft.AspNetCore.Mvc;
+using Do2.Models;
 
 namespace Do2.Controllers
 {
@@ -29,6 +30,12 @@ namespace Do2.Controllers
         [ServiceFilter(typeof(CheckSession))]
         public async Task<bool> DeleteUserCredentials(DeleteUserRequest userRequest) {
             return await userService.DeleteUser(userRequest.Email);
+        }
+
+        [HttpGet]
+        [ServiceFilter(typeof(CheckSession))]
+        public async Task<User> GetUser(string email) {
+            return await userService.GetUser(email);
         }
     }
 }
