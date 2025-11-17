@@ -93,9 +93,7 @@ const AddEditTaskModal = ({
         if (description !== (task.description || '')) {
           updateDescriptionMutation.mutate({ id: task.id, description });
         }
-        const originalDueDate = task.dueDate
-          ? task.dueDate.split('T')[0]
-          : '';
+        const originalDueDate = task.dueDate ? task.dueDate.split('T')[0] : '';
         if (dueDate !== originalDueDate) {
           updateDueDateMutation.mutate({ id: task.id, dueDate: dueDate || null });
         }
