@@ -33,10 +33,22 @@
 }
 
 .task-due-date {
-  margin-left: 25px;
+  margin-left: 0.5rem;
   font-size: 0.9rem;
-  color: #666;
+  color: #4c4c4c;
   font-weight: 500;
+}
+
+.task-subtask-count {
+  margin-left: 0.5rem;
+  font-size: 0.9rem;
+  color: #4c4c4c;
+  font-weight: 500;
+}
+
+.task-card-footer {
+  padding: 0 0 0 25px;
+  align-items: center;
 }
 
 .task-card-tags {
@@ -44,4 +56,9 @@
   flex-wrap: wrap;
   gap: 4px;
   margin-left: 8px;
+}
+
+.task-card-subtasks {
+  margin-left: 25px;
+  margin-bottom: 1.5rem;
 }

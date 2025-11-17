@@ -10,4 +10,5 @@ export interface Task {
   userEmail: string;
   tags?: Tag[];
   dueDate?: string;
+  subtasks?: Task[];
 }

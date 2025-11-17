@@ -152,5 +152,25 @@ namespace Do2.Repositories
             var sql = "DELETE FROM task WHERE user_email = @userEmail AND datetime_to_delete < NOW()";
             return await _db.ExecuteAsync(sql, new { userEmail = email });
         }
+
+        public async Task<IEnumerable<TaskModel>> GetSubtasksForTaskAsync(int taskId)
+        {
+            var sql =
+            """
+            SELECT
+                id,
+                is_pinned AS isPinned,
+                is_done AS isDone,
+                name,
+                datetime_to_delete AS datetimeToDelete,
+                description,
+                supertask_id AS supertaskId,
+                user_email AS userEmail
+            FROM task
+            WHERE supertask_id = @taskId
+            """;
+            return await _db.QueryAsync<TaskModel>(sql, new { taskId });
+        }
+
     }
 }

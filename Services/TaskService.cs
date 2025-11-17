@@ -16,24 +16,24 @@ namespace Do2.Services
 
         public async Task<IEnumerable<TaskModel>> GetAllUserTasksAsync(string userEmail)
         {
-            var tasks = await _repository.GetAllUserTasksAsync(userEmail);
+            var tasks = (await _repository.GetAllUserTasksAsync(userEmail)).ToList();
             await HydrateTasks(tasks);
             return tasks;
         }
         public async Task<IEnumerable<TaskModel>> GetPinnedUserTasksAsync(string userEmail)
         {
-            var tasks = await _repository.GetPinnedUserTasksAsync(userEmail);
+            var tasks = (await _repository.GetPinnedUserTasksAsync(userEmail)).ToList();
             await HydrateTasks(tasks);
             return tasks;
         }
         public async Task<IEnumerable<TaskModel>> GetUserTasksBySearchAsync(string userEmail, string search)
         {
-            var tasks = await _repository.GetUserTasksBySearchAsync(userEmail, search);
-            await HydrateTasks(tasks);
+            var tasks = (await _repository.GetUserTasksBySearchAsync(userEmail, search)).ToList();
+            await HydrateTasks(tasks, true);
             return tasks;
         }
 
-        private async Task HydrateTasks(IEnumerable<TaskModel> tasks)
+        private async Task HydrateTasks(List<TaskModel> tasks, bool includeSubtasks = false)
         {
             // Fetch and assign tags for each task
             var taskIds = tasks.Select(t => t.id).ToList();
@@ -60,6 +60,16 @@ namespace Do2.Services
                     task.dueDate = dueDate;
                 }
             }
+
+            // Assign subtasks for each task + Remove subtasks from main list
+            foreach (var task in tasks)
+            {
+                task.Subtasks = (await _repository.GetSubtasksForTaskAsync(task.id)).ToList();
+                await HydrateTasks(task.Subtasks, true);
+            }
+            if (!includeSubtasks) {
+                tasks.RemoveAll(t => t.supertaskId != null);
+            }
         }
 
         public Task<int> AddUserTaskAsync(TaskModel task) => _repository.AddUserTaskAsync(task);
@@ -72,6 +82,6 @@ namespace Do2.Services
         public Task<int> UpdateTaskSupertaskAsync(int taskId, int? supertaskId) => _repository.UpdateTaskSupertaskAsync(taskId, supertaskId);
         public Task<int> UpdateTaskDueDateAsync(int taskId, DateTime? dueDate) => _repository.UpdateTaskDueDateAsync(taskId, dueDate);
         public Task<int> DeleteTaskAsync(int id) => _repository.DeleteTaskAsync(id);
-        public Task<int> DeleteAllStaleTasksAsync(string email) => _repository.DeleteAllStaleTasksAsync(email);
+        public async Task<int> DeleteAllStaleTasksAsync(string email) => await _repository.DeleteAllStaleTasksAsync(email);
     }
 }

@@ -82,7 +82,7 @@ function TaskCard({ task, onEdit }: { task: Task; onEdit: (task: Task) => void }
         />
       </div>
       {isExpanded && (
-        <div className="task-card-footer">
+        <div className="task-card-expanded-content">
           <TaskDescription
             value={task.description}
             onBlur={(value) => {
@@ -112,9 +112,22 @@ function TaskCard({ task, onEdit }: { task: Task; onEdit: (task: Task) => void }
           />
         </div>
       )}
-      {task.dueDate && (
-        <span className="task-due-date">Due: {new Date(task.dueDate).toLocaleDateString()}</span>
+      {isExpanded && task.subtasks && task.subtasks.length > 0 && (
+        <div className="task-card-subtasks">
+          {task.subtasks.map((subtask) => (
+            <TaskCard key={subtask.id} task={subtask} onEdit={onEdit} />
+          ))}
+        </div>
       )}
+      <div className="task-card-footer">
+        {task.dueDate && (
+          <span className="task-due-date">Due: {new Date(task.dueDate).toLocaleDateString()}</span>
+        )}
+        {task.subtasks && task.subtasks.length > 0 && (
+          <span className="task-subtask-count">Subtasks: {task.subtasks.length}</span>
+        )}
+      </div>
+
       <ManageTagsModal
         isOpen={isTagsModalOpen}
         onRequestClose={() => setIsTagsModalOpen(false)}
