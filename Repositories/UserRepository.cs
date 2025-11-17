@@ -3,6 +3,8 @@ using Dapper;
 using Do2.Models;
 using Do2.Models.UserCredentials;
 using Do2.Services;
+using Do2.DTOs;
+using MySqlX.XDevAPI.Common;
 namespace Do2.Repositories;
 
 public class UserRepositoryService(IDbConnection _db, ILogger _logger) : IUserRepositoryService
@@ -94,12 +96,20 @@ public class UserRepositoryService(IDbConnection _db, ILogger _logger) : IUserRe
         };
     }
 
-    public async Task<User> GetUser(string email)
+    public async Task<UserInformationResponse> GetUser(string email)
     {
         string sql = @"
-        SELECT email, first_name, last_name FROM user 
+        SELECT email, first_name AS firstName, last_name AS lastName FROM user 
         WHERE email = @Email";
 
-        return await db.QueryFirstOrDefaultAsync<User>(sql, new { Email = email });
+        var result = await db.QueryFirstOrDefaultAsync<UserInformationResponse>(sql, new { Email = email });
+
+        if (result == null) {
+            const string LoggedError = "Failed to retrieve user from email!";
+            logger.LogError(LoggedError);
+            throw new Exception(LoggedError);
+        }
+
+        return result;
     }
 }

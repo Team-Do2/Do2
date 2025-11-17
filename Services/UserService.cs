@@ -48,7 +48,7 @@ public class UserService(IAuthenticationService _authenticationService, IUserRep
         return true;
     }
 
-    public async Task<UserModel> GetUser(string email)
+    public async Task<UserInformationResponse> GetUser(string email)
     {
         return await repositoryService.GetUser(email);
     }
