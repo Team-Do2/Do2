@@ -3,7 +3,7 @@
   flex-direction: column;
   background-color: #a5a4b8;
   height: 90vh;
-  width: 60vw;
+  width: 50vw;
   border-radius: 1rem;
   color: white;
   align-items: left;
@@ -74,10 +74,6 @@
   width: 8rem;
   color: white;
   font-weight: bold;
-}
-
-.account-settings {
-  margin-top: 1rem;
 }
 
 .account-settings button {

@@ -70,7 +70,7 @@ function SettingsPage() {
           Log Out
         </button>
         <div className="account-settings">
-          <h2>Account Settings</h2>
+          <h2>Account Details</h2>
           <button className="change-email-button" onClick={() => setIsEmailModalOpen(true)}>
             Change Email
           </button>
