@@ -9,15 +9,24 @@
   align-items: left;
   padding: 1rem 2rem 0 2rem;
   position: relative;
+  overflow: scroll;
+}
+
+.settings-page-container h2 {
+  margin: 1rem 0 0 0;
+  font-size: 1.5rem;
 }
 
 .settings-header {
-  margin-top: 1rem;
   font-size: 3.5rem;
 }
 
+.current-user-info {
+  margin-top: 0;
+}
+
 .back-link {
-  position: absolute;
+  position: fixed;
   top: 1rem;
   left: 2rem;
   color: white;
@@ -46,6 +55,11 @@
   background-color: #d1cce6;
 }
 
+.themse-section,
+.retention-time-section {
+  max-width: 30rem;
+}
+
 .user-tags-header {
   margin-bottom: 0;
 }
@@ -60,4 +74,25 @@
   width: 8rem;
   color: white;
   font-weight: bold;
+}
+
+.account-settings {
+  margin-top: 1rem;
+}
+
+.account-settings button {
+  padding: 0.5rem 1rem;
+  background-color: #e0dff0;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  font-size: 1.1rem;
+  width: 12rem;
+  color: white;
+  font-weight: bold;
+  margin-right: 1rem;
+}
+
+.account-settings button:hover {
+  background-color: #d1cce6;
 }

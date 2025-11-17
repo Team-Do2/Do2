@@ -112,4 +112,129 @@ public class UserRepositoryService(IDbConnection _db, ILogger _logger) : IUserRe
 
         return result;
     }
+
+    public async Task<bool> UpdateUserEmail(string currentEmail, string newEmail)
+    {
+        db.Open();
+        using var transaction = db.BeginTransaction();
+        try
+        {
+            // Check if new email already exists
+            string checkEmailSql = "SELECT COUNT(*) FROM user WHERE email = @NewEmail";
+            int existingCount = await db.ExecuteScalarAsync<int>(checkEmailSql, new { NewEmail = newEmail }, transaction);
+            if (existingCount > 0)
+            {
+                transaction.Rollback();
+                logger.LogWarning("Attempted to update email to {NewEmail} which already exists", newEmail);
+                return false;
+            }
+
+            // Update user (cascade will update foreign keys)
+            string updateUserSql = @"
+            UPDATE user 
+            SET email = @NewEmail
+            WHERE email = @CurrentEmail";
+            int rowsAffected = await db.ExecuteAsync(updateUserSql, new { CurrentEmail = currentEmail, NewEmail = newEmail }, transaction);
+
+            if (rowsAffected > 0)
+            {
+                transaction.Commit();
+                string LogSuccess = "Updated email from " + currentEmail + " to " + newEmail;
+                logger.LogInformation(LogSuccess);
+                return true;
+            }
+            else
+            {
+                transaction.Rollback();
+                string LoggedError = "Failed to update email from " + currentEmail + " to " + newEmail;
+                logger.LogInformation(LoggedError);
+                return false;
+            }
+        }
+        catch (Exception ex)
+        {
+            transaction.Rollback();
+            logger.LogError(ex, "Error updating email from {CurrentEmail} to {NewEmail}", currentEmail, newEmail);
+            return false;
+        }
+        finally
+        {
+            db.Close();
+        }
+    }
+
+    public async Task<bool> UpdateUserEmailAndHash(string currentEmail, string newEmail, byte[] newHash)
+    {
+        db.Open();
+        using var transaction = db.BeginTransaction();
+        try
+        {
+            // Check if new email already exists
+            string checkEmailSql = "SELECT COUNT(*) FROM user WHERE email = @NewEmail";
+            int existingCount = await db.ExecuteScalarAsync<int>(checkEmailSql, new { NewEmail = newEmail }, transaction);
+            if (existingCount > 0)
+            {
+                transaction.Rollback();
+                logger.LogWarning("Attempted to update email to {NewEmail} which already exists", newEmail);
+                return false;
+            }
+
+            // Update user email and hash (cascade will update foreign keys)
+            string updateUserSql = @"
+            UPDATE user 
+            SET email = @NewEmail, password_hash = @NewHash
+            WHERE email = @CurrentEmail";
+            int rowsAffected = await db.ExecuteAsync(updateUserSql, new { CurrentEmail = currentEmail, NewEmail = newEmail, NewHash = newHash }, transaction);
+
+            if (rowsAffected > 0)
+            {
+                transaction.Commit();
+                string LogSuccess = "Updated email from " + currentEmail + " to " + newEmail + " with new hash";
+                logger.LogInformation(LogSuccess);
+                return true;
+            }
+            else
+            {
+                transaction.Rollback();
+                string LoggedError = "Failed to update email from " + currentEmail + " to " + newEmail;
+                logger.LogInformation(LoggedError);
+                return false;
+            }
+        }
+        catch (Exception ex)
+        {
+            transaction.Rollback();
+            logger.LogError(ex, "Error updating email from {CurrentEmail} to {NewEmail}", currentEmail, newEmail);
+            return false;
+        }
+        finally
+        {
+            db.Close();
+        }
+    }
+
+    public async Task<bool> UpdateUserPassword(string email, byte[] hash, byte[] salt)
+    {
+        string sql = @"
+        UPDATE user 
+        SET password_hash = @Hash, password_salt = @Salt
+        WHERE email = @Email";
+
+        int rowsAffected = await db.ExecuteAsync(sql, new { Email = email, Hash = hash, Salt = salt });
+
+        bool isSuccessful = rowsAffected > 0;
+
+        if (isSuccessful)
+        {
+            string LogSuccess = "Updated password for " + email;
+            logger.LogInformation(LogSuccess);
+            return isSuccessful;
+        }
+        else
+        {
+            string LoggedError = "Failed to update password for " + email;
+            logger.LogInformation(LoggedError);
+            return isSuccessful;
+        }
+    }
 }

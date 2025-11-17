@@ -44,7 +44,9 @@ function TagList() {
             <div key={tag.id} className="tag-item">
               <TagComponent tag={tag} />
               <div className="tag-item-buttons">
-                <EditButton onClick={() => handleEdit(tag)} width="1.9rem" height="1.9rem" />
+                <div className="edit-button-wrapper">
+                  <EditButton onClick={() => handleEdit(tag)} width="1.9rem" height="1.9rem" />
+                </div>
                 <DeleteButton
                   onClick={() => handleDelete(tag.id)}
                   width="1.5rem"

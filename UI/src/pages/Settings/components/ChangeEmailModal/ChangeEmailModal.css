@@ -1,0 +1,73 @@
+.popup-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+}
+
+.popup-modal-content {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  right: auto;
+  bottom: auto;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
+  background: #fff;
+  color: #222;
+  padding: 2rem;
+  border-radius: 8px;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.2);
+  min-width: 300px;
+  max-width: 90vw;
+  z-index: 1001;
+}
+
+.popup-modal-content h2,
+.popup-modal-content div {
+  color: #222;
+}
+
+.popup-modal-content label {
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.popup-modal-content input {
+  width: 100%;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.popup-modal-content input[readonly] {
+  background-color: #f5f5f5;
+  cursor: not-allowed;
+}
+
+.popup-modal-content button {
+  margin-top: 1.5rem;
+  margin-right: 0.5rem;
+  padding: 0.5rem 1.2rem;
+  background: #222;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 1rem;
+}
+
+.popup-modal-content button:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.error {
+  color: red;
+  font-size: 12px;
+  margin-top: 5px;
+}

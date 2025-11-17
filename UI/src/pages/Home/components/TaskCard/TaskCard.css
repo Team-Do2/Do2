@@ -76,6 +76,6 @@
 
 .task-card-delete-button {
   position: absolute;
-  bottom: 0.25rem;
+  bottom: -0.05rem;
   right: 0.25rem;
 }

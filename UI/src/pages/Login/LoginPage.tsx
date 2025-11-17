@@ -30,7 +30,7 @@ function LoginPage() {
       {
         onSuccess: (result) => {
           if (result.success && result.user) {
-            logIn(email, result.user.firstName);
+            logIn(email.toLowerCase(), result.user.firstName);
             navigate('/');
           }
         },

@@ -15,4 +15,10 @@ public interface IUserRepositoryService
     Task<bool> DeleteUser(string email);
 
     Task<UserInformationResponse> GetUser(string email);
+
+    Task<bool> UpdateUserEmail(string currentEmail, string newEmail);
+
+    Task<bool> UpdateUserEmailAndHash(string currentEmail, string newEmail, byte[] newHash);
+
+    Task<bool> UpdateUserPassword(string email, byte[] hash, byte[] salt);
 }

@@ -24,3 +24,7 @@
   align-items: center;
   padding-left: 1rem;
 }
+
+.tag-item-buttons .edit-button-wrapper {
+  padding-top: 0.3rem;
+}

@@ -37,5 +37,25 @@ namespace Do2.Controllers
         public async Task<UserInformationResponse> GetUser(string email) {
             return await userService.GetUser(email);
         }
+
+        [HttpPost("UpdateEmail")]
+        [ServiceFilter(typeof(CheckSession))]
+        public async Task<IActionResult> UpdateEmail(UpdateEmailRequest request) {
+            var result = await userService.UpdateEmail(request);
+            if (!result) {
+                return BadRequest("Invalid password or email provided.");
+            }
+            return Ok(true);
+        }
+
+        [HttpPost("ChangePassword")]
+        [ServiceFilter(typeof(CheckSession))]
+        public async Task<IActionResult> ChangePassword(ChangePasswordRequest request) {
+            var result = await userService.ChangePassword(request);
+            if (!result) {
+                return BadRequest("Invalid current password provided.");
+            }
+            return Ok(true);
+        }
     }
 }
