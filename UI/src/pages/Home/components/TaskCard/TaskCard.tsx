@@ -78,14 +78,16 @@ function TaskCard({
           width="1.75rem"
           height="1.75rem"
         />
-        <TaskTitle value={task.name} onBlur={handleTitleChange} />
-        {task.tags && (
-          <div className="task-card-tags">
-            {task.tags.map((tag) => (
-              <TagComponent key={tag.id} tag={tag} />
-            ))}
-          </div>
-        )}
+        <div className="title-and-tags">
+          <TaskTitle value={task.name} onBlur={handleTitleChange} />
+          {task.tags && (
+            <div className="task-card-tags">
+              {task.tags.map((tag) => (
+                <TagComponent key={tag.id} tag={tag} />
+              ))}
+            </div>
+          )}
+        </div>
         <ExpandButton
           onClick={() => setIsExpanded(!isExpanded)}
           rotated={isExpanded}
@@ -101,13 +103,15 @@ function TaskCard({
               handleDescriptionChange(value);
             }}
           />
-          <EditButton
-            onClick={() => {
-              handleEditClick();
-            }}
-            width="1.75rem"
-            height="1.75rem"
-          />
+          <div className="task-card-edit-button">
+            <EditButton
+              onClick={() => {
+                handleEditClick();
+              }}
+              width="1.75rem"
+              height="1.75rem"
+            />
+          </div>
           <TagButton
             onClick={() => {
               handleTagClick();
@@ -115,13 +119,15 @@ function TaskCard({
             width="2rem"
             height="2rem"
           />
-          <DeleteButton
-            onClick={() => {
-              handleDeleteClick();
-            }}
-            width="1.5rem"
-            height="2rem"
-          />
+          <div className="task-card-delete-button">
+            <DeleteButton
+              onClick={() => {
+                handleDeleteClick();
+              }}
+              width="1.5rem"
+              height="2rem"
+            />
+          </div>
         </div>
       )}
       {isExpanded && task.subtasks && task.subtasks.length > 0 && (

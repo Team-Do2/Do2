@@ -108,7 +108,17 @@ function SignupPage() {
               placeholder="password"
               className="signup-input"
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                const newPass = e.target.value;
+                setPassword(newPass);
+                if (newPass && newPass.length < 6) {
+                  setPasswordError('Password must be at least 6 characters');
+                } else if (verifyPassword && newPass !== verifyPassword) {
+                  setPasswordError('Passwords do not match');
+                } else {
+                  setPasswordError(null);
+                }
+              }}
               required
             />
           </label>
@@ -120,7 +130,17 @@ function SignupPage() {
               placeholder="verify password"
               className="signup-input"
               value={verifyPassword}
-              onChange={(e) => setVerifyPassword(e.target.value)}
+              onChange={(e) => {
+                const newVerify = e.target.value;
+                setVerifyPassword(newVerify);
+                if (password && newVerify !== password) {
+                  setPasswordError('Passwords do not match');
+                } else if (password && password.length < 6) {
+                  setPasswordError('Password must be at least 6 characters');
+                } else {
+                  setPasswordError(null);
+                }
+              }}
               required
             />
           </label>
@@ -137,7 +157,8 @@ function SignupPage() {
               !lastName ||
               !isValidEmail(email) ||
               !password ||
-              !verifyPassword
+              !verifyPassword ||
+              password.length < 6
             }
           >
             {isPending ? 'Signing up...' : 'Sign Up'}

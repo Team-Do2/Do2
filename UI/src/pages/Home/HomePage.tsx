@@ -8,6 +8,8 @@ import AddTaskButton from './components/AddTaskButton/AddTaskButton';
 import AddEditTaskModal from './components/AddEditTaskModal/AddEditTaskModal';
 import type { Task } from '../../models/Task';
 import { useAuthStore } from '../../stores/authStore';
+import SettingsButton from './components/SettingsButton/SettingsButton';
+import CollapseButton from './components/CollapseButton/CollapseButton';
 
 function HomePage() {
   const navigate = useNavigate();
@@ -27,42 +29,8 @@ function HomePage() {
 
   return (
     <div className="home-page-container" style={{ position: 'relative' }}>
-      <button
-        style={{
-          position: 'absolute',
-          top: 16,
-          right: 120,
-          zIndex: 10,
-          padding: '8px 16px',
-          borderRadius: 6,
-          border: 'none',
-          background: '#eee',
-          cursor: 'pointer',
-          fontWeight: 500,
-        }}
-        onClick={() => setCollapseAll((c) => c + 1)}
-        aria-label="Collapse all tasks"
-      >
-        Collapse All
-      </button>
-      <button
-        style={{
-          position: 'absolute',
-          top: 16,
-          right: 16,
-          zIndex: 10,
-          padding: '8px 16px',
-          borderRadius: 6,
-          border: 'none',
-          background: '#eee',
-          cursor: 'pointer',
-          fontWeight: 500,
-        }}
-        onClick={() => navigate('/settings')}
-        aria-label="Go to settings"
-      >
-        Settings
-      </button>
+      <CollapseButton onClick={() => setCollapseAll((c) => c + 1)} />
+      <SettingsButton onClick={() => navigate('/settings')} />
       <AddTaskButton onClick={() => setIsAddTaskModalOpen(true)} />
       <PinnedTaskBar onEditTask={handleEditTask} collapseAll={collapseAll} />
       <div className="home-page-main">

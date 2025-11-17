@@ -12,4 +12,8 @@ public interface IUserService
     Task<UserInformationResponse> GetUser(string email);
 
     Task<bool> UpdateSettings();
+
+    Task<bool> UpdateEmail(UpdateEmailRequest request);
+
+    Task<bool> ChangePassword(ChangePasswordRequest request);
 }
