@@ -1,4 +1,4 @@
-namespace Do2.Services;
+namespace Do2.Interfaces;
 public interface ISettingsService
 {
     public Task<bool> UpdateTaskDeletionInterval(TimeSpan timeSpan);

@@ -1,5 +1,5 @@
+using Do2.Models;
 using Do2.Repositories;
-using Tag = Do2.Models.Tag;
 
 namespace Do2.Services
 {

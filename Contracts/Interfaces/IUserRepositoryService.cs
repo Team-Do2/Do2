@@ -1,8 +1,8 @@
-using UserModel = Do2.Models.User;
-using Do2.Models.UserCredentials;
 using Do2.DTOs;
+using Do2.Models;
+using Do2.Models.UserCredentials;
 
-namespace Do2.Services;
+namespace Do2.Interfaces;
 
 public interface IUserRepositoryService
 {
@@ -10,7 +10,7 @@ public interface IUserRepositoryService
 
     Task<bool> CheckUserHash(UserLoginCredentials generatedUserHash);
 
-    Task<bool> CreateUser(UserModel user);
+    Task<bool> CreateUser(User user);
 
     Task<bool> DeleteUser(string email);
 

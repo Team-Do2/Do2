@@ -1,7 +1,6 @@
 using Do2.DTOs;
-using UserModel = Do2.Models.User;
 
-namespace Do2.Services;
+namespace Do2.Interfaces;
 
 public interface IUserService
 {

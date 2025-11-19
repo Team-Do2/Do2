@@ -1,6 +1,6 @@
 using Dapper;
+using Do2.Models;
 using System.Data;
-using TaskModel = Do2.Models.Task;
 
 namespace Do2.Repositories
 {

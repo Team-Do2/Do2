@@ -1,6 +1,6 @@
 using Dapper;
+using Do2.Models;
 using System.Data;
-using Tag = Do2.Models.Tag;
 
 namespace Do2.Repositories
 {

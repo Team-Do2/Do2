@@ -1,9 +1,10 @@
 using Do2.DTOs;
-using Do2.Services;
+using Do2.Interfaces;
+using Do2.Models;
 using Do2.Models.UserCredentials;
-using UserModel = Do2.Models.User;
+using Microsoft.Extensions.Logging;
 
-namespace Do2.Services.User;
+namespace Do2.Services;
 
 public class UserService(IAuthenticationService _authenticationService, IUserRepositoryService _repositoryService, ILogger _logger) : IUserService
 {
@@ -16,7 +17,7 @@ public class UserService(IAuthenticationService _authenticationService, IUserRep
         byte[] salt = authenticationService.CreateUserSalt();
         byte[] hash = authenticationService.CreateUserHash(basicUserInformation.Email, basicUserInformation.Password, salt); //basicUserInformation.Password
 
-        var user = new UserModel()
+        var user = new User()
         {
             Email = basicUserInformation.Email,
             FirstName = basicUserInformation.FirstName,

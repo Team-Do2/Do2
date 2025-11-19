@@ -1,6 +1,7 @@
 using System.Collections.Concurrent;
 using System.Security.Cryptography;
-using Do2.Services;
+using Do2.Interfaces;
+using Microsoft.Extensions.Logging;
 
 namespace Do2.Services.Authentication;
 

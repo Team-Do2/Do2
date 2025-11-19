@@ -1,12 +1,11 @@
 using System.Security.Cryptography;
 using System.Text;
+using Do2.Interfaces;
 using Do2.Models.UserCredentials;
-using Do2.Services;
 using Konscious.Security.Cryptography;
 using Microsoft.Extensions.Logging;
 
 namespace Do2.Services;
-
 public class AuthenticationService(ILogger _logger, IUserRepositoryService _userRepositoryService, RandomNumberGenerator _random) : IAuthenticationService
 {
     const int PASSWORD_BYTE_COUNT = 128;

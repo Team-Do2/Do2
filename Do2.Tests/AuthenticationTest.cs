@@ -2,11 +2,9 @@
 using System.Text.Json;
 using Autofac;
 using Do2.DTOs;
-using Do2.Services;
 using Do2.Models;
-using Xunit;
-using TaskModel = Do2.Models.Task;
 using Task = System.Threading.Tasks.Task;
+using Do2.Interfaces;
 
 namespace Do2.Tests;
 

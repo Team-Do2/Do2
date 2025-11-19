@@ -2,9 +2,9 @@ using System.Data;
 using Dapper;
 using Do2.Models;
 using Do2.Models.UserCredentials;
-using Do2.Services;
 using Do2.DTOs;
-using MySqlX.XDevAPI.Common;
+using Do2.Interfaces;
+using Microsoft.Extensions.Logging;
 namespace Do2.Repositories;
 
 public class UserRepositoryService(IDbConnection _db, ILogger _logger) : IUserRepositoryService

@@ -2,7 +2,6 @@ using System.Data;
 using System.Security.Cryptography;
 using Do2.Repositories;
 using Do2.Services;
-using Do2.Services.User;
 
 using Autofac;
 using MySql.Data.MySqlClient;

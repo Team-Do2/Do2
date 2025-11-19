@@ -1,6 +1,6 @@
 using System.ComponentModel.DataAnnotations;
-using Do2.Repositories;
-using TaskModel = Do2.Models.Task;
+using Do2.Repositories; 
+using Do2.Models;
 
 namespace Do2.Services
 {
@@ -63,7 +63,7 @@ namespace Do2.Services
 
             // Assign subtasks for each task + Remove subtasks from main list
             foreach (var task in tasks)
-            {
+            {   
                 task.Subtasks = (await _repository.GetSubtasksForTaskAsync(task.id)).ToList();
                 await HydrateTasks(task.Subtasks, true);
             }
