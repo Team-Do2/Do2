@@ -1,7 +1,7 @@
 using Do2.DTOs;
 using Do2.Services;
 using Microsoft.AspNetCore.Mvc;
-using Do2.Models;
+using Do2.Interfaces;
 
 namespace Do2.Controllers
 {

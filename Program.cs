@@ -3,7 +3,6 @@ using Autofac.Extensions.DependencyInjection;
 using Do2.Repositories;
 using Do2.Services;
 using Do2.Services.Authentication;
-using Do2.Services.User;
 using MySql.Data.MySqlClient;
 using System.Data;
 using System.Security.Cryptography;

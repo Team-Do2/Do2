@@ -1,7 +1,7 @@
 using Do2.DTOs;
 using Do2.Services;
 using Microsoft.AspNetCore.Mvc;
-using TaskModel = Do2.Models.Task;
+using Do2.Models;
 
 namespace Do2.Controllers
 {
@@ -10,12 +10,10 @@ namespace Do2.Controllers
     public class TaskController : ControllerBase
     {
         private readonly TaskService _service;
-        private ISessionService sessionService;
 
-        public TaskController(TaskService service, ISessionService _sessionService)
+        public TaskController(TaskService service)
         {
             _service = service;
-            sessionService = _sessionService;
         }
 
         [HttpGet("user/{userEmail}")]

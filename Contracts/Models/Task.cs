@@ -1,6 +1,6 @@
 namespace Do2.Models
 {
-    public class Task
+    public class TaskModel
     {
         public int id { get; set; }
         public bool isPinned { get; set; }
@@ -14,6 +14,6 @@ namespace Do2.Models
         // Hydrated Information
         public List<Tag>? Tags { get; set; } = new();
         public DateTime? dueDate { get; set; }
-        public List<Task>? Subtasks { get; set; } = new();
+        public List<TaskModel>? Subtasks { get; set; } = new();
     }
 }
