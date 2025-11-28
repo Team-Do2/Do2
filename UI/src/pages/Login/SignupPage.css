@@ -16,7 +16,7 @@
 .signup-card {
   width: 680px;
   max-width: 92%;
-  background: #efefef;
+  background: var(--bg-color-white);
   border-radius: 16px;
   padding: 48px 56px 40px 56px;
   box-shadow: 0 6px 4px -2px rgba(0, 0, 0, 0.16);
@@ -26,7 +26,7 @@
 .brand {
   font-size: 84px;
   margin: 0;
-  color: #4c4c4c;
+  color: var(--text-color-dark);
   font-weight: 800;
   letter-spacing: 1px;
   text-shadow: 0 2px 0 rgba(0, 0, 0, 0.06);
@@ -35,7 +35,7 @@
 .title {
   font-size: 32px;
   margin: 12px 0 28px 0;
-  color: #4c4c4c;
+  color: var(--text-color-dark);
   font-weight: 700;
   text-shadow: 0 2px 0 rgba(0, 0, 0, 0.06);
 }
@@ -55,7 +55,7 @@
 .field-label {
   display: block;
   font-weight: 700;
-  color: #4c4c4c;
+  color: var(--text-color-dark);
   margin-bottom: 8px;
   font-size: 18px;
   text-shadow: 0 2px 0 rgba(0, 0, 0, 0.06);
@@ -67,23 +67,23 @@
   padding: 10px 16px;
   border-radius: 12px;
   border: none;
-  background: #e6e6e6;
+  background: var(--secondary-color-light);
   box-shadow: 0 6px 4px -2px rgba(0, 0, 0, 0.16);
   font-size: 16px;
-  color: #333;
+  color: var(--text-color-dark);
   outline: none;
 }
 
 .signup-input::placeholder {
-  color: #bdbdbd;
+  color: var(--text-color-disabled);
 }
 
 .signup-button {
   margin-top: 6px;
   width: 60%;
   max-width: 320px;
-  background: #7f7e90;
-  color: #fff;
+  background: var(--primary-color);
+  color: var(--text-color-light);
   border: none;
   border-radius: 12px;
   padding: 12px 20px;
@@ -99,9 +99,13 @@
   cursor: default;
 }
 
+.signup-button:hover {
+  background: var(--primary-color-dark);
+}
+
 .login-link {
   margin-top: 26px;
-  color: #777;
+  color: var(--secondary-color);
   font-size: 16px;
 }
 
@@ -113,7 +117,7 @@
 
 .error {
   margin-top: 12px;
-  color: #b00020;
+  color: var(--error-color);
 }
 
 @media (max-width: 520px) {
