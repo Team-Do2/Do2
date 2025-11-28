@@ -6,7 +6,7 @@
 .task-title-input {
   font-weight: 700;
   font-size: 1.9rem;
-  color: #4c4c4c;
+  color: var(--text-color-dark);
   background: transparent;
   border: none;
   outline: none;

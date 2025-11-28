@@ -26,8 +26,8 @@ function DeleteButton({
             width="40.5"
             height="5.97368"
             rx="2.98684"
-            fill="#D9D9D9"
-            stroke="#BBBBBB"
+            fill="currentColor"
+            stroke="var(--btn-center)"
             strokeWidth="0.5"
           />
           <rect
@@ -36,8 +36,8 @@ function DeleteButton({
             width="40.5"
             height="49.1316"
             rx="5.75"
-            fill="#D9D9D9"
-            stroke="#BBBBBB"
+            fill="currentColor"
+            stroke="var(--btn-center)"
             strokeWidth="0.5"
           />
           <rect
@@ -46,7 +46,7 @@ function DeleteButton({
             width="2.15789"
             height="25.8947"
             rx="1.07895"
-            fill="#B4B4B4"
+            fill="var(--btn-center)"
           />
           <rect
             x="14.7894"
@@ -54,7 +54,7 @@ function DeleteButton({
             width="2.15789"
             height="25.8947"
             rx="1.07895"
-            fill="#B4B4B4"
+            fill="var(--btn-center)"
           />
           <rect
             x="32.0526"
@@ -62,7 +62,7 @@ function DeleteButton({
             width="2.15789"
             height="25.8947"
             rx="1.07895"
-            fill="#B4B4B4"
+            fill="var(--btn-center)"
           />
           <rect
             x="21.25"
@@ -70,8 +70,8 @@ function DeleteButton({
             width="5.97368"
             height="3.81579"
             rx="1.75"
-            fill="#D9D9D9"
-            stroke="#BBBBBB"
+            fill="currentColor"
+            stroke="var(--btn-center)"
             strokeWidth="0.5"
           />
         </g>

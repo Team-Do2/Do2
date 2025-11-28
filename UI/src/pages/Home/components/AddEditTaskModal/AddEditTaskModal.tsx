@@ -133,7 +133,7 @@ const AddEditTaskModal = ({
       className="popup-modal-content"
       overlayClassName="popup-modal-overlay"
     >
-      <h2>{isEdit ? 'Edit Task' : 'Add New Task'}</h2>
+      <h2 className="popup-title">{isEdit ? 'Edit Task' : 'Add New Task'}</h2>
       <div className="form-group">
         <label htmlFor="task-name">Name:</label>
         <input

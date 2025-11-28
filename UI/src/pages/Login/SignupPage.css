@@ -95,12 +95,13 @@
 }
 
 .signup-button:disabled {
+  background: var(--primary-color) !important;
   opacity: 0.6;
-  cursor: default;
+  cursor: not-allowed;
 }
 
 .signup-button:hover {
-  background: var(--primary-color-dark);
+  background: var(--accent-color);
 }
 
 .login-link {

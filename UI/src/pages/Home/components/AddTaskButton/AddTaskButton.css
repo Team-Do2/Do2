@@ -5,9 +5,9 @@
   width: 6rem;
   height: 6rem;
   border-radius: 50%;
-  background-color: #7f7e90;
-  color: #a5a4b8;
-  border: 1px solid #636180;
+  --btn-center: var(--primary-color-dark);
+  background-color: var(--bg-color);
+  border: 1px solid var(--bg-color-dark);
   font-size: 24px;
   font-weight: bold;
   cursor: pointer;
@@ -16,9 +16,9 @@
   align-items: center;
   justify-content: center;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  transition: background-color 0.3s ease;
 }
 
 .add-task-button:hover {
-  background-color: #636180;
+  background-color: var(--bg-color-dark);
+  --btn-center: var(--bg-color);
 }

@@ -4,9 +4,9 @@
   right: 4rem;
   z-index: 10;
   cursor: pointer;
-  color: #d9d9d9;
+  color: var(--secondary-color-light);
 }
 
 .collapse-button:hover {
-  color: #c4c4c4;
+  color: var(--secondary-color-light-2);
 }
