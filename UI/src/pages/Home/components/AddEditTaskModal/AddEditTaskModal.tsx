@@ -108,6 +108,7 @@ const AddEditTaskModal = ({
           description,
           userEmail: userEmail || '',
           supertaskId: parentTaskId,
+          dueDate: dueDate || null,
         });
         setName('');
         setDescription('');

@@ -69,7 +69,13 @@ function TaskCard({
   };
 
   return (
-    <div className={'task-card'}>
+    <div
+      className={'task-card'}
+      onDoubleClick={(e) => {
+        e.stopPropagation();
+        setIsExpanded((prev) => !prev);
+      }}
+    >
       <PinButton isPinned={task.isPinned} onClick={handlePinClick} width="1.5rem" height="1.5rem" />
       <div className={`task-card-content ${isExpanded ? 'task-card-content-expanded' : ''}`}>
         <CheckboxButton

@@ -3,4 +3,5 @@
   overflow: auto;
   box-sizing: border-box;
   position: relative;
+  padding-bottom: 100px;
 }

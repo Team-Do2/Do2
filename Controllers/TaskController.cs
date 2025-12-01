@@ -33,6 +33,11 @@ namespace Do2.Controllers
         public async Task<ActionResult<int>> AddUserTask([FromBody] TaskModel task)
         {
             var id = await _service.AddUserTaskAsync(task);
+            // If a due date is provided, create a DeadlineTask
+            if (task.dueDate.HasValue)
+            {
+                await _service.AddDeadlineTaskAsync(id, task.dueDate.Value);
+            }
             return Created("", id);
         }
 

@@ -189,11 +189,13 @@ export function useCreateTask() {
       description,
       userEmail,
       supertaskId = null,
+      dueDate = null,
     }: {
       name: string;
       description: string;
       userEmail: string;
       supertaskId: number | null;
+      dueDate?: string | null;
     }) => {
       const res = await axios.post(
         `http://localhost:5015/api/task`,
@@ -206,6 +208,7 @@ export function useCreateTask() {
           datetimeToDelete: null,
           supertaskId: supertaskId,
           Tags: [],
+          dueDate: dueDate,
         },
         { withCredentials: true }
       );
