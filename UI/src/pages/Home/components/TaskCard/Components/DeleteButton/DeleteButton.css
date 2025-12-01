@@ -8,6 +8,6 @@
 }
 
 .delete-button:hover {
-  color: #ee6868;
+  color: var(--accent-color);
   --btn-center: var(--text-color-light);
 }

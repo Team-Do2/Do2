@@ -10,5 +10,5 @@
 }
 
 .checkbox-button:hover {
-  color: #ee6868;
+  color: var(--accent-color);
 }
