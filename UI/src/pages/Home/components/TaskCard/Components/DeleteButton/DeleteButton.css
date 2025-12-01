@@ -9,5 +9,5 @@
 
 .delete-button:hover {
   color: var(--accent-color);
-  --btn-center: var(--text-color-light);
+  --btn-center: transparent;
 }

@@ -15,7 +15,7 @@ function TagButton({
         xmlns="http://www.w3.org/2000/svg"
         width={width}
         height={height}
-        fill="currentColor"
+        fill={'var(--edit-btn-color)'}
         className="bi bi-pencil-square"
         viewBox="0 0 16 16"
       >

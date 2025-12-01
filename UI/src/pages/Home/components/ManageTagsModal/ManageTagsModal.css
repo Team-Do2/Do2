@@ -28,7 +28,7 @@
 }
 
 .popup-modal-content div,
-h2 {
+.popup-modal-content h2 {
   color: var(--text-color-dark) !important;
 }
 

@@ -24,7 +24,7 @@ const AddEditTagModal: React.FC<AddEditTagModalProps> = ({
   onSave,
 }) => {
   const [name, setName] = useState('');
-  const [color, setColor] = useState('#000000');
+  const [color, setColor] = useState('');
   const [nameError, setNameError] = useState('');
 
   useEffect(() => {
