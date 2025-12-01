@@ -31,7 +31,26 @@
   --text-color-dark: #4c4c4c;
 
   [app-theme='dark'] {
-    --primary-color: #777777;
+    --primary-color: #a5a4b8;
+    --primary-color-dark: #9998ab;
+
+    --secondary-color: #777777;
+    --secondary-color-light-2: #c4c4c4;
+    --secondary-color-light: #e6e6e6;
+
+    --accent-color: #ee6868;
+    --accent-color-2: #e4d961;
+    --accent-color-3: rgb(108, 177, 177);
+
+    --error-color: #b00020;
+
+    --bg-color: #7f7e90;
+    --bg-color-white: #efefef;
+    --bg-color-dark: #636180;
+
+    --text-color-light: #ffffff;
+    --text-color-disabled: #bdbdbd;
+    --text-color-dark: #4c4c4c;
   }
 }
 

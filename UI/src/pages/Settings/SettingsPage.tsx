@@ -29,7 +29,7 @@ function SettingsPage() {
   const [retentionHours, setRetentionHours] = useState(0);
 
   useEffect(() => {
-    document.body.className = theme;
+    document.body.setAttribute('app-theme', theme);
   }, [theme]);
 
   const handleThemeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
