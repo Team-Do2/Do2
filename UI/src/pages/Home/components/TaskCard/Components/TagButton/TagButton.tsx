@@ -35,7 +35,7 @@ function TagButton({
           cy="19.501"
           r="3.5"
           transform="rotate(-135 19.5011 19.501)"
-          fill="white"
+          fill="var(--bg-color-white)"
           stroke="currentColor"
         />
       </svg>
