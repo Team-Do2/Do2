@@ -28,3 +28,11 @@
 .tag-item-buttons .edit-button-wrapper {
   padding-top: 0.3rem;
 }
+
+.tag-item-buttons .edit-button {
+  --edit-btn-color: var(--secondary-color-light);
+}
+
+.tag-item-buttons .edit-button:hover {
+  --edit-btn-color: var(--accent-color);
+}

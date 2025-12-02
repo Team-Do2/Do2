@@ -3,6 +3,7 @@ using System.Text.Json;
 using Autofac;
 using Do2.DTOs;
 using Do2.Models;
+using Xunit;
 using Task = System.Threading.Tasks.Task;
 using Do2.Interfaces;
 

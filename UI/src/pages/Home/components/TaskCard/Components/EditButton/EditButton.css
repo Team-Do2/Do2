@@ -3,5 +3,9 @@
   cursor: pointer;
   border: none;
   padding: 0;
-  color: darkcyan;
+  --edit-btn-color: var(--accent-color-3);
+}
+
+.edit-button:hover {
+  --edit-btn-color: var(--accent-color);
 }

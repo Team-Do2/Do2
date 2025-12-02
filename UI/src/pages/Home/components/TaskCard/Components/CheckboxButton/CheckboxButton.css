@@ -1,5 +1,5 @@
 .checkbox-button {
-  color: #848484;
+  color: var(--text-color-dark);
   background: none;
   border: none;
   padding: 0 0 0 0.25rem;
@@ -10,5 +10,5 @@
 }
 
 .checkbox-button:hover {
-  color: #ee6868;
+  color: var(--accent-color);
 }

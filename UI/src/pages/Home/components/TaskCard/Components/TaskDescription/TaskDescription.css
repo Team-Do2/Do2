@@ -3,7 +3,7 @@
 }
 
 .task-description-input {
-  color: #848484;
+  color: var(--secondary-color);
   background: transparent;
   border: none;
   outline: none;

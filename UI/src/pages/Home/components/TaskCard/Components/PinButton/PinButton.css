@@ -1,13 +1,14 @@
 .pin-button-container {
-  color: #848484;
+  color: var(--text-color-dark);
   position: absolute;
   top: 0;
   left: 0.25rem;
   z-index: 1;
   display: inline-flex;
   align-items: center;
+  cursor: pointer;
 }
 
 .pin-button-container:hover {
-  color: #ee6868;
+  color: var(--accent-color);
 }

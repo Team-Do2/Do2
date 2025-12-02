@@ -6,7 +6,7 @@
   bottom: auto;
   margin-right: -50%;
   transform: translate(-50%, -50%);
-  background: white;
+  background: var(--bg-color-white);
   padding: 20px;
   border-radius: 8px;
   max-width: 400px;
@@ -25,19 +25,23 @@
 
 .error-modal-content h2 {
   margin-top: 0;
-  color: #333;
+  color: var(--text-color-dark);
 }
 
 .error-modal-content p {
-  color: #666;
+  color: var(--text-color-dark) !important;
 }
 
 .error-modal-content button {
-  background: #007bff;
-  color: white;
+  background: var(--primary-color) !important;
+  color: var(--text-color-light);
   border: none;
   padding: 8px 16px;
   border-radius: 4px;
   cursor: pointer;
   margin-top: 10px;
+}
+
+.error-modal-content button:hover {
+  background: var(--accent-color) !important;
 }
