@@ -29,9 +29,13 @@ export function useUpdateEmail() {
 export function useChangePassword() {
   return useMutation({
     mutationFn: async (data: { email: string; currentPassword: string; newPassword: string }) => {
-      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/User/ChangePassword`, data, {
-        withCredentials: true,
-      });
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/User/ChangePassword`,
+        data,
+        {
+          withCredentials: true,
+        }
+      );
       return res.data;
     },
   });
