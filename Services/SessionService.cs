@@ -19,7 +19,7 @@ public class SessionService(RandomNumberGenerator _random, ILogger _logger) : IS
         if (EmailToAccessTokenTable.ContainsKey(email))
         {
             InvalidateSessionByEmail(email);
-            _logger.LogWarning("Multiple sessions detected for " + email);
+            logger.LogWarning("Multiple sessions detected for " + email);
         }
 
         byte[] accessToken = new byte[COOKIE_SIZE]; // Change to secure

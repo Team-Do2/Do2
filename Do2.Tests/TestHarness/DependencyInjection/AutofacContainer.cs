@@ -6,6 +6,7 @@ using Do2.Services;
 using Autofac;
 using MySql.Data.MySqlClient;
 using Microsoft.Extensions.Logging.Abstractions;
+using Microsoft.Extensions.Logging;
 
 public class AutofacFixture : IDisposable
 {
