@@ -15,7 +15,8 @@ param(
 )
 
 # --- Configuration ---
-$LocalDir = ".\Do2"
+$DirectoryName = "Do2"
+$LocalDir = ".\$DirectoryName"
 $RemotePath = "/var/www/" # The target parent path on the server
 $Framework = "net9.0" # IMPORTANT: Update this to your target framework version
 
@@ -74,17 +75,7 @@ if ($LASTEXITCODE -eq 0) {
     $scpExitCode = $LASTEXITCODE
 }
 
-ssh $Username@${ServerIP}:~/
-
-# 2. Move the folder to the final web root and rename it for deployment
-sudo mv ~/$LocalDir /var/www/$LocalDir
-
-# 3. Change ownership for the web server (Apache/Nginx)
-sudo chown -R www-data:www-data /var/www/$LocalDir
-
-sudo systemctl restart apache2
-
-exit
+ssh -t $Username@${ServerIP} "sudo rm /var/www/$DirectoryName -r; sudo mv ~/$DirectoryName /var/www/$DirectoryName; sudo chown -R www-data:www-data /var/www/$DirectoryName; sudo systemctl restart apache2;"
 
 # --- 3. Cleanup ---
 Write-Host "--- 3. Cleaning up local directory $LocalDir ---"
