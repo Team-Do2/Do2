@@ -15,12 +15,19 @@ function TaskList({
   const { data, error } = useGetPinnedUserTasks(userEmail || '');
   if (error) return <pre>Error: {error.message}</pre>;
   if (!userEmail) return <div>Please log in to view your pinned tasks.</div>;
+
+  const sortedTasks = data
+    ? [...data].sort((a, b) => {
+        if (a.isDone === b.isDone) return 0;
+        return a.isDone ? 1 : -1;
+      })
+    : [];
+
   return (
     <div className="pinned-task-list-container">
-      {data &&
-        data.map((task) => (
-          <TaskCard key={task.id} task={task} onEdit={onEditTask} collapseAll={collapseAll} />
-        ))}
+      {sortedTasks.map((task) => (
+        <TaskCard key={task.id} task={task} onEdit={onEditTask} collapseAll={collapseAll} />
+      ))}
     </div>
   );
 }

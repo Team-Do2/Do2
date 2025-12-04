@@ -7,10 +7,18 @@ using Do2.Interfaces;
 using Microsoft.Extensions.Logging;
 namespace Do2.Repositories;
 
-public class UserRepositoryService(IDbConnection _db, ILogger _logger) : IUserRepositoryService
+public class UserRepositoryService : IUserRepositoryService
 {
-    private readonly IDbConnection db = _db;
-    private readonly ILogger logger = _logger;
+    private readonly IDbConnection db;
+    private readonly ILogger<UserRepositoryService> logger;
+    private readonly SettingsRepository settingsRepository;
+
+    public UserRepositoryService(IDbConnection _db, ILogger<UserRepositoryService> _logger, SettingsRepository _settingsRepository)
+    {
+        db = _db;
+        logger = _logger;
+        settingsRepository = _settingsRepository;
+    }
 
     public async Task<bool> CheckUserHash(UserLoginCredentials userLoginCredentials)
     {
@@ -35,11 +43,11 @@ public class UserRepositoryService(IDbConnection _db, ILogger _logger) : IUserRe
             (@Email, @Hash, @Salt, @FirstName, @LastName)";
 
         int rowsAffected = await db.ExecuteAsync(sql, user);
-
         bool isSuccessful = rowsAffected > 0;
 
         if (isSuccessful)
         {
+            await settingsRepository.CreateSettingsForUserAsync(user.Email, Themes.light, 30);
             string LogSuccess = "Created user with " + user.Email;
             logger.LogInformation(LogSuccess);
             return isSuccessful;

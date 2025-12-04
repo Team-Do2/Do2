@@ -40,8 +40,24 @@ function TaskCard({
     setIsExpanded(false);
   }, [collapseAll]);
 
+  const markSubtasksDone = (subtasks: Task[] | undefined, isDone: boolean) => {
+    if (!subtasks) return;
+    subtasks.forEach((subtask) => {
+      updateTaskDone.mutate({ id: subtask.id, isDone });
+      if (subtask.subtasks && subtask.subtasks.length > 0) {
+        markSubtasksDone(subtask.subtasks, isDone);
+      }
+    });
+  };
+
   const handleCheckboxClick = () => {
-    updateTaskDone.mutate({ id: task.id, isDone: !task.isDone });
+    const newIsDone = !task.isDone;
+    updateTaskDone.mutate({ id: task.id, isDone: newIsDone });
+
+    // If marking as done, also mark all subtasks as done
+    if (newIsDone && task.subtasks && task.subtasks.length > 0) {
+      markSubtasksDone(task.subtasks, true);
+    }
   };
 
   const handlePinClick = () => {

@@ -28,10 +28,12 @@ builder.Host.ConfigureContainer<ContainerBuilder>(containerBuilder =>
 		.As<RandomNumberGenerator>()
 		.SingleInstance();
 	containerBuilder.RegisterType<Logger<string>>().AsImplementedInterfaces();
+	containerBuilder.RegisterType<SettingsRepository>().AsSelf().InstancePerLifetimeScope();
 	containerBuilder.RegisterType<UserRepositoryService>().AsImplementedInterfaces();
 	containerBuilder.RegisterType<TagRepository>().AsSelf().InstancePerLifetimeScope();
 	containerBuilder.RegisterType<TagService>().AsSelf().InstancePerLifetimeScope();
 	containerBuilder.RegisterType<TaskRepository>().AsSelf().InstancePerLifetimeScope();
+	containerBuilder.RegisterType<SettingsService>().AsSelf().InstancePerLifetimeScope();
 	containerBuilder.RegisterType<TaskService>().AsSelf().InstancePerLifetimeScope();
 	containerBuilder.RegisterType<AuthenticationService>().AsImplementedInterfaces();
 	containerBuilder.RegisterType<UserService>().AsImplementedInterfaces();
