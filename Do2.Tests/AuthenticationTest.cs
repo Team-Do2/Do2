@@ -146,39 +146,5 @@ public class AuthenticationTest : IClassFixture<AutofacFixture>
             // 2. Delete User (Clean up)
             Assert.True(await userService.DeleteUser(Email), "User cleanup failed.");
         }
-
-
-        // string Email = "test";
-        // string Password = "test";
-        // string FirstName = "test";
-        // string LastName = "test";
-
-        // Assert.True(
-        //     await userService.CreateUser(new Contracts.DTOs.BasicUserInformation()
-        //     {
-        //         Email = Email,
-        //         Password = Password,
-        //         FirstName = FirstName,
-        //         LastName = LastName
-        //     })
-        // );
-
-        // /*
-        // https://localhost:7134/api/Authentication/AuthenticateUser
-        // {
-        //     "Email":Email,
-        //     "Password":Password
-        // }
-
-        // Take cookie
-
-        // http://localhost:5015/api/Task
-        // AuthToken : fzY8LGeniXbhgJWapPBBE6ZeHEuTQoy6Uq2CqSZlA3k=
-
-        // Check if it works
-
-        // */
-        // Assert.True(await userService.DeleteUser(Email));
-
     }
 }

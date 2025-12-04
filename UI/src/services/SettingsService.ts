@@ -12,7 +12,7 @@ export function useGetUserSettings(userEmail: string) {
     queryKey: ['userSettings', userEmail],
     queryFn: async () => {
       const response = await axios.get<Settings>(
-        `http://localhost:5015/api/settings/${encodeURIComponent(userEmail)}`,
+        `${import.meta.env.VITE_API_URL}/api/settings/${encodeURIComponent(userEmail)}`,
         { withCredentials: true }
       );
       return response.data;
@@ -25,7 +25,7 @@ export function useUpdateTheme() {
   return useMutation({
     mutationFn: async ({ email, theme }: { email: string; theme: 'light' | 'dark' }) => {
       await axios.patch(
-        `http://localhost:5015/api/settings/theme`,
+        `${import.meta.env.VITE_API_URL}/api/settings/theme`,
         { email, theme },
         { withCredentials: true }
       );
@@ -41,7 +41,7 @@ export function useUpdateTimeToDelete() {
   return useMutation({
     mutationFn: async ({ email, timeToDelete }: { email: string; timeToDelete: number }) => {
       await axios.patch(
-        `http://localhost:5015/api/settings/time-to-delete`,
+        `${import.meta.env.VITE_API_URL}/api/settings/time-to-delete`,
         { email, timeToDelete },
         { withCredentials: true }
       );
