@@ -1,6 +1,8 @@
 using System.Data;
 using Dapper;
 using Do2.Models;
+using Microsoft.Extensions.Logging;
+
 namespace Do2.Repositories
 {
     public class SettingsRepository
