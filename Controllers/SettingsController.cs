@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Do2.Services;
 using Do2.Models;
+using System;
 
 namespace Do2.Controllers
 {
@@ -24,16 +25,20 @@ namespace Do2.Controllers
             return Ok(settings);
         }
 
-        [HttpPut("theme")]
+        [HttpPatch("theme")]
         public async Task<IActionResult> UpdateTheme([FromBody] UpdateThemeRequest request)
         {
-            var success = await _settingsService.UpdateSettingsThemeAsync(request.Email, request.Theme);
+            if (!Enum.TryParse<Themes>(request.Theme, true, out var theme))
+            {
+                return BadRequest("Invalid theme");
+            }
+            var success = await _settingsService.UpdateSettingsThemeAsync(request.Email, theme);
             if (!success)
                 return BadRequest();
             return NoContent();
         }
 
-        [HttpPut("time-to-delete")]
+        [HttpPatch("time-to-delete")]
         public async Task<IActionResult> UpdateTimeToDelete([FromBody] UpdateTimeToDeleteRequest request)
         {
             var success = await _settingsService.UpdateSettingsTimeToDeleteAsync(request.Email, request.TimeToDelete);
@@ -46,7 +51,7 @@ namespace Do2.Controllers
     public class UpdateThemeRequest
     {
         public string Email { get; set; } = string.Empty;
-        public Themes Theme { get; set; }
+        public string Theme { get; set; } = string.Empty;
     }
 
     public class UpdateTimeToDeleteRequest

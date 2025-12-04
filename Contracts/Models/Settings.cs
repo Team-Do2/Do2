@@ -4,7 +4,7 @@ namespace Do2.Models
     {
         public required string userEmail { get; set; }
 
-        public Themes theme { get; set; }
+        public string theme { get; set; } = "light";
 
         public int timeToDelete { get; set; }
     }
