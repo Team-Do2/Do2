@@ -21,7 +21,9 @@ export function useCreateTag() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (tag: Omit<Tag, 'id'> & { userEmail: string }) => {
-      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/tag`, tag, { withCredentials: true });
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/tag`, tag, {
+        withCredentials: true,
+      });
       return res.data;
     },
     onSuccess: () => {
@@ -35,7 +37,9 @@ export function useUpdateTag() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (tag: Tag & { userEmail: string }) => {
-      const res = await axios.put(`${import.meta.env.VITE_API_URL}/api/tag`, tag, { withCredentials: true });
+      const res = await axios.put(`${import.meta.env.VITE_API_URL}/api/tag`, tag, {
+        withCredentials: true,
+      });
       return res.data;
     },
     onSuccess: () => {

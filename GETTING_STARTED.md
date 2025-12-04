@@ -24,7 +24,7 @@ This project is made up of 3 main parts: frontend, backend, and database.
 ./watchBackend.sh
 
 Or
+
 1. Run `dotnet watch run` in the root directory. This will start the backend and bring up all API endpoints at `localhost:5015`.
 2. Start a new command line and run `npm run dev` in the `./UI` directory. This will start a the frontend with a development webserver at `localhost:5173`.
 3. You can now make changes to the frontend or backend, and they will be automatically reloaded as long as both scrips are running.
-
