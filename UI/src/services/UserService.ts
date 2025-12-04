@@ -7,7 +7,7 @@ export function useGetUser(email: string) {
     queryKey: ['getUser', email],
     queryFn: async () => {
       const res = await axios.get(
-        `http://localhost:5015/api/User?email=${encodeURIComponent(email)}`,
+        `${import.meta.env.VITE_API_URL}/api/User?email=${encodeURIComponent(email)}`,
         { withCredentials: true }
       );
       return res.data;
@@ -18,7 +18,7 @@ export function useGetUser(email: string) {
 export function useUpdateEmail() {
   return useMutation({
     mutationFn: async (data: { currentEmail: string; newEmail: string; password: string }) => {
-      const res = await axios.post('http://localhost:5015/api/User/UpdateEmail', data, {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/User/UpdateEmail`, data, {
         withCredentials: true,
       });
       return res.data;
@@ -29,7 +29,7 @@ export function useUpdateEmail() {
 export function useChangePassword() {
   return useMutation({
     mutationFn: async (data: { email: string; currentPassword: string; newPassword: string }) => {
-      const res = await axios.post('http://localhost:5015/api/User/ChangePassword', data, {
+      const res = await axios.post(`${import.meta.env.VITE_API_URL}/api/User/ChangePassword`, data, {
         withCredentials: true,
       });
       return res.data;

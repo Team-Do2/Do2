@@ -2,28 +2,47 @@ using Do2.DTOs;
 using Do2.Services;
 using Microsoft.AspNetCore.Mvc;
 using Do2.Interfaces;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace Do2.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController : ControllerBase
+    public class UserController(IUserService _userService, ILogger _logger) : ControllerBase
     {
-        private IUserService userService;
-        public UserController(IUserService _userService)
-        {
-            userService = _userService;
-        }
+        private readonly IUserService userService = _userService;
+        private readonly ILogger logger = _logger;
 
         [HttpPost("CreateUserCredentials")]
-        public async Task<bool> CreateUserCredentials(CreateUserCredentialsRequest userRequest) {
-            return await userService.CreateUser(new BasicUserInformation()
+        public async Task<IActionResult> CreateUserCredentials(CreateUserCredentialsRequest userRequest) {
+            try
             {
-                Email = userRequest.Email.ToLower(),
-                Password = userRequest.Password,
-                FirstName = userRequest.FirstName,
-                LastName = userRequest.LastName
-            });
+                await userService.CreateUser(new BasicUserInformation()
+                {
+                    Email = userRequest.Email.ToLower(),
+                    Password = userRequest.Password,
+                    FirstName = userRequest.FirstName,
+                    LastName = userRequest.LastName
+                });
+
+                logger.LogInformation("User created for " + userRequest.Email);
+            } 
+            catch (System.Data.Common.DbException ex)
+            {
+                // 409 Conflict: Indicates a request conflict with the current state of the target resource.
+                // Used when trying to create a resource that already exists (like a user with a duplicate email/ID).
+                logger.LogWarning(ex.Message, ex);
+                return BadRequest("User email is already taken");
+            } 
+            catch (Exception ex)
+            {
+                logger.LogCritical("User creation utterly failed " + userRequest.Email);
+                logger.LogCritical(ex.Message);
+
+                return StatusCode(500, "An internal error occurred during user creation."); // This is what we call bad programming
+            }
+
+            return Created();
         }
 
         [HttpPost("DeleteUserCredentials")]

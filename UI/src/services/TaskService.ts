@@ -8,7 +8,7 @@ export function useGetAllUserTasks(userEmail: string) {
     queryKey: ['getTasks'],
     queryFn: async () => {
       const res = await axios.get(
-        `http://localhost:5015/api/task/user/${encodeURIComponent(userEmail)}`,
+        `${import.meta.env.VITE_API_URL}/api/task/user/${encodeURIComponent(userEmail)}`,
         { withCredentials: true }
       );
       return res.data;
@@ -20,7 +20,7 @@ export function useGetPinnedUserTasks(userEmail: string) {
     queryKey: ['getPinnedTasks'],
     queryFn: async () => {
       const res = await axios.get(
-        `http://localhost:5015/api/task/user/${encodeURIComponent(userEmail)}/pinned`,
+        `${import.meta.env.VITE_API_URL}/api/task/user/${encodeURIComponent(userEmail)}/pinned`,
         { withCredentials: true }
       );
       return res.data;
@@ -32,7 +32,7 @@ export function useGetUserTasksBySearch(userEmail: string, search: string) {
     queryKey: ['getTasksBySearch', search],
     queryFn: async () => {
       const res = await axios.get(
-        `http://localhost:5015/api/task/user/${encodeURIComponent(
+        `${import.meta.env.VITE_API_URL}/api/task/user/${encodeURIComponent(
           userEmail
         )}/search?search=${encodeURIComponent(search)}`,
         { withCredentials: true }
@@ -48,7 +48,7 @@ export function useUpdateTaskDone() {
   return useMutation({
     mutationFn: async ({ id, isDone }: { id: number; isDone: boolean }) => {
       const res = await axios.patch(
-        `http://localhost:5015/api/task/${id}/done?isDone=${isDone}`,
+        `${import.meta.env.VITE_API_URL}/api/task/${id}/done?isDone=${isDone}`,
         {},
         { withCredentials: true }
       );
@@ -66,7 +66,7 @@ export function useUpdateTaskPinned() {
   return useMutation({
     mutationFn: async ({ id, isPinned }: { id: number; isPinned: boolean }) => {
       const res = await axios.patch(
-        `http://localhost:5015/api/task/${id}/pinned?isPinned=${isPinned}`,
+        `${import.meta.env.VITE_API_URL}/api/task/${id}/pinned?isPinned=${isPinned}`,
         {},
         { withCredentials: true }
       );
@@ -84,7 +84,7 @@ export function useUpdateTaskDescription() {
   return useMutation({
     mutationFn: async ({ id, description }: { id: number; description: string }) => {
       const res = await axios.patch(
-        `http://localhost:5015/api/task/${id}/description`,
+        `${import.meta.env.VITE_API_URL}/api/task/${id}/description`,
         {
           description,
         },
@@ -104,7 +104,7 @@ export function useUpdateTaskName() {
   return useMutation({
     mutationFn: async ({ id, name }: { id: number; name: string }) => {
       const res = await axios.patch(
-        `http://localhost:5015/api/task/${id}/name`,
+        `${import.meta.env.VITE_API_URL}/api/task/${id}/name`,
         {
           name,
         },
@@ -127,7 +127,7 @@ export function useUpdateTaskSupertask() {
       const params = new URLSearchParams();
       if (supertaskId !== null) params.append('supertaskId', supertaskId.toString());
       const res = await axios.patch(
-        `http://localhost:5015/api/task/${id}/supertask?${params.toString()}`,
+        `${import.meta.env.VITE_API_URL}/api/task/${id}/supertask?${params.toString()}`,
         {},
         { withCredentials: true }
       );
@@ -148,7 +148,7 @@ export function useUpdateTaskDueDate() {
       const params = new URLSearchParams();
       if (dueDate) params.append('dueDate', dueDate);
       const res = await axios.patch(
-        `http://localhost:5015/api/task/${id}/duedate?${params.toString()}`,
+        `${import.meta.env.VITE_API_URL}/api/task/${id}/duedate?${params.toString()}`,
         {},
         { withCredentials: true }
       );
@@ -167,7 +167,7 @@ export function useDeleteTask() {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: async (id: number) => {
-      const res = await axios.delete(`http://localhost:5015/api/task/${id}`, {
+      const res = await axios.delete(`${import.meta.env.VITE_API_URL}/api/task/${id}`, {
         withCredentials: true,
       });
       return res.data;
@@ -198,7 +198,7 @@ export function useCreateTask() {
       dueDate?: string | null;
     }) => {
       const res = await axios.post(
-        `http://localhost:5015/api/task`,
+        `${import.meta.env.VITE_API_URL}/api/task`,
         {
           name,
           description,

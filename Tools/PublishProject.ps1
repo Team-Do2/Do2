@@ -75,7 +75,7 @@ if ($LASTEXITCODE -eq 0) {
     $scpExitCode = $LASTEXITCODE
 }
 
-ssh -t $Username@${ServerIP} "sudo rm /var/www/$DirectoryName -r; sudo mv ~/$DirectoryName /var/www/$DirectoryName; sudo chown -R www-data:www-data /var/www/$DirectoryName; sudo systemctl restart apache2;"
+ssh -t $Username@${ServerIP} "sudo rsync -av --delete ~/Do2/ /var/www/Do2/; sudo chown -R www-data:www-data /var/www/Do2; sudo systemctl restart apache2;  sudo systemctl restart Do2;"
 
 # --- 3. Cleanup ---
 Write-Host "--- 3. Cleaning up local directory $LocalDir ---"
