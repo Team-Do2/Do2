@@ -19,7 +19,7 @@ async function loginRequest(
 ): Promise<{ success: boolean; error?: string; user?: User }> {
   try {
     const response = await axios.post(
-      'http://localhost:5015/api/Authentication/AuthenticateUser',
+      import.meta.env.VITE_API_URL + '/api/Authentication/AuthenticateUser',
       request,
       {
         headers: { 'Content-Type': 'application/json' },
@@ -28,7 +28,7 @@ async function loginRequest(
     );
     if (response.status === 200) {
       const userRes = await axios.get(
-        `http://localhost:5015/api/User?email=${encodeURIComponent(request.Email)}`,
+        `${import.meta.env.VITE_API_URL}/api/User?email=${encodeURIComponent(request.Email)}`,
         { withCredentials: true }
       );
       return { success: true, user: userRes.data };
@@ -55,7 +55,7 @@ async function signupRequest(
 ): Promise<{ success: boolean; error?: string }> {
   try {
     const response = await axios.post(
-      'http://localhost:5015/api/User/CreateUserCredentials',
+      import.meta.env.VITE_API_URL + '/api/User/CreateUserCredentials',
       request,
       {
         headers: { 'Content-Type': 'application/json' },

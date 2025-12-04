@@ -47,9 +47,8 @@ builder.Services.AddCors(options =>
 {
 	options.AddDefaultPolicy(policy =>
 	{
-		policy.WithOrigins(
-			"http://localhost:5173" // Vite default dev port
-		)
+		policy.WithOrigins("http://localhost:5173",
+			"https://do2.chenevertsoftwareservices.com")
 			.AllowAnyHeader()
 			.AllowAnyMethod()
 			.AllowCredentials();

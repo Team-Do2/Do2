@@ -41,7 +41,7 @@ function LoginPage() {
                 queryKey: ['userSettings', email.toLowerCase()],
                 queryFn: async () => {
                   const response = await axios.get<Settings>(
-                    `http://localhost:5015/api/settings/${encodeURIComponent(email.toLowerCase())}`,
+                    `${import.meta.env.VITE_API_URL}/api/settings/${encodeURIComponent(email.toLowerCase())}`,
                     { withCredentials: true }
                   );
                   return response.data;
