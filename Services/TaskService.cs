@@ -8,14 +8,26 @@ namespace Do2.Services
     {
         private readonly TaskRepository _repository;
         private readonly TagRepository _tagRepository;
-        public TaskService(TaskRepository repository, TagRepository tagRepository)
+        private readonly SettingsService _settingsService;
+        public TaskService(TaskRepository repository, TagRepository tagRepository, SettingsService settingsService)
         {
             _repository = repository;
             _tagRepository = tagRepository;
+            _settingsService = settingsService;
         }
 
         public async Task<IEnumerable<TaskModel>> GetAllUserTasksAsync(string userEmail)
         {
+            // Update the DateTime to delete of all completed tasks based on settings value
+            var settings = await _settingsService.GetSettingsByEmailAsync(userEmail);
+            if (settings != null)
+            {
+                await _repository.UpdateDatetimeToDeleteForCompletedTasksAsync(userEmail, settings.timeToDelete);
+            }
+            
+            // Delete all stale tasks
+            await _repository.DeleteAllStaleTasksAsync(userEmail);
+            
             var tasks = (await _repository.GetAllUserTasksAsync(userEmail)).ToList();
             await HydrateTasks(tasks);
             return tasks;
@@ -76,11 +88,24 @@ namespace Do2.Services
         public Task<int> AddDeadlineTaskAsync(int taskId, DateTime datetime) => _repository.AddDeadlineTaskAsync(taskId, datetime);
         public Task<int> AddSubtaskRelationship(int supertaskId, int subtaskId) => _repository.AddSubtaskRelationship(supertaskId, subtaskId);
         public Task<int> UpdateTaskPinnedAsync(int taskId, bool isPinned) => _repository.UpdateTaskPinnedAsync(taskId, isPinned);
-        public Task<int> UpdateTaskDoneAsync(int taskId, bool isDone) => _repository.UpdateTaskDoneAsync(taskId, isDone);
+        public async Task<int> UpdateTaskDoneAsync(int taskId, bool isDone)
+        {
+            // If task is being unmarked as done, clear the datetime_to_delete
+            if (!isDone)
+            {
+                await _repository.ClearDatetimeToDeleteAsync(taskId);
+            }
+            return await _repository.UpdateTaskDoneAsync(taskId, isDone);
+        }
         public Task<int> UpdateTaskDescriptionAsync(int taskId, string description) => _repository.UpdateTaskDescriptionAsync(taskId, description);
         public Task<int> UpdateTaskNameAsync(int taskId, string name) => _repository.UpdateTaskNameAsync(taskId, name);
         public Task<int> UpdateTaskSupertaskAsync(int taskId, int? supertaskId) => _repository.UpdateTaskSupertaskAsync(taskId, supertaskId);
-        public Task<int> UpdateTaskDueDateAsync(int taskId, DateTime? dueDate) => _repository.UpdateTaskDueDateAsync(taskId, dueDate);
+        public async Task<int> UpdateTaskDueDateAsync(int taskId, DateTime? dueDate)
+        {
+            // Clear datetime_to_delete so it gets recalculated with new due date
+            await _repository.ClearDatetimeToDeleteAsync(taskId);
+            return await _repository.UpdateTaskDueDateAsync(taskId, dueDate);
+        }
         public Task<int> DeleteTaskAsync(int id) => _repository.DeleteTaskAsync(id);
         public async Task<int> DeleteAllStaleTasksAsync(string email) => await _repository.DeleteAllStaleTasksAsync(email);
     }

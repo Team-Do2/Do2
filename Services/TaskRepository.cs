@@ -153,6 +153,27 @@ namespace Do2.Repositories
             return await _db.ExecuteAsync(sql, new { userEmail = email });
         }
 
+        public async Task<int> UpdateDatetimeToDeleteForCompletedTasksAsync(string email, int daysToDelete)
+        {
+            var sql = @"
+                UPDATE task t
+                LEFT JOIN deadline_task dt ON t.id = dt.task_id
+                SET t.datetime_to_delete = DATE_ADD(
+                    LEAST(NOW(), COALESCE(dt.due_datetime, NOW())), 
+                    INTERVAL @daysToDelete DAY
+                )
+                WHERE t.user_email = @userEmail 
+                  AND t.is_done = 1 
+                  AND t.datetime_to_delete IS NULL";
+            return await _db.ExecuteAsync(sql, new { userEmail = email, daysToDelete });
+        }
+
+        public async Task<int> ClearDatetimeToDeleteAsync(int taskId)
+        {
+            var sql = "UPDATE task SET datetime_to_delete = NULL WHERE id = @taskId";
+            return await _db.ExecuteAsync(sql, new { taskId });
+        }
+
         public async Task<IEnumerable<TaskModel>> GetSubtasksForTaskAsync(int taskId)
         {
             var sql =

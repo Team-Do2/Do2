@@ -4,14 +4,19 @@ import { useState } from 'react';
 import { useLogin } from '../../services/LoginService';
 import { useAuthStore } from '../../stores/authStore';
 import { useNavigate } from 'react-router-dom';
+import { useQueryClient } from '@tanstack/react-query';
+import { type Settings } from '../../services/SettingsService';
+import axios from 'axios';
 
 function LoginPage() {
   const logIn = useAuthStore((state) => state.logIn);
+  const setSiteTheme = useAuthStore((state) => state.setSiteTheme);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [emailError, setEmailError] = useState<string | null>(null);
   const navigate = useNavigate();
   const { mutate, isPending, isError, error, data } = useLogin();
+  const queryClient = useQueryClient();
 
   const isValidEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -28,9 +33,24 @@ function LoginPage() {
     mutate(
       { Email: email, Password: password },
       {
-        onSuccess: (result) => {
+        onSuccess: async (result) => {
           if (result.success && result.user) {
             logIn(email.toLowerCase(), result.user.firstName);
+            try {
+              const settings = await queryClient.fetchQuery<Settings>({
+                queryKey: ['userSettings', email.toLowerCase()],
+                queryFn: async () => {
+                  const response = await axios.get<Settings>(
+                    `http://localhost:5015/api/settings/${encodeURIComponent(email.toLowerCase())}`,
+                    { withCredentials: true }
+                  );
+                  return response.data;
+                },
+              });
+              setSiteTheme(settings.theme);
+            } catch {
+              setSiteTheme('light');
+            }
             navigate('/');
           }
         },
