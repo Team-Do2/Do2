@@ -11,9 +11,15 @@ import { useCreateTag } from '../../services/TagService';
 import { useGetUser } from '../../services/UserService';
 import { useUpdateEmail, useChangePassword } from '../../services/UserService';
 import { useNavigate } from 'react-router-dom';
+import {
+  useGetUserSettings,
+  useUpdateTheme,
+  useUpdateTimeToDelete,
+} from '../../services/SettingsService';
 
 function SettingsPage() {
   const logOut = useAuthStore((state) => state.logOut);
+  const setSiteTheme = useAuthStore((state) => state.setSiteTheme);
   const queryClient = useQueryClient();
   const userEmail = useAuthStore((state) => state.userEmail || '');
   const [isTagModalOpen, setIsTagModalOpen] = useState(false);
@@ -26,22 +32,29 @@ function SettingsPage() {
   const navigate = useNavigate();
   const [theme, setTheme] = useState('light');
   const [retentionDays, setRetentionDays] = useState(7);
-  const [retentionHours, setRetentionHours] = useState(0);
+
+  const { data: settings } = useGetUserSettings(userEmail);
+  const updateThemeMutation = useUpdateTheme();
+  const updateTimeToDeleteMutation = useUpdateTimeToDelete();
 
   useEffect(() => {
-    document.body.setAttribute('app-theme', theme);
-  }, [theme]);
+    if (settings) {
+      setTheme(settings.theme);
+      setRetentionDays(settings.timeToDelete);
+    }
+  }, [settings]);
 
   const handleThemeChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setTheme(e.target.value);
+    const newTheme = e.target.value as 'light' | 'dark';
+    setTheme(newTheme);
+    setSiteTheme(newTheme);
+    updateThemeMutation.mutate({ email: userEmail, theme: newTheme });
   };
 
   const handleRetentionDaysChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setRetentionDays(Number(e.target.value));
-  };
-
-  const handleRetentionHoursChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setRetentionHours(Number(e.target.value));
+    const newDays = Number(e.target.value);
+    setRetentionDays(newDays);
+    updateTimeToDeleteMutation.mutate({ email: userEmail, timeToDelete: newDays });
   };
 
   const handleLogout = () => {
@@ -94,14 +107,6 @@ function SettingsPage() {
             onChange={handleRetentionDaysChange}
             min="0"
             max="365"
-          />
-          <label>Hours: </label>
-          <input
-            type="number"
-            value={retentionHours}
-            onChange={handleRetentionHoursChange}
-            min="0"
-            max="23"
           />
         </div>
         <div>
