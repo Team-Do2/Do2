@@ -9,20 +9,20 @@
   -moz-osx-font-smoothing: grayscale;
 
   /* Theme Colors */
-  --primary-color: #a5a4b8;
+  --primary-color: #92898a;
   --primary-color-dark: #9998ab;
 
-  --secondary-color: #777777;
-  --secondary-color-light-2: #c4c4c4;
-  --secondary-color-light: #e6e6e6;
+  --secondary-color: #af9fa5;
+  --secondary-color-light-2: #e4dee4;
+  --secondary-color-light: #e7dfe8;
 
-  --accent-color: #ee6868;
+  --accent-color: #63adf2;
   --accent-color-2: #e4d961;
   --accent-color-3: rgb(108, 177, 177);
 
   --error-color: #b00020;
 
-  --bg-color: #7f7e90;
+  --bg-color: #545e75;
   --bg-color-white: #efefef;
   --bg-color-dark: #636180;
 

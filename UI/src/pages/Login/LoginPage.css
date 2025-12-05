@@ -32,8 +32,12 @@
   text-shadow: 0 2px 0 rgba(0, 0, 0, 0.06);
 }
 
+.brand img {
+  height: 175px;
+}
+
 .title {
-  font-size: 32px;
+  font-size: 48px;
   margin: 12px 0 28px 0;
   color: var(--text-color-dark);
   font-weight: 700;
@@ -79,18 +83,26 @@
 
 .login-button {
   margin-top: 6px;
-  width: 60%;
-  max-width: 320px;
+  width: 65%;
+  max-width: 280px;
   background: var(--primary-color);
   color: var(--text-color-light);
   border: none;
-  border-radius: 12px;
-  padding: 12px 20px;
-  font-size: 18px;
+  border-radius: 11px;
+  padding: 10px 18px;
+  font-size: 17px;
   font-weight: 700;
-  box-shadow: 0 6px 4px -2px rgba(0, 0, 0, 0.16);
+  box-shadow: 0 5px 4px rgba(0, 0, 0, 0.12);
   cursor: pointer;
   align-self: center;
+  transition:
+    background 0.3s ease,
+    transform 0.2s ease;
+}
+
+.login-button:hover {
+  background: var(--accent-color);
+  transform: scale(1.03);
 }
 
 .login-button:disabled {
@@ -99,8 +111,18 @@
   cursor: not-allowed;
 }
 
-.login-button:hover {
-  background: var(--accent-color);
+.signup-link-button {
+  color: var(--accent);
+  text-decoration: underline;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    color 0.3s ease;
+}
+
+.signup-link-button:hover {
+  transform: scale(1.05);
+  color: var(--accent-color);
 }
 
 .signup-link {
