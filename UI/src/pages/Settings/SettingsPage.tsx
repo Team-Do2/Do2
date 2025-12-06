@@ -68,9 +68,8 @@ function SettingsPage() {
       <a className="back-link" onClick={() => navigate('/')}>
         {'< Back to Tasks'}
       </a>
+      <h1 className="settings-header">User Settings</h1>
       <div className="settings-page-container">
-        <h1 className="settings-header">User Settings</h1>
-
         <div className="current-user-row">
           <div className="current-user-info">
             <u>Currently Logged in as:</u> <br />
