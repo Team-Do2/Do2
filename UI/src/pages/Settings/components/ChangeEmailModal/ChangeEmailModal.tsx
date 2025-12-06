@@ -89,13 +89,14 @@ const ChangeEmailModal: React.FC<ChangeEmailModalProps> = ({
       <div>
         <label>
           Current Email:
-          <input type="text" value={currentEmail} readOnly />
+          <input style={{ color: '#9998ab' }} type="text" value={currentEmail} readOnly />
         </label>
       </div>
       <div>
         <label>
           New Email:
           <input
+            style={{ color: '#9998ab' }}
             type="email"
             value={newEmail}
             onChange={handleNewEmailChange}
@@ -108,6 +109,7 @@ const ChangeEmailModal: React.FC<ChangeEmailModalProps> = ({
         <label>
           Password:
           <input
+            style={{ color: '#9998ab' }}
             type="password"
             value={password}
             onChange={handlePasswordChange}

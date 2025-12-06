@@ -42,6 +42,65 @@ export function useGetUserTasksBySearch(userEmail: string, search: string) {
   });
 }
 
+// Helper to recursively update a task in a list (handles subtasks)
+const updateTaskInList = (
+  tasks: Task[] | undefined,
+  id: number,
+  updates: Partial<Task>
+): Task[] | undefined => {
+  if (!tasks) return tasks;
+  return tasks.map((task) => {
+    // Check if this task matches
+    if (task.id === id) {
+      return { ...task, ...updates };
+    }
+    // Recursively check subtasks
+    if (task.subtasks && task.subtasks.length > 0) {
+      return {
+        ...task,
+        subtasks: updateTaskInList(task.subtasks, id, updates),
+      };
+    }
+    return task;
+  });
+};
+
+// Helper to mark a task and all its subtasks as done/not done
+const markTaskAndSubtasksDone = (
+  tasks: Task[] | undefined,
+  id: number,
+  isDone: boolean
+): Task[] | undefined => {
+  if (!tasks) return tasks;
+  return tasks.map((task) => {
+    if (task.id === id) {
+      // Mark this task and all subtasks recursively
+      return {
+        ...task,
+        isDone,
+        subtasks: task.subtasks ? markAllSubtasksDone(task.subtasks, isDone) : undefined,
+      };
+    }
+    // Recursively search in subtasks
+    if (task.subtasks && task.subtasks.length > 0) {
+      return {
+        ...task,
+        subtasks: markTaskAndSubtasksDone(task.subtasks, id, isDone),
+      };
+    }
+    return task;
+  });
+};
+
+// Helper to mark all subtasks in a list as done/not done
+const markAllSubtasksDone = (subtasks: Task[], isDone: boolean): Task[] => {
+  return subtasks.map((subtask) => ({
+    ...subtask,
+    isDone,
+    subtasks: subtask.subtasks ? markAllSubtasksDone(subtask.subtasks, isDone) : undefined,
+  }));
+};
+
 // Update Tasks
 export function useUpdateTaskDone() {
   const queryClient = useQueryClient();
@@ -54,7 +113,64 @@ export function useUpdateTaskDone() {
       );
       return res.data;
     },
-    onSuccess: () => {
+    onMutate: async ({ id, isDone }) => {
+      // Cancel any outgoing refetches
+      await queryClient.cancelQueries({ queryKey: ['getTasks'] });
+      await queryClient.cancelQueries({ queryKey: ['getPinnedTasks'] });
+      await queryClient.cancelQueries({ queryKey: ['getTasksBySearch'] });
+
+      // Snapshot the previous values
+      const previousTasks = queryClient.getQueryData<Task[]>(['getTasks']);
+      const previousPinnedTasks = queryClient.getQueryData<Task[]>(['getPinnedTasks']);
+      const previousSearchQueries = queryClient.getQueriesData<Task[]>({
+        queryKey: ['getTasksBySearch'],
+      });
+
+      // Optimistically update all caches
+      // Use markTaskAndSubtasksDone when marking as done to also mark subtasks
+      // Use updateTaskInList when marking as not done (only affects the specific task)
+      if (isDone) {
+        queryClient.setQueryData<Task[]>(['getTasks'], (old) =>
+          markTaskAndSubtasksDone(old, id, isDone)
+        );
+        queryClient.setQueryData<Task[]>(['getPinnedTasks'], (old) =>
+          markTaskAndSubtasksDone(old, id, isDone)
+        );
+        previousSearchQueries.forEach(([queryKey]) => {
+          queryClient.setQueryData<Task[]>(queryKey, (old) =>
+            markTaskAndSubtasksDone(old, id, isDone)
+          );
+        });
+      } else {
+        queryClient.setQueryData<Task[]>(['getTasks'], (old) =>
+          updateTaskInList(old, id, { isDone })
+        );
+        queryClient.setQueryData<Task[]>(['getPinnedTasks'], (old) =>
+          updateTaskInList(old, id, { isDone })
+        );
+        previousSearchQueries.forEach(([queryKey]) => {
+          queryClient.setQueryData<Task[]>(queryKey, (old) =>
+            updateTaskInList(old, id, { isDone })
+          );
+        });
+      }
+
+      return { previousTasks, previousPinnedTasks, previousSearchQueries };
+    },
+    onError: (_err, _variables, context) => {
+      // Rollback on error
+      if (context?.previousTasks) {
+        queryClient.setQueryData(['getTasks'], context.previousTasks);
+      }
+      if (context?.previousPinnedTasks) {
+        queryClient.setQueryData(['getPinnedTasks'], context.previousPinnedTasks);
+      }
+      context?.previousSearchQueries?.forEach(([queryKey, data]) => {
+        queryClient.setQueryData(queryKey, data);
+      });
+    },
+    onSettled: () => {
+      // Refetch to verify server state
       queryClient.invalidateQueries({ queryKey: ['getTasks'] });
       queryClient.invalidateQueries({ queryKey: ['getPinnedTasks'] });
       queryClient.invalidateQueries({ queryKey: ['getTasksBySearch'] });
@@ -72,7 +188,48 @@ export function useUpdateTaskPinned() {
       );
       return res.data;
     },
-    onSuccess: () => {
+    onMutate: async ({ id, isPinned }) => {
+      // Cancel any outgoing refetches
+      await queryClient.cancelQueries({ queryKey: ['getTasks'] });
+      await queryClient.cancelQueries({ queryKey: ['getPinnedTasks'] });
+      await queryClient.cancelQueries({ queryKey: ['getTasksBySearch'] });
+
+      // Snapshot the previous values
+      const previousTasks = queryClient.getQueryData<Task[]>(['getTasks']);
+      const previousPinnedTasks = queryClient.getQueryData<Task[]>(['getPinnedTasks']);
+      const previousSearchQueries = queryClient.getQueriesData<Task[]>({
+        queryKey: ['getTasksBySearch'],
+      });
+
+      // Optimistically update all caches
+      queryClient.setQueryData<Task[]>(['getTasks'], (old) =>
+        updateTaskInList(old, id, { isPinned })
+      );
+      queryClient.setQueryData<Task[]>(['getPinnedTasks'], (old) =>
+        updateTaskInList(old, id, { isPinned })
+      );
+      previousSearchQueries.forEach(([queryKey]) => {
+        queryClient.setQueryData<Task[]>(queryKey, (old) =>
+          updateTaskInList(old, id, { isPinned })
+        );
+      });
+
+      return { previousTasks, previousPinnedTasks, previousSearchQueries };
+    },
+    onError: (_err, _variables, context) => {
+      // Rollback on error
+      if (context?.previousTasks) {
+        queryClient.setQueryData(['getTasks'], context.previousTasks);
+      }
+      if (context?.previousPinnedTasks) {
+        queryClient.setQueryData(['getPinnedTasks'], context.previousPinnedTasks);
+      }
+      context?.previousSearchQueries?.forEach(([queryKey, data]) => {
+        queryClient.setQueryData(queryKey, data);
+      });
+    },
+    onSettled: () => {
+      // Refetch to verify server state
       queryClient.invalidateQueries({ queryKey: ['getTasks'] });
       queryClient.invalidateQueries({ queryKey: ['getPinnedTasks'] });
       queryClient.invalidateQueries({ queryKey: ['getTasksBySearch'] });

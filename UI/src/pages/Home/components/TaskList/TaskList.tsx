@@ -3,6 +3,7 @@ import { useGetAllUserTasks } from '../../../../services/TaskService';
 import { useAuthStore } from '../../../../stores/authStore';
 import TaskCard from '../TaskCard/TaskCard';
 import type { Task } from '../../../../models/Task';
+import { useEffect, useState } from 'react';
 
 function TaskList({
   onEditTask,
@@ -13,20 +14,39 @@ function TaskList({
 }) {
   const userEmail = useAuthStore((state: { userEmail?: string }) => state.userEmail);
   const { data, error } = useGetAllUserTasks(userEmail || '');
+  const [newTaskIds, setNewTaskIds] = useState<number[]>([]);
+
   if (error) return <pre>Error: {error.message}</pre>;
   if (!userEmail) return <div>Please log in to view your tasks.</div>;
 
   const sortedTasks = data
-    ? [...data].sort((a, b) => {
-        if (a.isDone === b.isDone) return 0;
-        return a.isDone ? 1 : -1;
-      })
+    ? [...data].sort((a, b) => (a.isDone === b.isDone ? 0 : a.isDone ? 1 : -1))
     : [];
+
+  useEffect(() => {
+    if (!data) return;
+    const existingIds = sortedTasks.map((t) => t.id);
+    const newIds = existingIds.filter((id) => !newTaskIds.includes(id));
+    if (newIds.length > 0) {
+      setNewTaskIds((prev) => [...prev, ...newIds]);
+
+      const timer = setTimeout(() => {
+        setNewTaskIds((prev) => prev.filter((id) => !newIds.includes(id)));
+      }, 300);
+
+      return () => clearTimeout(timer);
+    }
+  }, [sortedTasks]);
 
   return (
     <div className="task-list-container">
       {sortedTasks.map((task) => (
-        <TaskCard key={task.id} task={task} onEdit={onEditTask} collapseAll={collapseAll} />
+        <div
+          key={task.id}
+          className={`task-card-wrapper ${newTaskIds.includes(task.id) ? 'task-card-enter' : ''}`}
+        >
+          <TaskCard task={task} onEdit={onEditTask} collapseAll={collapseAll} />
+        </div>
       ))}
     </div>
   );
