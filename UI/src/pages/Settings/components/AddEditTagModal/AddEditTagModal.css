@@ -36,7 +36,9 @@
   margin-bottom: 1rem !important;
 }
 
-.popup-modal-content input {
+.popup-modal-content input,
+.popup-modal-content select,
+.popup-modal-content input[type='color'] {
   margin-top: 0 !important;
   color: var(--text-color-dark);
   width: 100%;
@@ -46,6 +48,7 @@
   background-color: var(--secondary-color-light);
   border-radius: 4px;
   font-size: 14px;
+  box-sizing: border-box; /* ensures padding is included in width */
   box-shadow: 0 6px 4px -2px rgba(0, 0, 0, 0.16);
 }
 

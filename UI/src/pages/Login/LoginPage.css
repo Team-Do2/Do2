@@ -16,7 +16,7 @@
 .login-card {
   width: 680px;
   max-width: 92%;
-  background: var(--bg-color-white);
+  background: var(--bg-color-whitehome);
   border-radius: 16px;
   padding: 48px 56px 40px 56px;
   box-shadow: 0 6px 4px -2px rgba(0, 0, 0, 0.16);
@@ -26,7 +26,7 @@
 .brand {
   font-size: 84px;
   margin: 0;
-  color: var(--text-color-dark);
+  color: var(--text-color-darkhome);
   font-weight: 800;
   letter-spacing: 1px;
   text-shadow: 0 2px 0 rgba(0, 0, 0, 0.06);
@@ -39,7 +39,7 @@
 .title {
   font-size: 48px;
   margin: 12px 0 28px 0;
-  color: var(--text-color-dark);
+  color: var(--text-color-darkhome);
   font-weight: 700;
   text-shadow: 0 2px 0 rgba(0, 0, 0, 0.06);
 }
@@ -59,7 +59,7 @@
 .field-label {
   display: block;
   font-weight: 700;
-  color: var(--text-color-dark);
+  color: var(--text-color-darkhome);
   margin-bottom: 0.5rem;
   font-size: 18px;
   text-shadow: 0 2px 0 rgba(0, 0, 0, 0.06);
@@ -71,22 +71,22 @@
   padding: 10px 16px;
   border-radius: 12px;
   border: none;
-  background: var(--secondary-color-light);
+  background: var(--secondary-color-lighthome);
   box-shadow: 0 6px 4px -2px rgba(0, 0, 0, 0.16);
   font-size: 16px;
   outline: none;
 }
 
 .login-input::placeholder {
-  color: var(--text-color-disabled);
+  color: var(--text-color-disabledhome);
 }
 
 .login-button {
   margin-top: 6px;
   width: 65%;
   max-width: 280px;
-  background: var(--primary-color);
-  color: var(--text-color-light);
+  background: var(--primary-colorhome);
+  color: var(--text-color-lighthome);
   border: none;
   border-radius: 11px;
   padding: 10px 18px;
@@ -101,18 +101,18 @@
 }
 
 .login-button:hover {
-  background: var(--accent-color);
+  background: var(--accent-colorhome);
   transform: scale(1.03);
 }
 
 .login-button:disabled {
-  background: var(--primary-color) !important;
+  background: var(--primary-colorhome) !important;
   opacity: 0.6;
   cursor: not-allowed;
 }
 
 .signup-link-button {
-  color: var(--accent);
+  color: var(--accenthome);
   text-decoration: underline;
   cursor: pointer;
   transition:
@@ -122,24 +122,24 @@
 
 .signup-link-button:hover {
   transform: scale(1.05);
-  color: var(--accent-color);
+  color: var(--accent-colorhome);
 }
 
 .signup-link {
   margin-top: 26px;
-  color: var(--secondary-color);
+  color: var(--secondary-colorhome);
   font-size: 16px;
 }
 
 .signup-link a {
-  color: var(--accent);
+  color: var(--accenthome);
   text-decoration: underline;
   cursor: pointer;
 }
 
 .error {
   margin-top: 12px;
-  color: var(--error-color);
+  color: var(--error-colorhome);
 }
 
 @media (max-width: 520px) {

@@ -1,5 +1,4 @@
 import './SettingsPage.css';
-
 import { useAuthStore } from '../../stores/authStore';
 import { useQueryClient } from '@tanstack/react-query';
 import TagList from './components/TagList/TagList';
@@ -32,7 +31,6 @@ function SettingsPage() {
   const navigate = useNavigate();
   const [theme, setTheme] = useState('light');
   const [retentionDays, setRetentionDays] = useState(7);
-
   const { data: settings } = useGetUserSettings(userEmail);
   const updateThemeMutation = useUpdateTheme();
   const updateTimeToDeleteMutation = useUpdateTimeToDelete();
@@ -58,13 +56,10 @@ function SettingsPage() {
   };
 
   const handleLogout = () => {
-    // Clear user state
     logOut();
     queryClient.removeQueries({ queryKey: ['getTasks'] });
     queryClient.removeQueries({ queryKey: ['getPinnedTasks'] });
     queryClient.removeQueries({ queryKey: ['getTasksBySearch'] });
-
-    // Remove AuthToken cookie (set to expired)
     document.cookie = 'AuthToken=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
   };
 
@@ -75,13 +70,19 @@ function SettingsPage() {
       </a>
       <div className="settings-page-container">
         <h1 className="settings-header">User Settings</h1>
-        <h2 className="current-user-info">
-          <u>Currently Logged in as:</u> <br />
-          {userData.data?.email}({userData.data?.firstName + ' ' + userData.data?.lastName})
-        </h2>
-        <button className="logout-button" onClick={handleLogout}>
-          Log Out
-        </button>
+
+        <div className="current-user-row">
+          <div className="current-user-info">
+            <u>Currently Logged in as:</u> <br />
+            {userData.data?.email} ({userData.data?.firstName} {userData.data?.lastName})
+          </div>
+          <button className="logout-button" onClick={handleLogout}>
+            Log Out
+          </button>
+        </div>
+
+        <hr className="divider" />
+
         <div className="account-settings">
           <h2>Account Details</h2>
           <button className="change-email-button" onClick={() => setIsEmailModalOpen(true)}>
@@ -91,6 +92,9 @@ function SettingsPage() {
             Change Password
           </button>
         </div>
+
+        <hr className="divider" />
+
         <div className="theme-section">
           <h2>Theme</h2>
           <select value={theme} onChange={handleThemeChange}>
@@ -98,6 +102,9 @@ function SettingsPage() {
             <option value="dark">Dark</option>
           </select>
         </div>
+
+        <hr className="divider" />
+
         <div className="retention-time-section">
           <h2>Completed Task Retention Time</h2>
           <label>Days: </label>
@@ -109,13 +116,17 @@ function SettingsPage() {
             max="365"
           />
         </div>
-        <div>
+
+        <hr className="divider" />
+
+        <div className="user-tags-section">
           <h2 className="user-tags-header">User Tags</h2>
           <TagList />
           <button className="add-tag-button" onClick={() => setIsTagModalOpen(true)}>
             Add Tag
           </button>
         </div>
+
         <AddEditTagModal
           isOpen={isTagModalOpen}
           onRequestClose={() => setIsTagModalOpen(false)}
@@ -124,6 +135,7 @@ function SettingsPage() {
             createTagMutation.mutate(tag);
           }}
         />
+
         <ChangeEmailModal
           isOpen={isEmailModalOpen}
           onRequestClose={() => setIsEmailModalOpen(false)}
@@ -136,6 +148,7 @@ function SettingsPage() {
             navigate('/login');
           }}
         />
+
         <ChangePasswordModal
           isOpen={isPasswordModalOpen}
           onRequestClose={() => setIsPasswordModalOpen(false)}
