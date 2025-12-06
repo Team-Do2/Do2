@@ -70,7 +70,13 @@ const AddEditTagModal: React.FC<AddEditTagModalProps> = ({
       <div>
         <label>
           Name:
-          <input type="text" value={name} onChange={handleNameChange} placeholder="Tag name" />
+          <input
+            style={{ color: '#9998ab' }}
+            type="text"
+            value={name}
+            onChange={handleNameChange}
+            placeholder="Tag name"
+          />
         </label>
       </div>
       {nameError && <p className="error">{nameError}</p>}

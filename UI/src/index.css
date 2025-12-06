@@ -9,28 +9,7 @@
   -moz-osx-font-smoothing: grayscale;
 
   /* Theme Colors */
-  --primary-colorhome: #92898a;
-  --primary-color-darkhome: #9998ab;
 
-  --secondary-colorhome: #af9fa5;
-  --secondary-color-light-2home: #e4dee4;
-  --secondary-color-lighthome: #e7dfe8;
-
-  --accent-colorhome: #63adf2;
-  --accent-color-2home: #e4d961;
-  --accent-color-3home: rgb(108, 177, 177);
-
-  --error-colorhome: #b00020;
-
-  --bg-colorhome: #545e75;
-  --bg-color-whitehome: #efefef;
-  --bg-color-darkhome: #636180;
-
-  --text-color-lighthome: #ffffff;
-  --text-color-disabledhome: #bdbdbd;
-  --text-color-darkhome: #4c4c4c;
-
-  /* light */
   --primary-color: #82a0bc;
   --primary-color-dark: #af9fa5;
 

@@ -113,6 +113,7 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
         <label>
           Current Password:
           <input
+            style={{ color: '#9998ab' }}
             type="password"
             value={currentPassword}
             onChange={handleCurrentPasswordChange}
@@ -125,6 +126,7 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
         <label>
           New Password:
           <input
+            style={{ color: '#9998ab' }}
             type="password"
             value={newPassword}
             onChange={handleNewPasswordChange}
@@ -137,6 +139,7 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
         <label>
           Confirm New Password:
           <input
+            style={{ color: '#9998ab' }}
             type="password"
             value={confirmPassword}
             onChange={handleConfirmPasswordChange}

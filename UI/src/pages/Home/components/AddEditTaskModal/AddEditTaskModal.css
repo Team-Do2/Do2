@@ -41,7 +41,7 @@
 .form-group input,
 .form-group textarea,
 .form-group select {
-  padding: 0.5rem 0.8rem; /* uniform padding */
+  padding: 0.5rem 0.8rem;
   border-radius: 6px;
   border: 1px solid var(--secondary-color-light);
   font-size: 0.95rem;
@@ -54,6 +54,14 @@
   line-height: 1.4;
   box-sizing: border-box;
   margin: 0;
+  color: #9998ab;
+  background-color: #e7dfe8;
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder,
+.form-group select::placeholder {
+  color: #9998ab;
 }
 
 .form-group input:focus,
@@ -77,6 +85,7 @@
   cursor: pointer;
   background-color: var(--primary-color);
   color: var(--text-color-light);
+  font-family: 'Lexend', Arial, Helvetica, sans-serif;
   transition:
     transform 0.2s ease,
     box-shadow 0.2s ease,

@@ -7,6 +7,7 @@
   border: 2px solid var(--secondary-color);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
   margin: 0.5rem;
+  font-family: inherit;
 }
 
 .search-icon {
@@ -14,6 +15,7 @@
   align-items: center;
   margin-right: 0.5rem;
   color: var(--secondary-color-light-2);
+  font-family: inherit;
 }
 
 .pinned-task-search-input {
@@ -24,8 +26,10 @@
   flex: 1;
   padding: 0.25rem 0;
   color: var(--text-color-dark);
+  font-family: inherit;
 }
 
 .pinned-task-search-input::placeholder {
   color: var(--secondary-color-light-2);
+  font-family: inherit;
 }

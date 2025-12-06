@@ -73,9 +73,10 @@
   font-size: 15px;
   color: var(--text-color-dark);
   outline: none;
+  color: #000000;
 }
 
-.signup-input::placeholder {
+.login-input::placeholder {
   color: var(--text-color-disabled);
 }
 
