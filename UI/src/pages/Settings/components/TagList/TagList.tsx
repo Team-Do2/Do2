@@ -1,6 +1,6 @@
 import './TagList.css';
 import { useGetAllUserTags, useUpdateTag, useDeleteTag } from '../../../../services/TagService';
-import { useAuthStore } from '../../../../stores/authStore';
+import { useAuthStore } from '../../../../auth/authStore';
 import TagComponent from '../TagComponent/TagComponent';
 import AddEditTagModal from '../AddEditTagModal/AddEditTagModal';
 import type { Tag } from '../../../../models/Tag';

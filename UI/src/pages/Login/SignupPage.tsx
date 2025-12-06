@@ -58,7 +58,9 @@ function SignupPage() {
   return (
     <div className="signup-page">
       <div className="signup-card">
-        <h1 className="brand">Do2</h1>
+        <h1 className="brand">
+          <img src="src\assets\logo.png" alt="Do2 Logo" />
+        </h1>
         <h2 className="title">Sign Up</h2>
 
         <form className="signup-form" onSubmit={handleSignup}>
@@ -171,7 +173,10 @@ function SignupPage() {
         {data && !data.success && <div className="error">{data.error || 'Signup failed'}</div>}
 
         <div className="login-link">
-          Already have an account? <a onClick={() => navigate('/login')}>Log In</a>
+          Already have an account?{' '}
+          <a className="login-link-button" onClick={() => navigate('/login')}>
+            Log In
+          </a>
         </div>
       </div>
     </div>

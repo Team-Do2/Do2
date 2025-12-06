@@ -9,48 +9,49 @@
   -moz-osx-font-smoothing: grayscale;
 
   /* Theme Colors */
-  --primary-color: #a5a4b8;
-  --primary-color-dark: #9998ab;
 
-  --secondary-color: #777777;
-  --secondary-color-light-2: #c4c4c4;
-  --secondary-color-light: #e6e6e6;
+  --primary-color: #82a0bc;
+  --primary-color-dark: #af9fa5;
 
-  --accent-color: #ee6868;
+  --secondary-color: #af9fa5;
+  --secondary-color-light-2: #e4dee4;
+  --secondary-color-light: #e7dfe8;
+
+  --accent-color: #63adf2;
   --accent-color-2: #e4d961;
   --accent-color-3: rgb(108, 177, 177);
 
   --error-color: #b00020;
 
-  --bg-color: #7f7e90;
+  --bg-color: #a7cced;
   --bg-color-white: #efefef;
-  --bg-color-dark: #636180;
+  --bg-color-dark: #63adf2;
 
   --text-color-light: #ffffff;
   --text-color-disabled: #bdbdbd;
   --text-color-dark: #4c4c4c;
 
   [app-theme='dark'] {
-    --primary-color-dark: #6c6b8e;
-    --primary-color: #9998ab;
+    --primary-color: #333947;
+    --primary-color-dark: #9998ab;
 
-    --secondary-color: #cccccc;
-    --secondary-color-light-2: #a8a8a8;
-    --secondary-color-light: #7b7b93;
+    --secondary-color: #9998ab;
+    --secondary-color-light-2: #ffffff;
+    --secondary-color-light: #e7dfe8;
 
-    --accent-color: #ee6868;
+    --accent-color: #63adf2;
     --accent-color-2: #e4d961;
     --accent-color-3: rgb(108, 177, 177);
 
     --error-color: #b00020;
 
-    --bg-color: #5e5a7d;
-    --bg-color-dark: #201f29;
-    --bg-color-white: #636180;
+    --bg-color: #252a36;
+    --bg-color-white: #545e75;
+    --bg-color-dark: #636180;
 
-    --text-color-dark: #e9e9e9;
+    --text-color-light: #ffffff;
     --text-color-disabled: #bdbdbd;
-    --text-color-light: #393939;
+    --text-color-dark: #eeeeee;
   }
 }
 

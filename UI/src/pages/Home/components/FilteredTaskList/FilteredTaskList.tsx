@@ -1,6 +1,6 @@
 import './FilteredTaskList.css';
 import { useGetUserTasksBySearch } from '../../../../services/TaskService';
-import { useAuthStore } from '../../../../stores/authStore';
+import { useAuthStore } from '../../../../auth/authStore';
 import TaskCard from '../TaskCard/TaskCard';
 import type { Task } from '../../../../models/Task';
 

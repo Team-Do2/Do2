@@ -54,7 +54,6 @@ function TaskCard({
     const newIsDone = !task.isDone;
     updateTaskDone.mutate({ id: task.id, isDone: newIsDone });
 
-    // If marking as done, also mark all subtasks as done
     if (newIsDone && task.subtasks && task.subtasks.length > 0) {
       markSubtasksDone(task.subtasks, true);
     }

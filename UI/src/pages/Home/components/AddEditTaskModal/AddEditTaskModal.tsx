@@ -8,7 +8,7 @@ import {
   useUpdateTaskDueDate,
   useGetAllUserTasks,
 } from '../../../../services/TaskService';
-import { useAuthStore } from '../../../../stores/authStore';
+import { useAuthStore } from '../../../../auth/authStore';
 import type { Task } from '../../../../models/Task';
 import './AddEditTaskModal.css';
 
@@ -134,10 +134,10 @@ const AddEditTaskModal = ({
       className="popup-modal-content"
       overlayClassName="popup-modal-overlay"
     >
-      <h2 className="popup-title">{isEdit ? 'Edit Task' : 'Add New Task'}</h2>
       <div className="form-group">
         <label htmlFor="task-name">Name:</label>
         <input
+          style={{ color: '#9998ab' }}
           id="task-name"
           type="text"
           value={name}
@@ -145,6 +145,7 @@ const AddEditTaskModal = ({
           placeholder="Enter task name"
         />
       </div>
+
       {nameError && <p className="error">{nameError}</p>}
       <div className="form-group">
         <label htmlFor="task-description">Description:</label>
@@ -159,11 +160,22 @@ const AddEditTaskModal = ({
       {descriptionError && <p className="error">{descriptionError}</p>}
       <div className="form-group">
         <label htmlFor="task-due-date">Due Date:</label>
-        <input id="task-due-date" type="date" value={dueDate} onChange={handleDueDateChange} />
+        <input
+          style={{ color: '#9998ab' }}
+          id="task-due-date"
+          type="date"
+          value={dueDate}
+          onChange={handleDueDateChange}
+        />
       </div>
       <div className="form-group">
         <label htmlFor="task-parent">Parent Task:</label>
-        <select id="task-parent" value={parentTaskId || ''} onChange={handleParentChange}>
+        <select
+          style={{ color: '#9998ab' }}
+          id="task-parent"
+          value={parentTaskId || ''}
+          onChange={handleParentChange}
+        >
           <option value="">No parent</option>
           {allTasks
             ?.filter((t) => t.id !== task?.id)

@@ -2,7 +2,7 @@ import './LoginPage.css';
 
 import { useState } from 'react';
 import { useLogin } from '../../services/LoginService';
-import { useAuthStore } from '../../stores/authStore';
+import { useAuthStore } from '../../auth/authStore';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { type Settings } from '../../services/SettingsService';
@@ -61,7 +61,9 @@ function LoginPage() {
   return (
     <div className="login-page">
       <div className="login-card">
-        <h1 className="brand">Do2</h1>
+        <h1 className="brand">
+          <img src="src\assets\do2logo.svg" alt="Do2 Logo" />
+        </h1>
         <h2 className="title">Login</h2>
 
         <form className="login-form" onSubmit={handleLogin}>
@@ -107,7 +109,10 @@ function LoginPage() {
         {data && !data.success && <div className="error">Incorrect email or password provided</div>}
 
         <div className="signup-link">
-          First time here? <a onClick={() => navigate('/signup')}>Sign Up</a>
+          First time here?{' '}
+          <a className="signup-link-button" onClick={() => navigate('/signup')}>
+            Sign Up
+          </a>
         </div>
       </div>
     </div>
