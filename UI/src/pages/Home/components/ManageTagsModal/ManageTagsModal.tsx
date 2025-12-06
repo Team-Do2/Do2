@@ -5,7 +5,7 @@ import {
   useAddTagToTask,
   useRemoveTagFromTask,
 } from '../../../../services/TagService';
-import { useAuthStore } from '../../../../stores/authStore';
+import { useAuthStore } from '../../../../auth/authStore';
 import TagComponent from '../../../Settings/components/TagComponent/TagComponent';
 import type { Tag } from '../../../../models/Tag';
 import './ManageTagsModal.css';
@@ -39,11 +39,9 @@ const ManageTagsModal: React.FC<ManageTagsModalProps> = ({
   const handleTagToggle = (tag: Tag) => {
     const isSelected = selectedTags.some((t) => t.id === tag.id);
     if (isSelected) {
-      // Remove tag
       removeTagMutation.mutate({ tagId: tag.id, taskId });
       setSelectedTags(selectedTags.filter((t) => t.id !== tag.id));
     } else {
-      // Add tag
       addTagMutation.mutate({ tagId: tag.id, taskId });
       setSelectedTags([...selectedTags, tag]);
     }

@@ -1,5 +1,5 @@
 import './SettingsPage.css';
-import { useAuthStore } from '../../stores/authStore';
+import { useAuthStore } from '../../auth/authStore';
 import { useQueryClient } from '@tanstack/react-query';
 import TagList from './components/TagList/TagList';
 import AddEditTagModal from './components/AddEditTagModal/AddEditTagModal';

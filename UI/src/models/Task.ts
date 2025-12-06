@@ -4,7 +4,7 @@ export interface Task {
   isPinned: boolean;
   isDone: boolean;
   name: string;
-  datetimeToComplete?: string; // Todo(NN): make this a real date type later
+  datetimeToComplete?: string;
   description?: string;
   supertaskId: number;
   userEmail: string;

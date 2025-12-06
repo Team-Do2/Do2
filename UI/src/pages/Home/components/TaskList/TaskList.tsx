@@ -1,9 +1,9 @@
 import './TaskList.css';
 import { useGetAllUserTasks } from '../../../../services/TaskService';
-import { useAuthStore } from '../../../../stores/authStore';
+import { useAuthStore } from '../../../../auth/authStore';
 import TaskCard from '../TaskCard/TaskCard';
 import type { Task } from '../../../../models/Task';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 function TaskList({
   onEditTask,
@@ -16,12 +16,10 @@ function TaskList({
   const { data, error } = useGetAllUserTasks(userEmail || '');
   const [newTaskIds, setNewTaskIds] = useState<number[]>([]);
 
-  if (error) return <pre>Error: {error.message}</pre>;
-  if (!userEmail) return <div>Please log in to view your tasks.</div>;
-
-  const sortedTasks = data
-    ? [...data].sort((a, b) => (a.isDone === b.isDone ? 0 : a.isDone ? 1 : -1))
-    : [];
+  const sortedTasks = useMemo(
+    () => (data ? [...data].sort((a, b) => (a.isDone === b.isDone ? 0 : a.isDone ? 1 : -1)) : []),
+    [data]
+  );
 
   useEffect(() => {
     if (!data) return;
@@ -36,7 +34,10 @@ function TaskList({
 
       return () => clearTimeout(timer);
     }
-  }, [sortedTasks]);
+  }, [data, sortedTasks, newTaskIds]);
+
+  if (error) return <pre>Error: {error.message}</pre>;
+  if (!userEmail) return <div>Please log in to view your tasks.</div>;
 
   return (
     <div className="task-list-container">

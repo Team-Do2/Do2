@@ -4,8 +4,9 @@ import HomePage from './pages/Home/HomePage';
 import SettingsPage from './pages/Settings/SettingsPage';
 import LoginPage from './pages/Login/LoginPage';
 import SignupPage from './pages/Login/SignupPage';
-import { useAuthStore } from './stores/authStore';
+import { useAuthStore } from './auth/authStore';
 import LoadingPage from './pages/Loading/LoadingPage';
+import AuthErrorBoundary from './auth/AuthErrorBoundary';
 
 export function AppRoutes() {
   const isLoggedIn = useAuthStore((state) => state.isLoggedIn);
@@ -15,9 +16,11 @@ export function AppRoutes() {
         path="/"
         element={
           isLoggedIn ? (
-            <Suspense fallback={<LoadingPage />}>
-              <HomePage />
-            </Suspense>
+            <AuthErrorBoundary fallback={<LoadingPage />}>
+              <Suspense fallback={<LoadingPage />}>
+                <HomePage />
+              </Suspense>
+            </AuthErrorBoundary>
           ) : (
             <Navigate to="/login" replace />
           )

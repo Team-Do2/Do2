@@ -7,7 +7,7 @@ import TaskList from './components/TaskList/TaskList';
 import AddTaskButton from './components/AddTaskButton/AddTaskButton';
 import AddEditTaskModal from './components/AddEditTaskModal/AddEditTaskModal';
 import type { Task } from '../../models/Task';
-import { useAuthStore } from '../../stores/authStore';
+import { useAuthStore } from '../../auth/authStore';
 import SettingsButton from './components/SettingsButton/SettingsButton';
 import CollapseButton from './components/CollapseButton/CollapseButton';
 

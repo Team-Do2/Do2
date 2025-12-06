@@ -2,7 +2,7 @@ import './LoginPage.css';
 
 import { useState } from 'react';
 import { useLogin } from '../../services/LoginService';
-import { useAuthStore } from '../../stores/authStore';
+import { useAuthStore } from '../../auth/authStore';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
 import { type Settings } from '../../services/SettingsService';

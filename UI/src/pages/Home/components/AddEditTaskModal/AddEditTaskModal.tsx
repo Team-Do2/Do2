@@ -8,7 +8,7 @@ import {
   useUpdateTaskDueDate,
   useGetAllUserTasks,
 } from '../../../../services/TaskService';
-import { useAuthStore } from '../../../../stores/authStore';
+import { useAuthStore } from '../../../../auth/authStore';
 import type { Task } from '../../../../models/Task';
 import './AddEditTaskModal.css';
 

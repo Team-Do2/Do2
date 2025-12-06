@@ -57,7 +57,6 @@ const ChangePasswordModal: React.FC<ChangePasswordModalProps> = ({
     } else {
       setNewPasswordError('');
     }
-    // Also check confirm
     if (confirmPassword && value !== confirmPassword) {
       setConfirmPasswordError('Passwords do not match');
     } else {
