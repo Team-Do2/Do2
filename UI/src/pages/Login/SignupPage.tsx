@@ -2,6 +2,7 @@ import './SignupPage.css';
 
 import { useState } from 'react';
 import { useSignup } from '../../services/LoginService';
+import do2Logo from '../../assets/do2logo.svg';
 import { useNavigate } from 'react-router-dom';
 
 function SignupPage() {
@@ -59,7 +60,7 @@ function SignupPage() {
     <div className="signup-page">
       <div className="signup-card">
         <h1 className="brand">
-          <img src="src\assets\do2logo.svg" alt="Do2 Logo" />
+          <img src={do2Logo} alt="Do2" />
         </h1>
         <h2 className="title">Sign Up</h2>
 

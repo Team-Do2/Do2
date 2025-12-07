@@ -2,6 +2,7 @@ import './LoginPage.css';
 
 import { useState } from 'react';
 import { useLogin } from '../../services/LoginService';
+import do2Logo from '../../assets/do2logo.svg';
 import { useAuthStore } from '../../auth/authStore';
 import { useNavigate } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
@@ -62,7 +63,7 @@ function LoginPage() {
     <div className="login-page">
       <div className="login-card">
         <h1 className="brand">
-          <img src="src\assets\do2logo.svg" alt="Do2 Logo" />
+          <img src={do2Logo} alt="Do2" />
         </h1>
         <h2 className="title">Login</h2>
 
