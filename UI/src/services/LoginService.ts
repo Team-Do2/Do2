@@ -61,7 +61,7 @@ async function signupRequest(
         headers: { 'Content-Type': 'application/json' },
       }
     );
-    if (response.status === 200) {
+    if (response.status === 200 || response.status === 201) {
       return { success: true };
     } else {
       return { success: false, error: 'Signup failed' };
