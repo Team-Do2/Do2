@@ -59,7 +59,7 @@ function SignupPage() {
     <div className="signup-page">
       <div className="signup-card">
         <h1 className="brand">
-          <img src="src\assets\logo.png" alt="Do2 Logo" />
+          <img src="src\assets\do2logo.svg" alt="Do2 Logo" />
         </h1>
         <h2 className="title">Sign Up</h2>
 

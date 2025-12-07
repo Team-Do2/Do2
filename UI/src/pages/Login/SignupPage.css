@@ -23,14 +23,16 @@
 }
 
 .brand {
-  font-size: 0;
+  font-size: 84px;
   margin: 0;
+  color: var(--text-color-dark);
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 0 rgba(0, 0, 0, 0.06);
 }
 
 .brand img {
-  height: 120px;
-  width: auto;
-  margin-bottom: 16px;
+  height: 175px;
 }
 
 .title {
