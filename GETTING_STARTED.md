@@ -5,6 +5,8 @@ This file will outline the project setup process for new developers working on t
 ## Before you Start
 Check out the fully deployed app at https://do2.chenevertsoftwareservices.com/ to get a good overview of all the features and general sense of our basic and advanced database functionality!
 
+Check out the fully deployed app at https://do2.chenevertsoftwareservices.com/ to get a good overview of all the features and general sense of our basic and advanced database functionality!
+
 You should have the following installed:
 
 - [Visual Studio](https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=Community&channel=Release&version=VS2022&source=VSLandingPage&cid=2030&passive=false) with "ASP.NET and Web Development"
@@ -27,3 +29,4 @@ This project is made up of 3 main parts: frontend, backend, and database.
 2. Start a new command line and run `npm run dev` in the `./UI` directory. This will start a the frontend with a development webserver at `localhost:5173`.
    (Note: before you run the UI the first time, you will need to run `npm install` to get all dependencies)
 3. You can now make changes to the frontend or backend, and they will be automatically reloaded as long as both scrips are running.
+4. Once you are done, you can run .\Tools\PublishProject.ps1 username webserver-ip to publish your changes
