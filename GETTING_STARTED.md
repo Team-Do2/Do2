@@ -3,15 +3,16 @@
 This file will outline the project setup process for new developers working on this project. Development support is possible on any operating system that can run Microsoft .NET 9.0 SDK and Node.js. (windows, linux, and mac supported)
 
 ## Before you Start
+Check out the fully deployed app at https://do2.chenevertsoftwareservices.com/ to get a good overview of all the features and general sense of our basic and advanced database functionality!
 
 Check out the fully deployed app at https://do2.chenevertsoftwareservices.com/ to get a good overview of all the features and general sense of our basic and advanced database functionality!
 
 You should have the following installed:
 
-- [Visual Studio](https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=Community&channel=Release&version=VS2022&source=VSLandingPage&cid=2030&passive=false) with "ASP.NET and Web Development" and the ".NET 9.0 Runtime"
+- [Visual Studio](https://visualstudio.microsoft.com/thank-you-downloading-visual-studio/?sku=Community&channel=Release&version=VS2022&source=VSLandingPage&cid=2030&passive=false) with "ASP.NET and Web Development"
 - [Node.js](https://nodejs.org/dist/v22.20.0/node-v22.20.0-x64.msi)
-- .NET 9.0 SDK
-- MySQL
+- [.NET 9.0 SDK](https://dotnet.microsoft.com/en-us/download)
+- [MySQL](https://dev.mysql.com/get/Downloads/MySQL-9.5/mysql-9.5.0-winx64.msi)
 
 ## How it Works
 
